@@ -203,7 +203,7 @@
       "refersTo": "chip-mood",
       "description": "Status / mood / escuchando ahora.",
       "html": "<span class=\"ds-chip\">mood: ☆ nostálgic@</span>",
-      "css": ".ds-chip{display:inline-block;padding:.15rem .75rem;border:1px solid #00ffff;border-radius:999px;background:#0b0716;color:#00ffff;font-family:VT323,'Courier New',monospace;font-size:1.25rem}"
+      "css": ".ds-chip{display:inline-block;padding:.15rem .75rem;border:1px solid #00ffff;border-radius:10px;background:#0b0716;color:#00ffff;font-family:VT323,'Courier New',monospace;font-size:1.25rem}"
     },
     {
       "name": "Wordmark",

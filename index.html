@@ -40,16 +40,72 @@
     <!-- INICIO: título compacto + perfil MySpace -->
     <section class="seccion seccion-inicio" id="inicio" aria-labelledby="titulo-principal">
       <div class="titulo-wrap">
+        <img class="sticker sticker-oso" src="img/stickers/sticker-1.webp" alt="" width="400" height="400">
         <h1 class="titulo-principal" id="titulo-principal" data-texto="VANZY">VANZY</h1>
         <p class="subtitulo">✦ mi rincón oscuro de internet <span class="subtitulo-cute">uwu <span class="corazon" aria-hidden="true">♥</span></span> ✦</p>
+        <img class="sticker sticker-hayley" src="img/stickers/sticker-4.webp" alt="" width="400" height="400">
       </div>
 
       <div class="grid-myspace">
-        <!-- Columna izquierda: bio, Top Bandas, películas, libros -->
-        <div class="columna columna-izq"></div>
+        <!-- Columna izquierda: perfil + bio, Top Bandas, películas, libros -->
+        <div class="columna columna-izq">
+          <article class="ventana ventana-perfil">
+            <h2 class="ventana-barra"><span>✦ perfil de vanzy</span><span class="ventana-botones" aria-hidden="true">_ □ ×</span></h2>
+            <div class="ventana-cuerpo perfil">
+              <img class="perfil-avatar" id="perfil-avatar" src="img/avatar.webp" alt="Foto de perfil de Vanzy" width="400" height="368">
+              <div class="perfil-texto">
+                <p class="perfil-saludo" id="perfil-saludo"></p>
+                <div class="perfil-bio" id="perfil-bio"></div>
+              </div>
+              <ul class="perfil-estado" aria-label="Status">
+                <li class="chip"><span class="chip-etiqueta">mood:</span> <span id="estado-mood"></span></li>
+                <li class="chip"><span class="chip-etiqueta">escuchando:</span> <span id="estado-escuchando"></span></li>
+                <li class="chip chip-fecha"><span class="chip-etiqueta">actualizado:</span> <time id="estado-fecha"></time></li>
+              </ul>
+            </div>
+          </article>
 
-        <!-- Columna derecha: status / mood, Spotify, cositas sobre mí -->
-        <aside class="columna columna-der" aria-label="Sobre mí"></aside>
+          <article class="ventana">
+            <h2 class="ventana-barra"><span>★ top bandas <small class="ventana-nota" id="bandas-nota"></small></span><span class="ventana-botones" aria-hidden="true">_ □ ×</span></h2>
+            <div class="ventana-cuerpo">
+              <ul class="grilla-portadas" id="lista-bandas"></ul>
+            </div>
+          </article>
+
+          <article class="ventana">
+            <h2 class="ventana-barra"><span>★ películas favoritas</span><span class="ventana-botones" aria-hidden="true">_ □ ×</span></h2>
+            <div class="ventana-cuerpo">
+              <ul class="grilla-portadas" id="lista-peliculas"></ul>
+            </div>
+          </article>
+
+          <article class="ventana">
+            <h2 class="ventana-barra"><span>★ libros favoritos</span><span class="ventana-botones" aria-hidden="true">_ □ ×</span></h2>
+            <div class="ventana-cuerpo">
+              <ul class="grilla-portadas" id="lista-libros"></ul>
+            </div>
+          </article>
+        </div>
+
+        <!-- Columna derecha: Spotify y cositas sobre mí -->
+        <aside class="columna columna-der" aria-label="Más sobre mí">
+          <article class="ventana">
+            <h2 class="ventana-barra"><span>▶ mi música</span><span class="ventana-botones" aria-hidden="true">_ □ ×</span></h2>
+            <div class="ventana-cuerpo">
+              <iframe class="spotify" id="spotify-playlist" title="Mi playlist en Spotify" height="352" loading="lazy"
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+            </div>
+          </article>
+
+          <article class="ventana">
+            <h2 class="ventana-barra"><span>♡ cositas sobre mí</span><span class="ventana-botones" aria-hidden="true">_ □ ×</span></h2>
+            <div class="ventana-cuerpo">
+              <ul class="cositas" id="lista-cositas"></ul>
+            </div>
+          </article>
+
+          <img class="sticker sticker-leon" src="img/stickers/sticker-2.webp" alt="" width="400" height="400" loading="lazy">
+        </aside>
       </div>
     </section>
 
@@ -74,8 +130,13 @@
     </section>
   </main>
 
-  <footer class="pie"></footer>
+  <footer class="pie">
+    <img class="sticker sticker-camion" src="img/stickers/sticker-3.webp" alt="" width="400" height="400" loading="lazy">
+    <p>última actualización: <time id="pie-fecha"></time></p>
+    <p>hecho con <span class="pie-corazon">♡</span> por Vanzy</p>
+  </footer>
 
+  <script src="datos.js" defer></script>
   <script src="script.js" defer></script>
 </body>
 </html>

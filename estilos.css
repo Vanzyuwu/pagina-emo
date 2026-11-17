@@ -377,6 +377,370 @@ img {
   30%      { transform: scale(1.3); }
 }
 
+/* ---------- Stickers (decoración, nunca se salen del contenedor) ---------- */
+.titulo-wrap {
+  position: relative;
+}
+
+.sticker {
+  position: absolute;
+  z-index: 3;
+  height: auto;
+  pointer-events: none;
+  filter: drop-shadow(3px 4px 0 rgba(0, 0, 0, 0.7));
+  animation: flotar-sticker 4s ease-in-out infinite;
+}
+
+.sticker-oso {
+  width: clamp(72px, 18vw, 170px);
+  top: 50%;
+  left: 0;
+  translate: 0 -55%;
+  --giro: -8deg;
+}
+
+.sticker-hayley {
+  width: clamp(64px, 16vw, 150px);
+  top: 50%;
+  right: 0;
+  translate: 0 -55%;
+  --giro: 6deg;
+  animation-delay: -2s;
+}
+
+.sticker-leon {
+  position: relative;
+  display: block;
+  width: min(60%, 200px);
+  margin: -0.5rem auto 0;
+  --giro: -4deg;
+  animation-delay: -1s;
+}
+
+@keyframes flotar-sticker {
+  0%, 100% { transform: translateY(0) rotate(var(--giro, 0deg)); }
+  50%      { transform: translateY(-8px) rotate(calc(var(--giro, 0deg) * -0.5)); }
+}
+
+/* ---------- Grilla MySpace ---------- */
+.columna {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+/* ---------- Ventana (componente insignia) ---------- */
+.ventana {
+  border: 2px solid var(--morado);
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: 0 0 12px rgba(176, 38, 255, 0.55);
+  overflow: hidden;
+}
+
+.ventana-barra {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0.25rem 0.75rem;
+  background: var(--morado);
+  color: #fff;
+  font-family: var(--fuente-menu);
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.ventana-nota {
+  font-size: 1.1rem;
+  opacity: 0.85;
+  white-space: nowrap;
+}
+
+@media (max-width: 420px) {
+  .ventana-botones {
+    display: none;
+  }
+}
+
+.ventana-botones {
+  flex-shrink: 0;
+  letter-spacing: 0.2em;
+  opacity: 0.85;
+}
+
+.ventana-cuerpo {
+  padding: 1rem;
+}
+
+/* ---------- Perfil ---------- */
+.perfil {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.perfil-avatar {
+  width: min(100%, 220px);
+  height: auto;
+  aspect-ratio: 400 / 368;
+  object-fit: cover;
+  justify-self: center;
+  border: 2px solid var(--fucsia);
+  border-radius: 6px;
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.6);
+  rotate: -2deg;
+}
+
+.perfil-saludo {
+  margin: 0 0 0.5rem;
+  font-family: var(--fuente-titulo);
+  font-size: clamp(1.75rem, 5vw, 2.25rem);
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 0 6px #fff, 0 0 14px var(--fucsia), 0 0 28px var(--fucsia);
+}
+
+.perfil-bio p {
+  margin: 0 0 0.75rem;
+  max-width: 62ch;
+}
+
+.perfil-bio p:last-child {
+  margin-bottom: 0;
+}
+
+.perfil-estado {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.75rem 0 0;
+  border-top: 1px dashed rgba(176, 38, 255, 0.6);
+  list-style: none;
+}
+
+@media (min-width: 560px) {
+  .perfil {
+    grid-template-columns: 180px 1fr;
+    column-gap: 1.25rem;
+  }
+
+  .perfil-avatar {
+    width: 100%;
+    align-self: start;
+  }
+
+  .perfil-estado {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ---------- Chips de status ---------- */
+.chip {
+  display: inline-block;
+  padding: 0.15rem 0.75rem;
+  border: 1px solid var(--cyan);
+  border-radius: 10px;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: var(--fuente-menu);
+  font-size: 1.25rem;
+  line-height: 1.3;
+}
+
+.chip-etiqueta {
+  color: var(--cyan);
+}
+
+.chip-fecha {
+  border-color: rgba(185, 168, 217, 0.6);
+  color: var(--texto-suave);
+}
+
+.chip-fecha .chip-etiqueta {
+  color: var(--texto-suave);
+}
+
+/* ---------- Portadas (bandas, películas, libros) ---------- */
+.grilla-portadas {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.portada,
+.banda-cara {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--morado);
+  border-radius: 6px;
+  background: #000;
+}
+
+.portada {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.portada img {
+  aspect-ratio: 2 / 3;
+  height: auto;
+}
+
+/* En pelis y libros el nombre va debajo, así no tapa la portada */
+.portada .portada-nombre {
+  position: static;
+  flex-grow: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portada:hover {
+  transform: translateY(-4px) rotate(-1deg);
+  border-color: var(--fucsia);
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.6);
+}
+
+.portada img,
+.banda-cara img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.portada-nombre {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 0.35rem 0.4rem;
+  background: rgba(11, 7, 22, 0.82);
+  color: #fff;
+  font-family: var(--fuente-menu);
+  font-size: clamp(1rem, 3.2vw, 1.15rem);
+  line-height: 1.1;
+  text-align: center;
+  text-wrap: balance;
+  hyphens: auto;
+}
+
+/* Tarjeta de banda que gira: frente = banda, dorso = disco */
+.banda {
+  display: block;
+  aspect-ratio: 1;
+  perspective: 900px;
+  border-radius: 6px;
+  text-decoration: none;
+}
+
+.banda-giro {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.banda-cara {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.banda-frente img {
+  filter: grayscale(40%) contrast(110%);
+}
+
+.banda-dorso {
+  transform: rotateY(180deg);
+  border-color: var(--fucsia);
+  box-shadow: 0 0 12px rgba(255, 0, 127, 0.7);
+}
+
+.banda-dorso .portada-nombre {
+  color: var(--cyan);
+}
+
+.banda:hover .banda-giro,
+.banda:focus-visible .banda-giro,
+.banda.volteada .banda-giro {
+  transform: rotateY(180deg);
+}
+
+/* ---------- Spotify y cositas ---------- */
+.spotify {
+  display: block;
+  width: 100%;
+  border: 0;
+  border-radius: 10px;
+  background: var(--fondo);
+}
+
+.cositas {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cositas li {
+  position: relative;
+  padding: 0.3rem 0 0.3rem 1.5rem;
+  border-bottom: 1px dashed rgba(176, 38, 255, 0.35);
+}
+
+.cositas li:last-child {
+  border-bottom: 0;
+}
+
+.cositas li::before {
+  content: "★" / "";
+  position: absolute;
+  left: 0;
+  color: var(--fucsia);
+  text-shadow: 0 0 6px var(--fucsia);
+}
+
+/* ---------- Footer ---------- */
+.pie {
+  position: relative;
+  z-index: 1;
+  max-width: 1100px;
+  margin: 4rem auto 0;
+  padding: 1.5rem 1rem 2rem;
+  border-top: 1px dashed rgba(176, 38, 255, 0.6);
+  font-family: var(--fuente-menu);
+  font-size: 1.25rem;
+  color: var(--texto-suave);
+  text-align: center;
+}
+
+.pie p {
+  margin: 0.15rem 0;
+}
+
+.pie-corazon {
+  color: var(--fucsia);
+  text-shadow: 0 0 6px var(--fucsia);
+}
+
+.sticker-camion {
+  position: relative;
+  display: block;
+  width: 110px;
+  margin: -4.5rem auto 0.5rem;
+  --giro: 4deg;
+  animation-delay: -3s;
+}
+
 /* ---------- Accesibilidad: sin animaciones si el usuario lo pide ---------- */
 @media (prefers-reduced-motion: reduce) {
   html {

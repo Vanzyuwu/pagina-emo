@@ -1,25 +1,127 @@
 /* =========================================================
    ✦ pagina-emo ✦ — script
    JS puro, sin frameworks.
-   Edita las listas de abajo para cambiar bandas, películas y libros.
+   Para cambiar el contenido, edita datos.js (no este archivo).
    ========================================================= */
 
-/* ---------- DATOS EDITABLES ---------- */
+/* El contenido vive en datos.js. Aquí solo se dibuja en la página. */
 
-// Top Bandas (Paso 3): cada una con su embed oficial de Spotify.
-const bandas = [
-  // { nombre: "My Chemical Romance", spotifyId: "7FBcuc1gsnv6Y1nwFtNRCb", tipo: "artist" },
-];
+/* ---------- AYUDANTES ---------- */
+// Crea un elemento con atributos e hijos (el texto se inserta seguro, sin HTML)
+function crear(etiqueta, atributos = {}, ...hijos) {
+  const elemento = document.createElement(etiqueta);
+  Object.entries(atributos).forEach(([clave, valor]) => {
+    if (valor === undefined || valor === null || valor === false) return;
+    elemento.setAttribute(clave, valor);
+  });
+  hijos.flat().forEach((hijo) => {
+    if (hijo === undefined || hijo === null) return;
+    elemento.append(hijo instanceof Node ? hijo : String(hijo));
+  });
+  return elemento;
+}
 
-// Películas favoritas (Paso 4)
-const peliculas = [
-  // { titulo: "Donnie Darko", anio: 2001, poster: "img/peliculas/donnie-darko.jpg" },
-];
+function poner(id, contenido) {
+  const elemento = document.getElementById(id);
+  if (!elemento) return null;
+  elemento.replaceChildren(...[contenido].flat().filter((x) => x !== undefined && x !== null));
+  return elemento;
+}
 
-// Libros favoritos (Paso 4)
-const libros = [
-  // { titulo: "Las ventajas de ser invisible", autor: "Stephen Chbosky", portada: "img/libros/ventajas.jpg" },
-];
+// "2026-11-17" -> "17 nov 2026"
+function formatearFecha(texto) {
+  const [anio, mes, dia] = String(texto).split("-").map(Number);
+  if (!anio || !mes || !dia) return texto;
+  const meses = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
+  return `${dia} ${meses[mes - 1]} ${anio}`;
+}
+
+/* ---------- INICIO: PERFIL ---------- */
+function pintarPerfil(d) {
+  const avatar = document.getElementById("perfil-avatar");
+  if (avatar && d.avatar) avatar.src = d.avatar;
+
+  poner("perfil-saludo", d.saludo);
+  poner("perfil-bio", (d.bio || []).map((parrafo) => crear("p", {}, parrafo)));
+  poner("estado-mood", d.mood);
+  poner("estado-escuchando", d.escuchando);
+
+  ["estado-fecha", "pie-fecha"].forEach((id) => {
+    const fecha = poner(id, formatearFecha(d.actualizado));
+    if (fecha) fecha.setAttribute("datetime", d.actualizado);
+  });
+
+  const spotify = document.getElementById("spotify-playlist");
+  if (spotify && d.playlistSpotify) {
+    spotify.src = `https://open.spotify.com/embed/playlist/${d.playlistSpotify}?utm_source=generator&theme=0`;
+  }
+
+  poner("lista-cositas", (d.cositas || []).map((cosita) => crear("li", {}, cosita)));
+}
+
+/* ---------- INICIO: TOP BANDAS (tarjetas que giran) ---------- */
+function pintarBandas(d) {
+  poner("bandas-nota", d.topBandasNota);
+  const tarjetas = (d.topBandas || []).map((banda) =>
+    crear(
+      "li",
+      {},
+      crear(
+        "a",
+        {
+          class: "banda",
+          href: banda.link,
+          target: "_blank",
+          rel: "noopener noreferrer",
+          "aria-label": `${banda.nombre}: escuchar el disco en Spotify`,
+        },
+        crear(
+          "span",
+          { class: "banda-giro" },
+          crear(
+            "span",
+            { class: "banda-cara banda-frente" },
+            crear("img", { src: banda.foto, alt: "", loading: "lazy", width: 300, height: 300 }),
+            crear("span", { class: "portada-nombre" }, banda.nombre)
+          ),
+          crear(
+            "span",
+            { class: "banda-cara banda-dorso" },
+            crear("img", { src: banda.disco, alt: "", loading: "lazy", width: 300, height: 300 }),
+            crear("span", { class: "portada-nombre" }, "▶ escuchar")
+          )
+        )
+      )
+    )
+  );
+  poner("lista-bandas", tarjetas);
+
+  // En celular (sin hover): el primer toque gira la tarjeta, el segundo abre Spotify
+  const sinHover = window.matchMedia("(hover: none)");
+  document.querySelectorAll(".banda").forEach((tarjeta) => {
+    tarjeta.addEventListener("click", (evento) => {
+      if (!sinHover.matches || tarjeta.classList.contains("volteada")) return;
+      evento.preventDefault();
+      document.querySelectorAll(".banda.volteada").forEach((otra) => otra.classList.remove("volteada"));
+      tarjeta.classList.add("volteada");
+    });
+  });
+}
+
+/* ---------- INICIO: PELÍCULAS Y LIBROS ---------- */
+function pintarPortadas(id, lista, campoImagen) {
+  poner(
+    id,
+    (lista || []).map((item) =>
+      crear(
+        "li",
+        { class: "portada" },
+        crear("img", { src: item[campoImagen], alt: "", loading: "lazy", width: 300, height: 450 }),
+        crear("span", { class: "portada-nombre" }, item.nombre)
+      )
+    )
+  );
+}
 
 /* ---------- FONDO DE ESTRELLAS ---------- */
 function crearEstrellas() {
@@ -99,5 +201,11 @@ function marcarSeccionActiva() {
 /* ---------- INICIO ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   crearEstrellas();
+  if (typeof datos !== "undefined") {
+    pintarPerfil(datos);
+    pintarBandas(datos);
+    pintarPortadas("lista-peliculas", datos.peliculas, "poster");
+    pintarPortadas("lista-libros", datos.libros, "portada");
+  }
   marcarSeccionActiva();
 });

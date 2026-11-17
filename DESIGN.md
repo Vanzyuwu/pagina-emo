@@ -80,7 +80,7 @@ components:
     backgroundColor: "{colors.noche}"
     textColor: "{colors.neon-cyan}"
     typography: "{typography.label}"
-    rounded: "{rounded.pill}"
+    rounded: "{rounded.md}"
     padding: "0.15rem 0.75rem"
 ---
 
@@ -212,7 +212,7 @@ Dos formas: la píldora (999px) para todo lo que es navegación o acción — me
 - **Ghost:** borde 2px cyan, texto cyan, fondo transparente; hover rellena con panel y Glow Cyan.
 
 ### Chips (mood / status)
-- **Style:** fondo noche, borde 1px cyan, texto cyan VT323. Ej.: "mood: ☆ nostálgic@", "escuchando: Paramore".
+- **Style:** fondo noche, borde 1px cyan, esquinas de ventana (10px, para que no se deforme si el texto ocupa dos líneas), etiqueta en cyan y valor en texto. Ej.: "mood: feliz :3", "escuchando: Paramore".
 
 ### Tarjeta de banda (flip)
 - Cara A: foto de la banda + nombre; cara B: portada del álbum + link a Spotify. Gira en hover y en foco del teclado; con reduced-motion cambia sin animación.
