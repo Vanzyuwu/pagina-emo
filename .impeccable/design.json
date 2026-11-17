@@ -1,0 +1,127 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-17T05:40:00Z",
+  "title": "Design System: VANZY",
+  "extensions": {
+    "colorMeta": {
+      "noche": { "role": "neutral", "displayName": "Noche", "canonical": "#0b0716" },
+      "panel": { "role": "neutral", "displayName": "Panel", "canonical": "#140828", "note": "Se usa al 85%: rgba(20, 8, 40, 0.85)" },
+      "neon-cyan": { "role": "primary", "displayName": "Cyan Letrero", "canonical": "#00ffff", "tonalRamp": ["#003d3d", "#005c5c", "#007a7a", "#00a3a3", "#00cccc", "#00ffff", "#80ffff", "#ccffff"] },
+      "neon-fucsia": { "role": "secondary", "displayName": "Fucsia Corazón", "canonical": "#ff007f", "tonalRamp": ["#3d001e", "#5c002e", "#85003f", "#b30055", "#db006c", "#ff007f", "#ff66b2", "#ffcce5"] },
+      "neon-morado": { "role": "tertiary", "displayName": "Morado Moretón", "canonical": "#b026ff", "tonalRamp": ["#22053a", "#35085a", "#4d0c85", "#6a12b5", "#8c1ce0", "#b026ff", "#cf7fff", "#ecd4ff"] },
+      "texto": { "role": "neutral", "displayName": "Texto Lavanda", "canonical": "#f1e9ff" },
+      "texto-suave": { "role": "neutral", "displayName": "Lavanda Gastada", "canonical": "#b9a8d9" },
+      "blanco": { "role": "neutral", "displayName": "Blanco Tubo", "canonical": "#ffffff" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Wordmark", "purpose": "Solo VANZY, uno por página." },
+      "headline": { "displayName": "Título de sección", "purpose": "MÚSICA, JUEGOS, FOTOS, FORO." },
+      "title": { "displayName": "Barra de ventana", "purpose": "Barras de título y nombres." },
+      "body": { "displayName": "Texto", "purpose": "Bio, listas, descripciones." },
+      "label": { "displayName": "Etiqueta", "purpose": "Menú, chips, botones." }
+    },
+    "shadows": [
+      { "name": "glow-cyan", "value": "0 0 4px #00ffff, 0 0 12px #00ffff, 0 0 24px #00ffff", "purpose": "Texto interactivo en hover." },
+      { "name": "glow-fucsia", "value": "0 0 4px #ff007f, 0 0 12px #ff007f, 0 0 24px #ff007f", "purpose": "Píldora, hover/foco/activo, botón." },
+      { "name": "glow-morado", "value": "0 0 4px #b026ff, 0 0 12px #b026ff, 0 0 24px #b026ff", "purpose": "Halo de la calavera; versión suave (0 0 12px) en ventanas." },
+      { "name": "brillo-interior", "value": "inset 0 0 12px rgba(255, 0, 127, 0.35)", "purpose": "Solo la píldora." }
+    ],
+    "motion": [
+      { "name": "subir", "value": "15–40s linear infinite", "purpose": "Estrellas subiendo (transform)." },
+      { "name": "titilar", "value": "2.5s ease-in-out infinite alternate", "purpose": "Estrellas titilando (opacity)." },
+      { "name": "parpadeo-neon", "value": "5s infinite", "purpose": "Wordmark." },
+      { "name": "glitch", "value": "3s steps(1) infinite", "purpose": "Capa cyan del wordmark." },
+      { "name": "flotar", "value": "3s ease-in-out infinite", "purpose": "Calavera." },
+      { "name": "latido", "value": "1s ease-in-out infinite", "purpose": "Corazón." },
+      { "name": "hover", "value": "0.2s", "purpose": "Transiciones de estado." }
+    ],
+    "breakpoints": [
+      { "name": "perfil-dos-columnas", "value": "800px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Menú píldora",
+      "kind": "nav",
+      "refersTo": "menu-pildora",
+      "description": "Navegación por anclas con calavera central y estado activo.",
+      "html": "<nav class=\"ds-pildora\"><a class=\"ds-link\" href=\"#\" aria-current=\"true\">[inicio]</a><a class=\"ds-link\" href=\"#\">[música]</a><span class=\"ds-calavera\" aria-hidden=\"true\">💀</span><a class=\"ds-link\" href=\"#\">[juegos]</a><a class=\"ds-link\" href=\"#\">[fotos]</a></nav>",
+      "css": ".ds-pildora{display:inline-flex;align-items:center;gap:.75rem;padding:.35rem 1.25rem;border:2px solid #ff007f;border-radius:999px;background:rgba(20,8,40,.85);box-shadow:0 0 4px #ff007f,0 0 12px #ff007f,0 0 24px #ff007f,inset 0 0 12px rgba(255,0,127,.35);font-family:VT323,'Courier New',monospace;font-size:1.5rem}.ds-link{display:inline-flex;align-items:center;min-height:44px;padding:0 .5rem;color:#00ffff;text-decoration:none;text-shadow:0 0 6px #00ffff;transition:color .2s,text-shadow .2s,transform .2s}.ds-link:hover,.ds-link:focus-visible{color:#fff;text-shadow:0 0 4px #ff007f,0 0 12px #ff007f,0 0 24px #ff007f;transform:scale(1.1) rotate(-3deg)}.ds-link:focus-visible{outline:2px dashed #ff007f;outline-offset:4px}.ds-link[aria-current]{color:#fff;text-shadow:0 0 4px #ff007f,0 0 12px #ff007f;text-decoration:underline #ff007f 2px;text-underline-offset:6px}.ds-calavera{font-size:1.9rem;filter:drop-shadow(0 0 6px #b026ff)}"
+    },
+    {
+      "name": "Ventana",
+      "kind": "card",
+      "refersTo": "ventana",
+      "description": "Contenedor de contenido estilo programa 2006.",
+      "html": "<section class=\"ds-ventana\"><header class=\"ds-barra\"><span>✦ cositas sobre mí</span><span aria-hidden=\"true\">_ □ ×</span></header><div class=\"ds-cuerpo\">Acuario ♒ · toco bajo, guitarra y batería · colecciono CDs</div></section>",
+      "css": ".ds-ventana{max-width:360px;border:2px solid #b026ff;border-radius:10px;background:rgba(20,8,40,.85);box-shadow:0 0 12px #b026ff;overflow:hidden;color:#f1e9ff;font-family:'Space Mono','Courier New',monospace;font-size:.95rem;line-height:1.6}.ds-barra{display:flex;justify-content:space-between;padding:.25rem .75rem;background:#b026ff;color:#fff;font-family:VT323,'Courier New',monospace;font-size:1.5rem;line-height:1.2}.ds-cuerpo{padding:1rem}"
+    },
+    {
+      "name": "Botón primario",
+      "kind": "button",
+      "refersTo": "boton",
+      "description": "Acción principal, p. ej. firmar el libro.",
+      "html": "<button class=\"ds-boton\">firmar el libro ♡</button>",
+      "css": ".ds-boton{min-height:44px;padding:0 1.25rem;border:0;border-radius:999px;background:#ff007f;color:#fff;font-family:VT323,'Courier New',monospace;font-size:1.25rem;letter-spacing:.04em;cursor:pointer;transition:box-shadow .2s,transform .2s}.ds-boton:hover{box-shadow:0 0 4px #ff007f,0 0 12px #ff007f,0 0 24px #ff007f;transform:translateY(-2px)}.ds-boton:focus-visible{outline:2px dashed #fff;outline-offset:4px}"
+    },
+    {
+      "name": "Botón ghost",
+      "kind": "button",
+      "refersTo": "boton",
+      "description": "Acción secundaria, p. ej. abrir en Spotify.",
+      "html": "<a class=\"ds-ghost\" href=\"#\">▶ abrir en spotify</a>",
+      "css": ".ds-ghost{display:inline-flex;align-items:center;min-height:44px;padding:0 1.25rem;border:2px solid #00ffff;border-radius:999px;color:#00ffff;text-decoration:none;font-family:VT323,'Courier New',monospace;font-size:1.25rem;transition:background .2s,box-shadow .2s}.ds-ghost:hover{background:rgba(20,8,40,.85);box-shadow:0 0 4px #00ffff,0 0 12px #00ffff}.ds-ghost:focus-visible{outline:2px dashed #ff007f;outline-offset:4px}"
+    },
+    {
+      "name": "Chip de mood",
+      "kind": "chip",
+      "refersTo": "chip-mood",
+      "description": "Status / mood / escuchando ahora.",
+      "html": "<span class=\"ds-chip\">mood: ☆ nostálgic@</span>",
+      "css": ".ds-chip{display:inline-block;padding:.15rem .75rem;border:1px solid #00ffff;border-radius:999px;background:#0b0716;color:#00ffff;font-family:VT323,'Courier New',monospace;font-size:1.25rem}"
+    },
+    {
+      "name": "Wordmark",
+      "kind": "custom",
+      "refersTo": "display",
+      "description": "VANZY con glow, parpadeo y glitch cyan.",
+      "html": "<h1 class=\"ds-wordmark\" data-texto=\"VANZY\">VANZY</h1>",
+      "css": ".ds-wordmark{position:relative;margin:0;font-family:'Metal Mania',Impact,fantasy;font-weight:400;font-size:4rem;line-height:1.05;color:#fff;text-shadow:0 0 6px #fff,0 0 14px #ff007f,0 0 28px #ff007f,0 0 48px #b026ff}.ds-wordmark::before{content:attr(data-texto);position:absolute;inset:0;color:transparent;text-shadow:-3px 0 #00ffff;opacity:.6}"
+    }
+  ],
+  "narrative": {
+    "northStar": "El perfil de MySpace a las 3 AM",
+    "overview": "VANZY es un perfil personal de 2006 que alguien sigue editando de madrugada: noche violeta casi negra, estrellas de colores que suben, y neón cyan/fucsia/morado que zumba como un letrero. El brillo, el parpadeo y el glitch son la voz del sitio y son intencionales. Una sola página con anclas; el primer pantallazo ya es el perfil. También es portafolio de GitHub: el wordmark es VANZY y lo cute vive en segundo plano.",
+    "keyCharacteristics": [
+      "Noche estrellada fija detrás de todo; el contenido flota encima en ventanas translúcidas.",
+      "Tres neones con roles fijos: cyan = interactivo, fucsia = acento/acción, morado = estructura/profundidad.",
+      "Tres fuentes con roles fijos: Metal Mania grita, VT323 etiqueta, Space Mono cuenta.",
+      "Movimiento constante pero barato (transform/opacity), y apagado completo con prefers-reduced-motion.",
+      "Una sola página con anclas; el menú píldora siempre dice dónde estás."
+    ],
+    "rules": [
+      { "name": "The Cyan Se Toca Rule", "body": "Cyan significa interactivo. Texto estático nunca va en cyan salvo el subtítulo del wordmark.", "section": "colors" },
+      { "name": "The Luz No Relleno Rule", "body": "Los neones se usan como borde, glow o texto; nunca como fondo de una superficie grande. La excepción son la barra de título de una ventana y el botón.", "section": "colors" },
+      { "name": "The Un Solo Grito Rule", "body": "Metal Mania solo en el wordmark y los títulos de sección. Nunca en párrafos, botones ni barras de ventana.", "section": "typography" },
+      { "name": "The Glifo Seguro Rule", "body": "VT323 no tiene buenos ~; los adornos usan ✦ ♡ ★ ☆ ⋆ y no ~*~. Los textos decorativos de varias palabras llevan text-wrap: balance y line-height: 1.2.", "section": "typography" },
+      { "name": "The Tubo De Neón Rule", "body": "Un glow fuerte (3 capas) por zona visual. Las ventanas en reposo llevan glow suave; el fuerte se reserva para hover, foco y el elemento activo.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do mantener las 5 animaciones (estrellas, parpadeo del título, glitch, calavera, corazón); animar solo transform y opacity.",
+      "Do apagar toda animación y transición dentro de @media (prefers-reduced-motion: reduce), dejando las estrellas quietas pero visibles.",
+      "Do escribir el wordmark como VANZY en h1, <title>, metadatos y footer; uwu/:3/♡ van en subtítulo, status o footer.",
+      "Do incluir en el footer nombre, año, link a GitHub y \"hecho a mano con HTML + CSS + JS\".",
+      "Do dar a todo lo interactivo foco visible (outline dashed fucsia) y 44px de alto táctil.",
+      "Do usar contenido real en las ventanas (bandas, pelis, libros, juegos, fotos del proyecto anterior)."
+    ],
+    "donts": [
+      "Don't quitar ni \"suavizar\" el glow neón, el parpadeo o el glitch: son la identidad.",
+      "Don't usar filter animado en las estrellas ni en elementos repetidos; usa opacity.",
+      "Don't posicionar stickers o decoraciones con offsets negativos que se salgan del contenedor.",
+      "Don't agregar una cuarta fuente ni colores fuera de los tokens (nada de slate, #6b21a8 sueltos).",
+      "Don't usar cajas negras idénticas para todo; cada ventana tiene barra de título y jerarquía propia.",
+      "Don't conectar APIs con llaves en el cliente (Steam, Valorant) ni formularios que fallen en silencio; el foro es estático o \"próximamente\".",
+      "Don't usar copy de relleno o de broma interna (\"una es falsa es fake\", chats falsos) ni ~*~ en VT323."
+    ]
+  }
+}
