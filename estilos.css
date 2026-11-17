@@ -81,6 +81,164 @@ img {
   overflow: hidden;
 }
 
+.estrella {
+  position: absolute;
+  bottom: -10px;
+  width: var(--tam, 2px);
+  height: var(--tam, 2px);
+  border-radius: 50%;
+  background: var(--color, #fff);
+  box-shadow: 0 0 6px var(--color, #fff);
+  opacity: var(--opacidad, 0.8);
+  animation:
+    subir var(--duracion, 20s) linear var(--retraso, 0s) infinite,
+    titilar 2.5s ease-in-out var(--retraso, 0s) infinite alternate;
+}
+
+@keyframes subir {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-110vh); }
+}
+
+@keyframes titilar {
+  from { filter: brightness(0.6); }
+  to   { filter: brightness(1.4); }
+}
+
+/* ---------- Menú píldora emo ---------- */
+.cabecera {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  justify-content: center;
+  padding: 1.25rem 1rem 0;
+}
+
+.menu-pildora {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.35rem 1.25rem;
+  border: 2px solid var(--fucsia);
+  border-radius: 999px;
+  background: rgba(20, 8, 40, 0.85);
+  box-shadow: var(--glow-fucsia), inset 0 0 12px rgba(255, 0, 127, 0.35);
+  font-family: var(--fuente-menu);
+  font-size: 1.5rem;
+}
+
+.menu-link {
+  color: var(--cyan);
+  text-decoration: none;
+  text-shadow: 0 0 6px var(--cyan);
+  padding: 0 0.25rem;
+  border-radius: 6px;
+  transition: color 0.2s, text-shadow 0.2s, transform 0.2s;
+}
+
+.menu-link:hover,
+.menu-link:focus-visible {
+  color: #fff;
+  text-shadow: var(--glow-fucsia);
+  transform: scale(1.1) rotate(-3deg);
+  outline: none;
+}
+
+.menu-uwu:hover {
+  transform: scale(1.1) rotate(3deg);
+}
+
+.corazon {
+  display: inline-block;
+  color: var(--fucsia);
+  animation: latido 1s ease-in-out infinite;
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  30%      { transform: scale(1.3); }
+}
+
+.menu-calavera {
+  font-size: 1.9rem;
+  line-height: 1;
+  filter: drop-shadow(0 0 6px var(--morado)) drop-shadow(0 0 12px var(--morado));
+  animation: flotar 3s ease-in-out infinite;
+  cursor: default;
+  transition: transform 0.3s;
+}
+
+.menu-calavera:hover {
+  animation: girar 0.6s ease-in-out;
+}
+
+@keyframes flotar {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+
+@keyframes girar {
+  to { transform: rotate(360deg) scale(1.2); }
+}
+
+/* ---------- Título gigante con glow ---------- */
+.titulo-wrap {
+  text-align: center;
+  margin: 1.5rem 0 2rem;
+}
+
+.titulo-principal {
+  position: relative;
+  margin: 0;
+  font-family: var(--fuente-titulo);
+  font-weight: 400;
+  font-size: clamp(3rem, 14vw, 7.5rem);
+  line-height: 1.05;
+  color: #fff;
+  text-shadow:
+    0 0 6px #fff,
+    0 0 14px var(--fucsia),
+    0 0 28px var(--fucsia),
+    0 0 48px var(--morado),
+    0 0 80px var(--morado);
+  animation: parpadeo-neon 5s infinite;
+  word-break: break-word;
+}
+
+/* Capa cyan desplazada para el efecto "glitch" */
+.titulo-principal::before {
+  content: attr(data-texto);
+  position: absolute;
+  inset: 0;
+  color: transparent;
+  text-shadow: -3px 0 var(--cyan);
+  opacity: 0.6;
+  mix-blend-mode: screen;
+  animation: glitch 3s infinite steps(1);
+  pointer-events: none;
+}
+
+@keyframes parpadeo-neon {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55%                     { opacity: 0.55; }
+}
+
+@keyframes glitch {
+  0%, 90%, 100% { transform: translate(0, 0); }
+  92%           { transform: translate(-4px, 2px); }
+  94%           { transform: translate(4px, -2px); }
+  96%           { transform: translate(-2px, 0); }
+}
+
+.subtitulo {
+  margin: 0.5rem 0 0;
+  font-family: var(--fuente-menu);
+  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  color: var(--cyan);
+  text-shadow: 0 0 6px var(--cyan);
+  letter-spacing: 1px;
+}
+
 /* ---------- Accesibilidad: sin animaciones si el usuario lo pide ---------- */
 @media (prefers-reduced-motion: reduce) {
   *,
