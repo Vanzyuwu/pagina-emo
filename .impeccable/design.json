@@ -62,7 +62,7 @@
       "refersTo": "boton",
       "description": "Acción principal, p. ej. firmar el libro.",
       "html": "<button class=\"ds-boton\">firmar el libro ♡</button>",
-      "css": ".ds-boton{min-height:44px;padding:0 1.25rem;border:0;border-radius:999px;background:#ff007f;color:#fff;font-family:VT323,'Courier New',monospace;font-size:1.25rem;letter-spacing:.04em;cursor:pointer;transition:box-shadow .2s,transform .2s}.ds-boton:hover{box-shadow:0 0 4px #ff007f,0 0 12px #ff007f,0 0 24px #ff007f;transform:translateY(-2px)}.ds-boton:focus-visible{outline:2px dashed #fff;outline-offset:4px}"
+      "css": ".ds-boton{min-height:44px;padding:0 1.25rem;border:0;border-radius:999px;background:#ff007f;color:#0b0716;font-family:VT323,'Courier New',monospace;font-size:1.25rem;letter-spacing:.04em;cursor:pointer;transition:box-shadow .2s,transform .2s}.ds-boton:hover{box-shadow:0 0 4px #ff007f,0 0 12px #ff007f,0 0 24px #ff007f;transform:translateY(-2px)}.ds-boton:focus-visible{outline:2px dashed #fff;outline-offset:4px}"
     },
     {
       "name": "Botón ghost",

@@ -12,6 +12,8 @@
   --fucsia: #ff007f;
   --morado: #b026ff;
   --texto: #f1e9ff;
+  --texto-suave: #b9a8d9;
+  --panel: rgba(20, 8, 40, 0.85);
 
   --glow-cyan: 0 0 4px var(--cyan), 0 0 12px var(--cyan), 0 0 24px var(--cyan);
   --glow-fucsia: 0 0 4px var(--fucsia), 0 0 12px var(--fucsia), 0 0 24px var(--fucsia);
@@ -20,6 +22,8 @@
   --fuente-titulo: "Metal Mania", "Impact", fantasy;
   --fuente-menu: "VT323", "Courier New", monospace;
   --fuente-texto: "Space Mono", "Courier New", monospace;
+
+  --alto-menu: 4.5rem; /* reserva para el menú fijo al saltar a una ancla */
 }
 
 /* ---------- Reset básico ---------- */
@@ -33,6 +37,26 @@ html,
 body {
   margin: 0;
   padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scrollbar-color: var(--morado) var(--fondo);
+}
+
+::selection {
+  background: var(--fucsia);
+  color: #fff;
+}
+
+a {
+  color: var(--cyan);
+  text-underline-offset: 0.2em;
+}
+
+:focus-visible {
+  outline: 2px dashed var(--fucsia);
+  outline-offset: 4px;
 }
 
 body {
@@ -90,6 +114,7 @@ img {
   background: var(--color, #fff);
   box-shadow: 0 0 6px var(--color, #fff);
   opacity: var(--opacidad, 0.8);
+  will-change: transform, opacity;
   animation:
     subir var(--duracion, 20s) linear var(--retraso, 0s) infinite,
     titilar 2.5s ease-in-out var(--retraso, 0s) infinite alternate;
@@ -101,75 +126,114 @@ img {
 }
 
 @keyframes titilar {
-  from { filter: brightness(0.6); }
-  to   { filter: brightness(1.4); }
+  from { opacity: calc(var(--opacidad, 0.8) * 0.4); }
+  to   { opacity: var(--opacidad, 0.8); }
 }
 
-/* ---------- Menú píldora emo ---------- */
+/* ---------- Saltar al contenido (visible solo con teclado) ---------- */
+.saltar {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 1.25rem;
+  border-radius: 999px;
+  background: var(--fucsia);
+  color: var(--fondo);
+  font-family: var(--fuente-menu);
+  font-size: 1.25rem;
+  text-decoration: none;
+  transform: translateY(-200%);
+  transition: transform 0.2s;
+}
+
+.saltar:focus-visible {
+  transform: translateY(0);
+  outline-color: #fff;
+}
+
+/* ---------- Menú píldora emo (fijo arriba) ---------- */
 .cabecera {
-  position: relative;
-  z-index: 2;
+  position: sticky;
+  top: 0;
+  z-index: 5;
   display: flex;
   justify-content: center;
-  padding: 1.25rem 1rem 0;
+  padding: 0.75rem 1rem 0;
 }
 
 .menu-pildora {
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.35rem 1.25rem;
+  column-gap: 0.25rem;
+  padding: 0.15rem 1rem;
   border: 2px solid var(--fucsia);
-  border-radius: 999px;
-  background: rgba(20, 8, 40, 0.85);
+  border-radius: 1.75rem;
+  background: var(--panel);
   box-shadow: var(--glow-fucsia), inset 0 0 12px rgba(255, 0, 127, 0.35);
   font-family: var(--fuente-menu);
-  font-size: 1.5rem;
+  font-size: 1.35rem;
+  line-height: 1;
 }
 
 .menu-link {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 0.35rem;
   color: var(--cyan);
   text-decoration: none;
   text-shadow: 0 0 6px var(--cyan);
-  padding: 0 0.25rem;
   border-radius: 6px;
   transition: color 0.2s, text-shadow 0.2s, transform 0.2s;
 }
+
+/* Corchetes decorativos: el lector de pantalla no los lee */
+.menu-link::before { content: "[" / ""; opacity: 0.7; }
+.menu-link::after  { content: "]" / ""; opacity: 0.7; }
 
 .menu-link:hover,
 .menu-link:focus-visible {
   color: #fff;
   text-shadow: var(--glow-fucsia);
   transform: scale(1.1) rotate(-3deg);
-  outline: none;
 }
 
-.menu-uwu:hover {
+.menu-link:nth-of-type(even):hover,
+.menu-link:nth-of-type(even):focus-visible {
   transform: scale(1.1) rotate(3deg);
 }
 
-.corazon {
-  display: inline-block;
-  color: var(--fucsia);
-  animation: latido 1s ease-in-out infinite;
+/* Sección visible ahora mismo (lo marca script.js) */
+.menu-link[aria-current="true"] {
+  color: #fff;
+  text-shadow: var(--glow-fucsia);
+  text-decoration: underline 2px var(--fucsia);
+  text-underline-offset: 6px;
 }
 
-@keyframes latido {
-  0%, 100% { transform: scale(1); }
-  30%      { transform: scale(1.3); }
-}
-
+/* La calavera flota (capa externa) y gira en hover (capa interna): sin saltos */
 .menu-calavera {
-  font-size: 1.9rem;
+  display: inline-block;
+  margin: 0 0.35rem;
+  font-size: 1.75rem;
   line-height: 1;
   filter: drop-shadow(0 0 6px var(--morado)) drop-shadow(0 0 12px var(--morado));
   animation: flotar 3s ease-in-out infinite;
-  cursor: default;
-  transition: transform 0.3s;
 }
 
-.menu-calavera:hover {
-  animation: girar 0.6s ease-in-out;
+.menu-calavera-giro {
+  display: inline-block;
+  transition: transform 0.6s ease-in-out;
+}
+
+.menu-pildora:hover .menu-calavera-giro {
+  transform: rotate(360deg) scale(1.15);
 }
 
 @keyframes flotar {
@@ -177,14 +241,71 @@ img {
   50%      { transform: translateY(-4px); }
 }
 
-@keyframes girar {
-  to { transform: rotate(360deg) scale(1.2); }
+/* En pantallas angostas los corchetes se van para que todo quepa en una fila */
+@media (max-width: 479px) {
+  .menu-pildora {
+    column-gap: 0;
+    padding: 0.1rem 0.5rem;
+    font-size: 1.2rem;
+  }
+
+  .menu-link {
+    padding: 0 0.3rem;
+  }
+
+  .menu-link::before,
+  .menu-link::after {
+    content: none;
+  }
+
+  .menu-calavera {
+    margin: 0 0.15rem;
+    font-size: 1.5rem;
+  }
 }
 
-/* ---------- Título gigante con glow ---------- */
+@media (min-width: 480px) {
+  .menu-pildora {
+    border-radius: 999px;
+    padding: 0.15rem 1.25rem;
+    font-size: 1.5rem;
+  }
+}
+
+/* ---------- Secciones ancla ---------- */
+.seccion {
+  scroll-margin-top: var(--alto-menu);
+}
+
+.seccion + .seccion {
+  margin-top: 4rem;
+}
+
+.titulo-seccion {
+  margin: 0 0 1rem;
+  font-family: var(--fuente-titulo);
+  font-weight: 400;
+  font-size: clamp(1.75rem, 5vw, 2.5rem);
+  line-height: 1.1;
+  color: #fff;
+  text-shadow: 0 0 6px #fff, 0 0 14px var(--fucsia), 0 0 28px var(--fucsia);
+}
+
+.en-construccion {
+  margin: 0;
+  font-family: var(--fuente-menu);
+  font-size: 1.25rem;
+  color: var(--texto-suave);
+}
+
+.contenedor:focus {
+  outline: none;
+}
+
+/* ---------- Título VANZY con glow ---------- */
 .titulo-wrap {
   text-align: center;
-  margin: 1.5rem 0 2rem;
+  margin: 1.5rem 0;
 }
 
 .titulo-principal {
@@ -192,8 +313,9 @@ img {
   margin: 0;
   font-family: var(--fuente-titulo);
   font-weight: 400;
-  font-size: clamp(3rem, 14vw, 7.5rem);
+  font-size: clamp(3.5rem, 16vw, 6rem);
   line-height: 1.05;
+  letter-spacing: 0.02em;
   color: #fff;
   text-shadow:
     0 0 6px #fff,
@@ -202,7 +324,6 @@ img {
     0 0 48px var(--morado),
     0 0 80px var(--morado);
   animation: parpadeo-neon 5s infinite;
-  word-break: break-word;
 }
 
 /* Capa cyan desplazada para el efecto "glitch" */
@@ -233,14 +354,35 @@ img {
 .subtitulo {
   margin: 0.5rem 0 0;
   font-family: var(--fuente-menu);
-  font-size: clamp(1.1rem, 4vw, 1.6rem);
+  font-size: clamp(1.25rem, 4vw, 1.6rem);
+  line-height: 1.2;
   color: var(--cyan);
   text-shadow: 0 0 6px var(--cyan);
-  letter-spacing: 1px;
+  text-wrap: balance;
+}
+
+.subtitulo-cute {
+  white-space: nowrap;
+  color: var(--fucsia);
+  text-shadow: 0 0 6px var(--fucsia);
+}
+
+.corazon {
+  display: inline-block;
+  animation: latido 1s ease-in-out infinite;
+}
+
+@keyframes latido {
+  0%, 100% { transform: scale(1); }
+  30%      { transform: scale(1.3); }
 }
 
 /* ---------- Accesibilidad: sin animaciones si el usuario lo pide ---------- */
 @media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
   *,
   *::before,
   *::after {

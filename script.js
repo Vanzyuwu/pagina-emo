@@ -52,7 +52,52 @@ function crearEstrellas() {
   }
 }
 
+/* ---------- MENÚ: marca la sección visible ---------- */
+function marcarSeccionActiva() {
+  const links = [...document.querySelectorAll(".menu-link")];
+  const secciones = links
+    .map((link) => document.querySelector(link.getAttribute("href")))
+    .filter(Boolean);
+  if (!secciones.length || !("IntersectionObserver" in window)) return;
+
+  const activar = (id) => {
+    links.forEach((link) => {
+      if (link.getAttribute("href") === `#${id}`) {
+        link.setAttribute("aria-current", "true");
+      } else {
+        link.removeAttribute("aria-current");
+      }
+    });
+  };
+
+  // Una sección cuenta como "visible" cuando cruza la franja central de la pantalla
+  const observador = new IntersectionObserver(
+    (entradas) => {
+      // Arriba del todo siempre manda "inicio"
+      if (window.scrollY < 10) return activar(secciones[0].id);
+      entradas.forEach((entrada) => {
+        if (entrada.isIntersecting) activar(entrada.target.id);
+      });
+    },
+    { rootMargin: "-45% 0px -50% 0px" }
+  );
+
+  secciones.forEach((seccion) => observador.observe(seccion));
+  activar(secciones[0].id);
+
+  // La última sección puede ser corta y no llegar al centro: al tocar fondo, se marca igual
+  window.addEventListener(
+    "scroll",
+    () => {
+      const alFondo = window.scrollY > 0 && window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (alFondo) activar(secciones[secciones.length - 1].id);
+    },
+    { passive: true }
+  );
+}
+
 /* ---------- INICIO ---------- */
 document.addEventListener("DOMContentLoaded", () => {
   crearEstrellas();
+  marcarSeccionActiva();
 });

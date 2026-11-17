@@ -71,7 +71,7 @@ components:
     padding: "0.25rem 0.75rem"
   boton:
     backgroundColor: "{colors.neon-fucsia}"
-    textColor: "{colors.blanco}"
+    textColor: "{colors.noche}"
     typography: "{typography.label}"
     rounded: "{rounded.pill}"
     height: "44px"
@@ -192,7 +192,7 @@ Dos formas: la píldora (999px) para todo lo que es navegación o acción — me
 
 ### Buttons
 - **Shape:** píldora (999px), altura 44px.
-- **Primary:** fucsia sólido con texto blanco VT323; hover con Glow Fucsia y `translateY(-2px)`; foco con outline dashed blanco.
+- **Primary:** fucsia sólido con texto noche VT323 (blanco sobre fucsia no llega a 4.5:1); hover con Glow Fucsia y `translateY(-2px)`; foco con outline dashed blanco.
 - **Ghost:** borde 2px cyan, texto cyan, fondo transparente; hover rellena con panel y Glow Cyan.
 
 ### Chips (mood / status)
@@ -205,7 +205,7 @@ Dos formas: la píldora (999px) para todo lo que es navegación o acción — me
 - Marco blanco hueso con margen inferior más ancho para la leyenda en VT323, rotación aleatoria leve (±3deg) que se endereza en hover.
 
 ### Skip link
-- Oculto hasta recibir foco; aparece arriba a la izquierda como botón primario: "saltar al contenido".
+- Oculto hasta recibir foco; aparece arriba a la izquierda como botón primario (texto noche): "saltar al contenido".
 
 ## Do's and Don'ts
 
