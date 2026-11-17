@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boceto 2 · VANZY.EXE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  /* Boceto rápido: la página es un escritorio Y2K */
+  :root {
+    --noche: #0b0716; --cyan: #00ffff; --fucsia: #ff007f; --morado: #b026ff;
+    --texto: #f1e9ff; --suave: #b9a8d9; --cromo: #2a1b3d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    color: var(--texto); font: 14px/1.5 "Space Mono", monospace; overflow: hidden;
+    background:
+      radial-gradient(circle at 70% 35%, rgba(176,38,255,.35), transparent 40%),
+      radial-gradient(circle at 20% 80%, rgba(255,0,127,.25), transparent 40%),
+      var(--noche);
+  }
+  /* fondo de pantalla: logo gigante tenue */
+  .wallpaper {
+    position: fixed; inset: 0; display: grid; place-items: center; pointer-events: none;
+    font: 400 28vw/1 "Metal Mania", fantasy; color: transparent;
+    -webkit-text-stroke: 1px rgba(255,0,127,.25);
+  }
+  .escritorio { position: fixed; inset: 0 0 44px 0; }
+  .escritorio > *, .ventana .cuerpo > * { min-width: 0; }
+
+  /* íconos */
+  .iconos { position: absolute; top: 16px; left: 16px; display: grid; gap: 14px; }
+  .icono { width: 84px; display: grid; justify-items: center; gap: 4px; text-decoration: none; color: #fff; font: 18px/1 VT323; text-align: center; }
+  .icono i { width: 48px; height: 48px; display: grid; place-items: center; font-style: normal; font-size: 26px; border: 2px solid var(--cyan); background: rgba(0,0,0,.5); box-shadow: 0 0 10px rgba(0,255,255,.4); }
+  .icono:hover span, .icono:focus span { background: var(--fucsia); color: #000; }
+
+  /* ventanas */
+  .ventana {
+    position: absolute; background: #12081f; border: 2px solid var(--morado);
+    box-shadow: 0 0 0 1px #000, 8px 8px 0 rgba(0,0,0,.6);
+  }
+  .ventana.activa { border-color: var(--fucsia); box-shadow: 0 0 0 1px #000, 0 0 22px rgba(255,0,127,.5), 8px 8px 0 rgba(0,0,0,.6); z-index: 5; }
+  .titulo {
+    display: flex; justify-content: space-between; align-items: center; padding: 2px 4px 2px 8px;
+    background: linear-gradient(90deg, var(--morado), #5a1590); color: #fff; font: 20px VT323; cursor: grab; user-select: none;
+  }
+  .activa .titulo { background: linear-gradient(90deg, var(--fucsia), var(--morado)); }
+  .titulo .btns { display: flex; gap: 3px; }
+  .titulo .btns span { width: 20px; height: 18px; display: grid; place-items: center; background: #000; border: 1px solid #fff; font-size: 14px; }
+  .cuerpo { padding: 14px; }
+
+  /* PROTAGONISTA: perfil.exe */
+  .perfil { top: 40px; left: 50%; translate: -50% 0; width: min(560px, 92vw); }
+  .perfil .cuerpo { display: grid; grid-template-columns: 170px 1fr; gap: 14px; }
+  .perfil img { width: 100%; aspect-ratio: 1; object-fit: cover; border: 2px solid var(--cyan); }
+  .perfil h1 { margin: 0; font: 400 76px/.9 "Metal Mania", fantasy; color: #fff; text-shadow: 0 0 8px #fff, 0 0 22px var(--fucsia), 0 0 44px var(--morado); }
+  .perfil p { margin: 8px 0; }
+  .chip { display: inline-block; margin: 2px 4px 2px 0; padding: 0 8px; border: 1px solid var(--cyan); font: 18px VT323; color: var(--cyan); }
+
+  .winamp { top: 360px; left: calc(50% + 40px); width: 300px; }
+  .winamp .lcd { background: #000; border: 1px solid #0f0; color: #3dff7a; font: 20px VT323; padding: 6px; white-space: nowrap; overflow: hidden; }
+  .winamp .eq { display: flex; gap: 3px; height: 26px; align-items: end; margin-top: 8px; }
+  .winamp .eq i { flex: 1; background: var(--fucsia); animation: eq .7s ease-in-out infinite alternate; }
+  .winamp .eq i:nth-child(2n) { animation-delay: -.3s; } .winamp .eq i:nth-child(3n) { animation-delay: -.5s; background: var(--cyan); }
+  @keyframes eq { from { height: 20%; } to { height: 100%; } }
+
+  .notas { top: 380px; left: calc(50% - 330px); width: 260px; background: #fff7a8; color: #1a0d1f; border-color: #000; }
+  .notas .titulo { background: #e8d84a; color: #000; }
+  .notas ul { margin: 0; padding-left: 18px; font: 19px/1.2 VT323; }
+
+  .stickers img { position: absolute; width: 150px; pointer-events: none; filter: drop-shadow(3px 4px 0 #000); }
+
+  /* barra de tareas */
+  .tareas {
+    position: fixed; left: 0; right: 0; bottom: 0; height: 44px; z-index: 10;
+    display: flex; align-items: center; gap: 8px; padding: 0 8px;
+    background: #000; border-top: 2px solid var(--fucsia); font: 20px VT323;
+  }
+  .inicio { padding: 2px 12px; background: var(--fucsia); color: #000; border: 2px solid #fff; font: 400 22px "Metal Mania", fantasy; }
+  .tarea { padding: 2px 10px; border: 1px solid var(--morado); color: var(--texto); }
+  .tarea.on { border-color: var(--cyan); color: var(--cyan); }
+  .bandeja { margin-left: auto; display: flex; gap: 12px; color: var(--suave); }
+
+  @media (max-width: 760px) {
+    body { overflow: auto; }
+    .escritorio { position: static; padding: 12px 12px 60px; display: grid; gap: 14px; }
+    .iconos { position: static; grid-template-columns: repeat(4, 1fr); }
+    .icono { width: auto; }
+    .ventana { position: static; translate: none; width: auto; }
+    .perfil .cuerpo { grid-template-columns: 1fr; } .perfil img { width: 60%; justify-self: center; }
+    .perfil h1 { font-size: 64px; }
+    .stickers, .tarea { display: none; }
+    body { overflow-x: hidden; }
+  }
+</style>
+</head>
+<body>
+<div class="wallpaper" aria-hidden="true">VANZY</div>
+<div class="escritorio">
+  <nav class="iconos" aria-label="Menú">
+    <a class="icono" href="#"><i>♫</i><span>música</span></a>
+    <a class="icono" href="#"><i>🎮</i><span>juegos</span></a>
+    <a class="icono" href="#"><i>📷</i><span>fotos</span></a>
+    <a class="icono" href="#"><i>✉</i><span>foro</span></a>
+  </nav>
+
+  <div class="stickers" aria-hidden="true">
+    <img src="../img/stickers/sticker-1.webp" alt="" style="right:40px;top:30px;rotate:8deg">
+    <img src="../img/stickers/sticker-3.webp" alt="" style="right:60px;bottom:40px;width:130px">
+  </div>
+
+  <section class="ventana activa perfil">
+    <div class="titulo"><span>✦ perfil.exe — vanzy</span><span class="btns"><span>_</span><span>□</span><span>×</span></span></div>
+    <div class="cuerpo">
+      <img src="../img/avatar.webp" alt="Foto de Vanzy">
+      <div>
+        <h1>VANZY</h1>
+        <p>Holaaaa~ ♡ bienvenid@ a mi pequeño rinconcito de internet. Ponte cómod@ y abre las ventanas que quieras :3</p>
+        <span class="chip">mood: feliz y con sueño</span><span class="chip">acuario</span><span class="chip">bajo • guitarra • batería</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="ventana notas">
+    <div class="titulo"><span>cositas.txt</span><span class="btns"><span>×</span></span></div>
+    <div class="cuerpo"><ul>
+      <li>team verano y playa</li><li>colecciono CDs</li><li>morado y negro</li><li>solo capuchino :3</li><li>Soul Reaver siempre</li>
+    </ul></div>
+  </section>
+
+  <section class="ventana winamp">
+    <div class="titulo"><span>winamp</span><span class="btns"><span>_</span><span>×</span></span></div>
+    <div class="cuerpo">
+      <div class="lcd">▶ 02:14 faster — manic street preachers</div>
+      <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
+  </section>
+</div>
+
+<footer class="tareas">
+  <span class="inicio">vanzy</span>
+  <span class="tarea on">perfil.exe</span><span class="tarea">cositas.txt</span><span class="tarea">winamp</span>
+  <span class="bandeja"><span>♥ feliz :3</span><span id="hora">--:--</span></span>
+</footer>
+
+<script>
+  // Reloj de la barra de tareas
+  const hora = document.getElementById("hora");
+  const tick = () => hora.textContent = new Date().toLocaleTimeString("es-CL", { hour: "2-digit", minute: "2-digit" });
+  tick(); setInterval(tick, 30000);
+
+  // Arrastrar ventanas (solo en escritorio)
+  document.querySelectorAll(".ventana").forEach((ventana) => {
+    const barra = ventana.querySelector(".titulo");
+    barra.addEventListener("pointerdown", (e) => {
+      if (window.innerWidth <= 760) return;
+      document.querySelectorAll(".ventana").forEach((v) => v.classList.remove("activa"));
+      ventana.classList.add("activa");
+      const caja = ventana.getBoundingClientRect();
+      const dx = e.clientX - caja.left, dy = e.clientY - caja.top;
+      ventana.style.translate = "0 0";
+      const mover = (ev) => { ventana.style.left = ev.clientX - dx + "px"; ventana.style.top = ev.clientY - dy + "px"; };
+      const soltar = () => { removeEventListener("pointermove", mover); removeEventListener("pointerup", soltar); };
+      addEventListener("pointermove", mover); addEventListener("pointerup", soltar);
+    });
+  });
+</script>
+</body>
+</html>

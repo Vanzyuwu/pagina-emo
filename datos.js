@@ -38,6 +38,13 @@ const datos = {
     "Soul Reaver siempre.",
   ],
 
+  // Canciones que pasan por el winamp (la primera siempre es "escuchando")
+  winamp: [
+    "Red Flag — Billy Talent",
+    "Devil in a Midnight Mass — Billy Talent",
+    "My Own Summer (Shove It) — Deftones",
+  ],
+
   // Playlist de Spotify: copia el código que sale en el link
   // open.spotify.com/playlist/ESTE_CODIGO
   playlistSpotify: "3b2iNp0JaHr6DSoBxhhhUj",

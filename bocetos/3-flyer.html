@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boceto 3 · FLYER</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  /* Boceto rápido: el inicio como afiche de tocata fotocopiado con tinta neón */
+  :root { --noche: #0b0716; --papel: #0f0a14; --cyan: #00ffff; --fucsia: #ff007f; --morado: #b026ff; --texto: #f1e9ff; --suave: #b9a8d9; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--texto); font: 14px/1.5 "Space Mono", monospace;
+    background: var(--noche);
+    /* muro de pegatinas: afiches viejos atrás */
+    background-image:
+      repeating-linear-gradient(8deg, rgba(176,38,255,.07) 0 140px, transparent 140px 300px),
+      repeating-linear-gradient(-6deg, rgba(255,0,127,.06) 0 90px, transparent 90px 260px);
+  }
+  .muro { overflow-x: clip; position: relative; width: min(980px, 100%); margin: 0 auto; padding: 40px 16px 60px; }
+
+  /* PROTAGONISTA: el afiche */
+  .afiche {
+    position: relative; rotate: -1deg;
+    background: var(--papel); border: 2px solid #000;
+    box-shadow: 0 30px 60px rgba(0,0,0,.6);
+    padding: 26px 28px 30px;
+    /* grano de fotocopia */
+    background-image: radial-gradient(rgba(255,255,255,.06) 1px, transparent 1.2px);
+    background-size: 4px 4px;
+    clip-path: polygon(0 1%, 4% 0, 30% 1.2%, 60% 0, 96% .8%, 100% 3%, 99.4% 40%, 100% 70%, 99% 99%, 70% 100%, 40% 98.8%, 8% 100%, 0 98%, .8% 60%);
+  }
+  .cinta { position: absolute; width: 120px; height: 30px; background: rgba(255, 240, 200, .35); z-index: 3; }
+  .presenta { margin: 0; font: 24px VT323; letter-spacing: .3em; color: var(--cyan); text-align: center; }
+  .titulo {
+    margin: 0; text-align: center; font: 400 clamp(90px, 19vw, 210px)/.82 "Metal Mania", fantasy;
+    color: var(--fucsia); text-shadow: 4px 0 0 var(--cyan), 0 0 30px rgba(255,0,127,.5);
+    mix-blend-mode: screen;
+  }
+  .sub { position: relative; text-align: center; font: 26px VT323; margin: 26px 0 18px; }
+  .sub b { color: var(--fucsia); font-weight: 400; }
+
+  .cuerpo { display: grid; grid-template-columns: 1.1fr 1fr; gap: 22px; align-items: start; }
+  /* foto duotono, como serigrafía */
+  .duo { position: relative; background: var(--fucsia); }
+  .duo img { display: block; width: 100%; aspect-ratio: 4/5; object-fit: cover; filter: grayscale(1) contrast(1.5) brightness(1.05); mix-blend-mode: multiply; }
+  .duo::after { content: ""; position: absolute; inset: 0; background: radial-gradient(#000 1px, transparent 1.4px) 0 0/5px 5px; opacity: .35; mix-blend-mode: multiply; }
+  .pie-foto { position: absolute; left: -10px; bottom: 18px; rotate: -4deg; background: var(--cyan); color: #000; font: 24px VT323; padding: 2px 10px; }
+
+  .cartel h2 { margin: 0 0 4px; font: 22px VT323; color: var(--suave); letter-spacing: .2em; }
+  .lineup { list-style: none; margin: 0 0 16px; padding: 0; }
+  .lineup li { font: 400 clamp(30px, 4.6vw, 46px)/1.05 "Metal Mania", fantasy; color: #fff; }
+  .lineup li:nth-child(2) { color: var(--cyan); } .lineup li:nth-child(3) { color: var(--fucsia); }
+  .lineup small { display: block; font: 18px VT323; color: var(--suave); }
+  .datos { border-top: 2px dashed var(--fucsia); border-bottom: 2px dashed var(--fucsia); padding: 10px 0; font: 21px/1.25 VT323; display: grid; grid-template-columns: auto 1fr; gap: 2px 14px; }
+  .datos dt { color: var(--fucsia); } .datos dd { margin: 0; }
+  .bio { margin: 14px 0 0; }
+  .entrada { display: inline-block; margin-top: 16px; padding: 6px 14px; background: var(--fucsia); color: #000; font: 24px VT323; rotate: 2deg; text-decoration: none; }
+
+  /* recortes alrededor */
+  .recorte { position: absolute; z-index: 4; background: #f1e9ff; color: #000; font: 20px/1.1 VT323; padding: 6px 10px; box-shadow: 3px 3px 0 #000; }
+  .r1 { top: 20px; right: 0; rotate: 6deg; }
+  .r2 { bottom: 30px; left: -6px; rotate: -5deg; background: var(--cyan); }
+  .sticker { position: absolute; z-index: 5; pointer-events: none; filter: drop-shadow(3px 4px 0 #000); }
+
+  .tira { display: flex; gap: 10px; margin-top: 26px; }
+  .tira img { width: 25%; aspect-ratio: 2/3; object-fit: cover; border: 2px solid #000; filter: grayscale(.3) contrast(1.15); rotate: var(--r); box-shadow: 4px 4px 0 #000; }
+
+  @media (max-width: 720px) {
+    .afiche { padding: 18px 14px 22px; rotate: 0deg; }
+    .cuerpo { grid-template-columns: 1fr; }
+    .sticker { width: 90px !important; }
+    .tira { flex-wrap: wrap; } .tira img { width: calc(50% - 5px); }
+  }
+</style>
+</head>
+<body>
+<div class="muro">
+  <img class="sticker" src="../img/stickers/sticker-4.webp" alt="" style="width:170px;top:0;left:-30px;rotate:-10deg">
+  <img class="sticker" src="../img/stickers/sticker-1.webp" alt="" style="width:150px;bottom:10px;right:-20px;rotate:8deg">
+  <span class="recorte r1">¡entrada liberada! ♡</span>
+
+  <article class="afiche">
+    <span class="cinta" style="top:-8px;left:40%;rotate:-3deg"></span>
+    <p class="presenta">rinconcito oscuro de internet presenta</p>
+    <h1 class="titulo">VANZY</h1>
+    <p class="sub">en vivo desde mi pieza · <b>actualizado 17.11.2026</b> · uwu</p>
+
+    <div class="cuerpo">
+      <div class="duo">
+        <img src="../img/avatar.webp" alt="Foto de Vanzy">
+        <span class="pie-foto">mood: feliz y con sueño :3</span>
+      </div>
+      <div class="cartel">
+        <h2>EN EL TOP:</h2>
+        <ul class="lineup">
+          <li>Fall Out Boy</li>
+          <li>Paramore</li>
+          <li>Turnstile <small>(una es falsa es fake)</small></li>
+        </ul>
+        <dl class="datos">
+          <dt>escuchando</dt><dd>Faster — Manic Street Preachers</dd>
+          <dt>toco</dt><dd>bajo • guitarra • batería</dd>
+          <dt>signo</dt><dd>acuario</dd>
+          <dt>vicio</dt><dd>Soul Reaver siempre</dd>
+        </dl>
+        <p class="bio">Holaaaa~ ♡ Si llegaste hasta aquí, quédate un ratito. Aquí están mis bandas, mis pelis, mis libros y uno que otro pensamiento perdido. UwU</p>
+        <a class="entrada" href="#">firma el guestbook →</a>
+      </div>
+    </div>
+
+    <div class="tira">
+      <img src="../img/peliculas/american-beauty.webp" alt="American Beauty" style="--r:-2deg">
+      <img src="../img/peliculas/hereditary.webp" alt="Hereditary" style="--r:1.5deg">
+      <img src="../img/libros/el-retrato-de-dorian-gray.webp" alt="El Retrato de Dorian Gray" style="--r:-1deg">
+      <img src="../img/libros/el-psicoanalista.webp" alt="El Psicoanalista" style="--r:2deg">
+    </div>
+    <span class="recorte r2">próxima fecha: el tema de mi banda ✦</span>
+  </article>
+</div>
+</body>
+</html>

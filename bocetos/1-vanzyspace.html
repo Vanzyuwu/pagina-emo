@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Boceto 1 · VANZYSPACE</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Metal+Mania&family=Space+Mono:wght@400;700&family=VT323&display=swap" rel="stylesheet">
+<style>
+  /* Boceto rápido: perfil MySpace 2006 con la paleta neón de VANZY */
+  :root {
+    --noche: #0b0716; --panel: #150a24; --panel-2: #1f0f33;
+    --cyan: #00ffff; --fucsia: #ff007f; --morado: #b026ff;
+    --texto: #f1e9ff; --suave: #b9a8d9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; color: var(--texto); background: var(--noche);
+    font: 14px/1.55 "Space Mono", monospace;
+    /* mosaico de estrellas pixel, como fondo de layout */
+    background-image:
+      radial-gradient(1px 1px at 10px 10px, #fff 99%, transparent),
+      radial-gradient(1px 1px at 70px 40px, var(--cyan) 99%, transparent),
+      radial-gradient(2px 2px at 40px 90px, var(--fucsia) 99%, transparent),
+      radial-gradient(1px 1px at 100px 110px, #fff 99%, transparent);
+    background-size: 120px 120px;
+  }
+  a { color: var(--cyan); }
+  .pagina { width: min(900px, 100%); margin: 0 auto; padding: 0 12px 40px; }
+
+  /* barra estilo red social */
+  .barra {
+    display: flex; justify-content: space-between; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 6px 10px; background: #000; border: 1px solid var(--morado); border-top: 0;
+    font: 18px VT323, monospace;
+  }
+  .barra b { color: var(--fucsia); font-weight: 400; font-size: 24px; }
+  .barra nav a { margin-left: 12px; text-decoration: none; }
+
+  /* PROTAGONISTA: cabecera de perfil */
+  .cabecera {
+    position: relative; margin-top: 16px;
+    display: grid; grid-template-columns: 220px 1fr; gap: 18px; align-items: end;
+    padding: 18px; background: linear-gradient(180deg, var(--panel-2), var(--panel));
+    border: 2px solid var(--fucsia); box-shadow: 0 0 18px rgba(255,0,127,.45);
+  }
+  .cabecera > *, .cols > *, .player .pista { min-width: 0; }
+  .foto { position: relative; }
+  .foto img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border: 3px solid #fff; rotate: -3deg; box-shadow: 6px 6px 0 #000; }
+  .online { position: absolute; bottom: -10px; right: 8px; rotate: 4deg; background: #00ff88; color: #000; font: 18px VT323; padding: 0 8px; border: 2px solid #000; }
+  .nombre {
+    margin: 0; font: 400 clamp(56px, 10vw, 104px)/.9 "Metal Mania", fantasy; color: #fff;
+    text-shadow: 0 0 6px #fff, 0 0 18px var(--fucsia), 0 0 40px var(--morado);
+  }
+  .frase { margin: 6px 0 12px; font: 22px VT323; color: var(--cyan); }
+  .estado { display: flex; flex-wrap: wrap; gap: 6px 18px; font: 19px VT323; color: var(--suave); }
+  .estado b { color: var(--fucsia); font-weight: 400; }
+  .player {
+    grid-column: 1 / -1; display: flex; align-items: center; gap: 10px;
+    padding: 8px 10px; background: #000; border: 1px solid var(--cyan); font: 18px VT323;
+  }
+  .player button { width: 32px; height: 32px; border: 1px solid var(--cyan); background: var(--panel); color: var(--cyan); font: 18px VT323; cursor: pointer; }
+  .player .pista { flex: 1; overflow: hidden; white-space: nowrap; }
+  .player .pista span { display: inline-block; animation: marquesina 12s linear infinite; }
+  @keyframes marquesina { from { transform: translateX(100%); } to { transform: translateX(-100%); } }
+
+  .cols { display: grid; grid-template-columns: 280px 1fr; gap: 16px; margin-top: 16px; }
+  .caja { background: var(--panel); border: 1px solid var(--morado); margin-bottom: 16px; }
+  .caja h2 { margin: 0; padding: 2px 10px; background: var(--morado); color: #fff; font: 400 21px VT323; }
+  .caja .in { padding: 10px; }
+  .contacto { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font: 18px VT323; }
+  .contacto a { text-decoration: none; } .contacto a::before { content: "▸ "; color: var(--fucsia); }
+  .intereses dt { color: var(--cyan); font: 19px VT323; } .intereses dd { margin: 0 0 6px; }
+
+  .top8 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+  .top8 figure { margin: 0; text-align: center; font: 18px VT323; }
+  .top8 img { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; border: 2px solid var(--fucsia); }
+  .top8 .vacio { aspect-ratio: 1; display: grid; place-items: center; border: 2px dashed var(--morado); color: var(--suave); }
+  .comentario { display: grid; grid-template-columns: 56px 1fr; gap: 10px; padding: 8px 0; border-bottom: 1px dashed var(--morado); }
+  .comentario i { width: 56px; height: 56px; border: 2px solid var(--cyan); display: grid; place-items: center; font-style: normal; font: 22px VT323; color: var(--cyan); }
+  .comentario small { color: var(--suave); display: block; }
+
+  .sticker { position: absolute; pointer-events: none; filter: drop-shadow(3px 4px 0 #000); }
+  .s1 { width: 140px; right: -70px; top: 30px; rotate: 10deg; }
+
+  @media (max-width: 700px) {
+    .cabecera, .cols { grid-template-columns: 1fr; }
+    .foto { width: 70%; justify-self: center; }
+    .top8 { grid-template-columns: repeat(2, 1fr); }
+    .s1 { width: 90px; right: -6px; top: -30px; }
+  }
+</style>
+</head>
+<body>
+<div class="pagina">
+  <div class="barra"><b>vanzyspace</b><nav><a href="#">inicio</a><a href="#">música</a><a href="#">juegos</a><a href="#">fotos</a><a href="#">foro</a></nav></div>
+
+  <!-- protagonista -->
+  <header class="cabecera">
+    <img class="sticker s1" src="../img/stickers/sticker-4.webp" alt="">
+    <div class="foto"><img src="../img/avatar.webp" alt="Foto de Vanzy"><span class="online">● online</span></div>
+    <div>
+      <h1 class="nombre">VANZY</h1>
+      <p class="frase">"bienvenid@ a mi rinconcito de internet uwu ♥"</p>
+      <div class="estado">
+        <span><b>mood:</b> feliz y con sueño :3</span>
+        <span><b>signo:</b> acuario</span>
+        <span><b>actualizado:</b> 17 nov 2026</span>
+      </div>
+    </div>
+    <div class="player">
+      <button aria-label="Reproducir">▶</button>
+      <div class="pista"><span>♫ ahora suena: Faster — Manic Street Preachers ♫ · ♫ Red Flag — Billy Talent ♫</span></div>
+      <span style="color:var(--suave)">02:14</span>
+    </div>
+  </header>
+
+  <div class="cols">
+    <div>
+      <section class="caja"><h2>contactar a vanzy</h2><div class="in contacto">
+        <a href="#">firmar guestbook</a><a href="#">mi spotify</a><a href="#">instagram</a><a href="#">jugar juntos</a>
+      </div></section>
+      <section class="caja"><h2>intereses</h2><div class="in"><dl class="intereses">
+        <dt>general</dt><dd>verano y playa, colecciono CDs, morado y negro, solo capuchino :3</dd>
+        <dt>toco</dt><dd>bajo • guitarra • batería</dd>
+        <dt>pelis</dt><dd>American Beauty, Los Infiltrados, Hereditary</dd>
+        <dt>libros</dt><dd>El Psicoanalista, HP Príncipe Mestizo, Dorian Gray</dd>
+        <dt>juegos</dt><dd>Soul Reaver siempre</dd>
+      </dl></div></section>
+    </div>
+    <div>
+      <section class="caja"><h2>sobre mí</h2><div class="in">
+        <p style="margin:0">Si llegaste hasta aquí, espero que te quedes un ratito. Esta página la hice para compartir un poquito de quién soy, las cosas que me gustan y uno que otro pensamiento perdido por ahí. UwU ♡</p>
+      </div></section>
+      <section class="caja"><h2>top 8 de vanzy</h2><div class="in top8">
+        <figure><img src="../img/bandas/fall-out-boy.webp" alt="">fall out boy</figure>
+        <figure><img src="../img/bandas/paramore.webp" alt="">paramore</figure>
+        <figure><img src="../img/bandas/turnstile.webp" alt="">turnstile</figure>
+        <figure><img src="../img/peliculas/hereditary.webp" alt="">hereditary</figure>
+        <figure><img src="../img/libros/el-retrato-de-dorian-gray.webp" alt="">dorian gray</figure>
+        <figure><img src="../img/peliculas/american-beauty.webp" alt="">american beauty</figure>
+        <figure><img src="../img/libros/el-psicoanalista.webp" alt="">el psicoanalista</figure>
+        <figure><div class="vacio">¿tú?</div>tu lugar ♡</figure>
+      </div></section>
+      <section class="caja"><h2>comentarios (2)</h2><div class="in">
+        <div class="comentario"><i>:3</i><div><small>17 nov 2026</small>holaaa!! me encantó la página nueva ♡</div></div>
+        <div class="comentario"><i>xD</i><div><small>16 nov 2026</small>¿cuándo sale el tema de la banda?</div></div>
+      </div></section>
+    </div>
+  </div>
+</div>
+</body>
+</html>
