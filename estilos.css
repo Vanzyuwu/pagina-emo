@@ -1,10 +1,11 @@
 /* =========================================================
    ✦ VANZY.EXE ✦ — estilos
-   El inicio es un escritorio Y2K: ventanas, íconos y barra de tareas.
+   El inicio es un escritorio Y2K (Windows 98/XP versión emo):
+   ventanas con bisel, íconos, barra de tareas, bandeja y menú Inicio.
    Se ve oldschool, pero usa CSS actual (@property, conic-gradient,
    @starting-style, transiciones de display).
-   El glow neón y los efectos llamativos son INTENCIONALES.
-   Celular (< 900px): todo pasa a una columna.
+   El glow neón y el caos 2006 son INTENCIONALES.
+   Celular (< 900px): pantalla de inicio de un celular de los 2000.
    ========================================================= */
 
 /* ---------- Tokens ---------- */
@@ -14,12 +15,17 @@
   --panel-claro: #1d0f30;
   --fucsia: #ff007f;
   --morado: #b026ff;
+  --morado-hondo: #5b1690; /* barras inactivas: texto claro a 7:1 */
   --cyan: #00ffff;
   --texto: #f1e9ff;
   --texto-suave: #b9a8d9;
   --papel: #ffd6ea;
   --tinta: #1a0d1f;
-  --morado-hondo: #5b1690; /* barras inactivas: texto claro a 7:1 */
+  --zumbido: #ffd23f; /* amarillo del botón ZUMBIDO (MSN) */
+
+  /* Bisel estilo 98: luz arriba-izquierda, sombra abajo-derecha */
+  --bisel-luz: #c98bff;
+  --bisel-sombra: #05020a;
 
   --fuente-marca: "Metal Mania", "Impact", fantasy;
   --fuente-sistema: "VT323", "Courier New", monospace;
@@ -29,8 +35,8 @@
   --salida: cubic-bezier(0.23, 1, 0.32, 1);
   --mover: cubic-bezier(0.77, 0, 0.175, 1);
 
-  --alto-tareas: 48px;
-  --sombra-dura: 6px 6px 0 rgba(0, 0, 0, 0.55);
+  --alto-tareas: 44px;
+  --sombra-dura: 6px 6px 0 rgba(0, 0, 0, 0.6);
 }
 
 /* Ángulo animable para la orilla neón de la ventana activa */
@@ -59,6 +65,7 @@ body {
   font-family: var(--fuente-texto);
   font-size: 0.9rem;
   line-height: 1.6;
+  caret-color: var(--fucsia);
 }
 
 img,
@@ -76,6 +83,10 @@ button {
 a {
   color: var(--cyan);
   text-underline-offset: 0.2em;
+}
+
+p {
+  margin: 0;
 }
 
 ::selection {
@@ -107,7 +118,7 @@ a {
 }
 
 /* =========================================================
-   FONDO VIVO: auroras + estrellas (canvas) + wallpaper + scanlines
+   FONDO VIVO: auroras + estrellas pixel (canvas) + wallpaper + scanlines
    ========================================================= */
 .fondo {
   position: fixed;
@@ -128,14 +139,14 @@ a {
 .aurora-1 {
   top: -30vmax;
   left: -20vmax;
-  background: radial-gradient(closest-side, rgba(255, 0, 127, 0.28), transparent);
+  background: radial-gradient(closest-side, rgba(255, 0, 127, 0.16), transparent);
   animation: deriva-1 28s ease-in-out infinite alternate;
 }
 
 .aurora-2 {
   right: -25vmax;
   bottom: -35vmax;
-  background: radial-gradient(closest-side, rgba(176, 38, 255, 0.32), transparent);
+  background: radial-gradient(closest-side, rgba(176, 38, 255, 0.24), transparent);
   animation: deriva-2 36s ease-in-out infinite alternate;
 }
 
@@ -152,16 +163,15 @@ a {
   inset: 0;
   width: 100%;
   height: 100%;
+  image-rendering: pixelated;
 }
 
-/* VANZY gigante del fondo de pantalla: tubo de neón */
-/* Centrado en el escritorio (la pantalla menos la barra de tareas) */
+/* VANZY del fondo de pantalla: tubo de neón abajo a la derecha (espacio libre) */
 .wallpaper {
   position: absolute;
-  left: 50%;
-  top: calc(50% - var(--alto-tareas) / 2);
-  width: min(1200px, 94vw);
-  translate: -50% -50%;
+  right: 3vw;
+  bottom: calc(var(--alto-tareas) + 1vh);
+  width: min(780px, 54vw);
   overflow: visible;
 }
 
@@ -174,32 +184,42 @@ a {
 }
 
 .wallpaper-tubo {
-  stroke-width: 2.5;
+  stroke-width: 3;
   stroke-dasharray: 2600;
   stroke-dashoffset: 0;
-  opacity: 0.55;
+  opacity: 0.85;
 }
 
-/* Capa de brillo: el mismo trazo, grueso y difuso, que "zumba" */
+/* Capa de brillo: el mismo trazo, grueso y difuso, que "zumba" como letrero */
 .wallpaper-brillo {
-  stroke-width: 9;
-  opacity: 0.22;
-  filter: blur(7px);
-  animation: zumbido 6s steps(1) infinite;
+  stroke-width: 10;
+  opacity: 0.35;
+  filter: blur(8px);
+  animation: letrero 6s steps(1) infinite;
 }
 
-@keyframes zumbido {
-  0%, 41%, 45%, 100% { opacity: 0.22; }
-  42%, 44%           { opacity: 0.06; }
-  43%                { opacity: 0.3; }
+@keyframes letrero {
+  0%, 41%, 45%, 100% { opacity: 0.35; }
+  42%, 44%           { opacity: 0.08; }
+  43%                { opacity: 0.45; }
 }
 
 .scanlines {
   position: absolute;
   inset: 0;
   background:
-    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.22) 0 1px, transparent 1px 3px),
+    repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.2) 0 1px, transparent 1px 3px),
     radial-gradient(ellipse at center, transparent 55%, rgba(0, 0, 0, 0.55));
+}
+
+/* Estela del cursor: encima de todo, sin bloquear clics */
+.estela {
+  position: fixed;
+  inset: 0;
+  z-index: 150;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
 }
 
 /* =========================================================
@@ -212,110 +232,206 @@ a {
   min-height: max(640px, calc(100vh - var(--alto-tareas)));
   /* Centra el "área de ventanas" en pantallas muy anchas */
   --origen: max(0px, calc((100vw - 1440px) / 2));
-  --w-perfil: clamp(470px, 40vw, 620px);
+  --w-perfil: clamp(500px, 44vw, 640px);
   --col-2: calc(var(--origen) + 132px + var(--w-perfil) + 28px);
+}
+
+/* Solo en celular */
+.celu-estado,
+.celu-portada,
+.solo-celu,
+.inicio-celu,
+.tecla-atras {
+  display: none;
 }
 
 /* ---------- Íconos ---------- */
 .iconos {
   position: absolute;
-  top: 16px;
-  left: 12px;
+  inset: 16px auto 12px 12px;
   z-index: 2;
-  display: grid;
-  gap: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .icono {
   display: grid;
   justify-items: center;
-  gap: 4px;
+  gap: 5px;
   width: 92px;
   padding: 6px 2px;
-  border: 0;
+  border: 1px dotted transparent;
   background: none;
   text-align: center;
 }
 
 .icono svg {
-  width: 38px;
-  height: 38px;
+  width: 40px;
+  height: 40px;
   fill: none;
   stroke: var(--cyan);
-  stroke-width: 1.8;
+  stroke-width: 2;
   stroke-linecap: square;
   filter: drop-shadow(0 0 4px rgba(0, 255, 255, 0.55));
   transition: transform 160ms var(--salida);
 }
 
 .icono span {
-  padding: 0 4px;
+  padding: 1px 4px;
   font: 1.15rem/1.05 var(--fuente-sistema);
   color: #fff;
   text-shadow: 1px 1px 0 #000, 0 0 6px #000;
 }
 
-.icono:focus-visible {
-  outline-offset: 0;
+/* Papelera: abajo a la izquierda, como en Windows */
+.icono-papelera {
+  margin-top: auto;
 }
 
+.icono:focus-visible {
+  outline-offset: 0;
+  border-color: var(--cyan);
+}
+
+/* Ventana abierta = ícono "seleccionado": etiqueta pintada como en Windows */
+.icono[aria-pressed="true"] {
+  border-color: rgba(0, 255, 255, 0.6);
+}
+
+.icono[aria-pressed="true"] span,
 .icono:focus-visible span {
-  background: var(--fucsia);
-  color: var(--tinta);
+  background: var(--morado-hondo);
   text-shadow: none;
 }
 
-/* Ventana abierta: puntito cyan bajo el ícono, como en la barra de tareas */
-.icono[aria-pressed="true"] span {
-  box-shadow: 0 2px 0 var(--cyan);
-}
-
 .icono:active svg {
-  transform: scale(0.94);
+  transform: scale(0.92);
 }
 
 @media (hover: hover) and (pointer: fine) {
   .icono:hover svg {
     stroke: #fff;
-    transform: translateY(-2px);
+    transform: translateY(-3px) rotate(-4deg);
   }
 }
 
-/* ---------- Stickers (en el wallpaper, debajo de las ventanas) ---------- */
-/* Los monitos se pueden arrastrar (en escritorio). Viven debajo de las ventanas. */
+/* Pantallas bajitas (laptops): íconos más compactos para que quepan todos */
+@media (min-width: 900px) and (max-height: 820px) {
+  .iconos { top: 8px; gap: 0; }
+  .icono { padding: 3px 2px; }
+  .icono svg { width: 32px; height: 32px; }
+}
+
+/* ---------- Stickers: con cinta, chuecos a propósito, flotando ---------- */
 .sticker {
   position: absolute;
   z-index: 2;
-  height: auto;
+  display: block;
   cursor: grab;
   touch-action: none;
   user-select: none;
-  -webkit-user-drag: none;
-  filter: drop-shadow(4px 5px 0 rgba(0, 0, 0, 0.7));
+  -webkit-user-select: none;
+  filter: drop-shadow(4px 6px 2px rgba(0, 0, 0, 0.6));
   transition: scale 180ms var(--salida);
+  animation: flotar 5s ease-in-out infinite alternate;
+}
+
+.sticker img {
+  width: 100%;
+  height: auto;
+  pointer-events: none;
+  -webkit-user-drag: none;
+}
+
+/* La cinta: rayada fucsia, translúcida */
+.sticker::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: -6px;
+  left: 50%;
+  width: 34%;
+  height: 16px;
+  translate: -50% 0;
+  rotate: -7deg;
+  background: repeating-linear-gradient(45deg, rgba(255, 0, 127, 0.6) 0 5px, rgba(255, 214, 234, 0.45) 5px 10px);
+}
+
+@keyframes flotar {
+  from { translate: 0 0; }
+  to   { translate: 0 -8px; }
 }
 
 @media (hover: hover) and (pointer: fine) {
   .sticker:hover {
-    scale: 1.05;
+    scale: 1.06;
   }
 }
 
-/* Mientras lo arrastras: se levanta un poco y queda arriba de todo */
+.sticker.toque {
+  scale: 0.94;
+}
+
+/* 3 clics: el monito "rockea" mientras suena su riff */
+.sticker.rockeando {
+  animation: rockear 700ms var(--salida);
+}
+
+@keyframes rockear {
+  0%, 100% { rotate: 0deg; }
+  20% { rotate: -14deg; scale: 1.12; }
+  40% { rotate: 12deg; }
+  60% { rotate: -8deg; }
+  80% { rotate: 4deg; }
+}
+
+/* Mientras lo arrastras: se levanta y queda arriba de todo */
 .sticker.arrastrando {
   z-index: 40;
   cursor: grabbing;
   scale: 1.1;
-  filter: drop-shadow(10px 14px 0 rgba(0, 0, 0, 0.55));
+  animation: none;
+  filter: drop-shadow(10px 16px 6px rgba(0, 0, 0, 0.55));
 }
 
-.sticker-chica  { width: 170px; left: calc(var(--origen) + 150px); bottom: 40px; rotate: -8deg; }
-.sticker-oso    { width: 150px; left: calc(var(--origen) + 560px); bottom: 50px; rotate: 7deg; }
-.sticker-leon   { width: 170px; right: calc(var(--origen) + 50px); top: 400px; }
-.sticker-camion { width: 150px; right: calc(var(--origen) + 30px); bottom: 30px; rotate: 5deg; }
+.sticker-chica  { width: 165px; left: calc(var(--origen) + 140px); bottom: 26px; rotate: -8deg; animation-delay: -1s; }
+.sticker-oso    { width: 140px; left: calc(var(--origen) + 600px); bottom: 70px; rotate: 6deg; animation-delay: -2.5s; }
+.sticker-camion { width: 150px; right: calc(var(--origen) + 40px); top: 40px; rotate: 9deg; animation-delay: -3.5s; }
+.sticker-leon   { width: 135px; right: calc(var(--origen) + 210px); top: 230px; rotate: -5deg; animation-delay: -0.5s; }
+
+/* El sticker escondido: un corazoncito que se asoma por el borde derecho */
+.sticker-escondido {
+  position: absolute;
+  z-index: 2;
+  right: -12px;
+  top: 58%;
+  width: 34px;
+  height: 34px;
+  padding: 4px;
+  border: 0;
+  background: none;
+  opacity: 0.45;
+  rotate: -20deg;
+  transition: opacity 200ms ease, right 200ms var(--salida);
+}
+
+.sticker-escondido svg {
+  width: 100%;
+  height: 100%;
+  fill: var(--fucsia);
+  stroke: #000;
+  stroke-width: 1.5;
+}
+
+.sticker-escondido:hover,
+.sticker-escondido:focus-visible {
+  right: -2px;
+  opacity: 1;
+}
 
 /* =========================================================
-   VENTANA (componente insignia)
+   VENTANA (componente insignia): bisel 98 + barra en degradado
    ========================================================= */
 .ventana {
   position: absolute;
@@ -324,9 +440,11 @@ a {
   flex-direction: column;
   min-width: 260px;
   max-height: calc(100vh - var(--alto-tareas) - 32px);
-  border: 2px solid var(--morado);
+  border: 2px solid;
+  border-color: var(--bisel-luz) var(--bisel-sombra) var(--bisel-sombra) var(--bisel-luz);
   background: var(--panel);
   box-shadow: var(--sombra-dura);
+  outline: none;
   /* Abrir/cerrar: escala + opacidad, también al pasar a display:none */
   transition:
     opacity 160ms var(--salida),
@@ -360,7 +478,7 @@ a {
   background:
     linear-gradient(var(--panel), var(--panel)) padding-box,
     conic-gradient(from var(--giro), var(--fucsia), var(--morado), var(--cyan), var(--fucsia)) border-box;
-  box-shadow: 0 0 26px rgba(255, 0, 127, 0.35), var(--sombra-dura);
+  box-shadow: 0 0 24px rgba(255, 0, 127, 0.4), var(--sombra-dura);
   animation: orilla 4s linear infinite;
 }
 
@@ -368,24 +486,29 @@ a {
   to { --giro: 360deg; }
 }
 
-/* Barra de título */
+/* Barra de título: degradado como Win98, en morado (inactiva) */
 .ventana-barra {
   display: flex;
   align-items: center;
   gap: 8px;
   height: 30px;
   padding: 0 4px 0 8px;
-  background: var(--morado-hondo);
+  background: linear-gradient(90deg, var(--morado-hondo), var(--panel-claro));
   color: var(--texto);
   cursor: grab;
   user-select: none;
   touch-action: none;
 }
 
-/* Activa: fucsia sólido con texto oscuro (5.2:1) */
+/* Activa: fucsia → morado con texto oscuro (5:1 sobre el fucsia) */
 .ventana.activa .ventana-barra {
-  background: var(--fucsia);
+  background: linear-gradient(90deg, var(--fucsia) 30%, var(--morado));
   color: var(--tinta);
+}
+
+.ventana-barra:focus-visible {
+  outline-offset: -3px;
+  outline-color: #fff;
 }
 
 .ventana.arrastrando .ventana-barra {
@@ -411,38 +534,36 @@ a {
   text-overflow: ellipsis;
 }
 
-.ventana-titulo small {
-  font-size: 1rem;
-  opacity: 0.85;
-}
-
 .ventana-controles {
   display: flex;
-  gap: 3px;
+  gap: 2px;
 }
 
+/* Botones _ □ × con bisel */
 .control {
   display: grid;
   place-items: center;
   width: 24px;
-  height: 22px;
+  height: 21px;
   padding: 0;
-  border: 1px solid #fff;
-  background: var(--tinta);
-  color: #fff;
+  border: 2px solid;
+  border-color: var(--bisel-luz) var(--bisel-sombra) var(--bisel-sombra) var(--bisel-luz);
+  background: var(--panel-claro);
+  color: var(--texto);
   transition: transform 120ms var(--salida);
 }
 
 .control svg {
-  width: 14px;
-  height: 14px;
+  width: 13px;
+  height: 13px;
   fill: none;
   stroke: currentColor;
   stroke-width: 2.5;
 }
 
 .control:active {
-  transform: scale(0.92);
+  border-color: var(--bisel-sombra) var(--bisel-luz) var(--bisel-luz) var(--bisel-sombra);
+  transform: scale(0.94);
 }
 
 @media (hover: hover) and (pointer: fine) {
@@ -461,40 +582,66 @@ a {
   scrollbar-width: thin;
 }
 
+/* Barra de estado tipo Explorer */
+.ventana-estado {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-top: 1px solid var(--bisel-sombra);
+  font: 1.05rem/1.2 var(--fuente-sistema);
+  color: var(--texto-suave);
+}
+
+.ventana-estado > span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 6px;
+  border: 1px solid;
+  border-color: var(--bisel-sombra) var(--panel-claro) var(--panel-claro) var(--bisel-sombra);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ventana-estado b {
+  font-weight: 400;
+  color: var(--texto);
+}
+
 /* Maximizada: ocupa todo el escritorio */
 .ventana.maximizada {
   left: 0 !important;
   top: 0 !important;
   width: 100% !important;
   height: calc(100vh - var(--alto-tareas)) !important;
+  max-height: none;
 }
 
 /* ---------- Posiciones iniciales (escritorio) ---------- */
-#ventana-perfil  { left: calc(var(--origen) + 132px); top: 24px; width: var(--w-perfil); }
-#ventana-winamp  { left: var(--col-2); top: 24px; width: 360px; }
-#ventana-bandas  { left: var(--col-2); top: 214px; width: 360px; }
-#ventana-favs    { left: var(--col-2); top: 450px; width: 360px; }
-#ventana-cositas { right: calc(var(--origen) + 20px); top: 48px; width: 240px; min-width: 0; rotate: 1.5deg; }
-#ventana-aviso   { left: calc(50% - 180px); top: 26vh; width: 360px; }
+#ventana-perfil   { left: calc(var(--origen) + 132px); top: 24px; width: var(--w-perfil); }
+#ventana-msn      { left: var(--col-2); top: 24px; width: 340px; }
+#ventana-winamp   { left: var(--col-2); top: 60px; width: 360px; }
+#ventana-bandas   { left: calc(var(--col-2) - 60px); top: 140px; width: 380px; }
+#ventana-favs     { left: calc(var(--col-2) - 30px); top: 100px; width: 380px; }
+#ventana-cositas  { right: calc(var(--origen) + 24px); top: 48px; width: 250px; min-width: 0; rotate: 1.5deg; }
+#ventana-papelera { left: calc(var(--origen) + 220px); top: 180px; width: 440px; }
+#ventana-secreto  { left: calc(var(--origen) + 300px); top: 120px; width: 320px; min-width: 0; rotate: -1deg; }
+#ventana-aviso    { left: calc(50% - 190px); top: 24vh; width: 380px; }
 
-/* En pantallas medianas cositas.txt baja para no salirse */
-@media (max-width: 1180px) {
-  #ventana-cositas { top: 470px; right: 12px; }
+/* Pantallas medianas: la segunda columna se corre para no salirse */
+@media (min-width: 900px) and (max-width: 1180px) {
+  #ventana-msn,
+  #ventana-winamp,
+  #ventana-bandas,
+  #ventana-favs { left: auto; right: 12px; }
 }
 
-/* Pantallas bajitas (laptops): íconos más compactos para que quepan todos */
-@media (min-width: 900px) and (max-height: 820px) {
-  .iconos { top: 8px; gap: 0; }
-  .icono { padding: 3px 2px; }
-  .icono svg { width: 30px; height: 30px; }
-}
-
-/* ---------- perfil.exe ---------- */
+/* ---------- about_me.exe ---------- */
 .perfil {
   display: grid;
-  grid-template-columns: 180px 1fr;
-  gap: 16px 20px;
-  padding: 18px;
+  grid-template-columns: 170px 1fr;
+  gap: 14px 20px;
+  padding: 16px;
 }
 
 .perfil-foto {
@@ -528,7 +675,7 @@ a {
 .marca {
   position: relative;
   margin: 0;
-  font: 400 clamp(3.5rem, 7vw, 5.5rem)/0.9 var(--fuente-marca);
+  font: 400 clamp(3.2rem, 5.6vw, 4.6rem)/0.9 var(--fuente-marca);
   color: #fff;
   text-shadow:
     0 0 4px #fff,
@@ -547,7 +694,7 @@ a {
   text-shadow: -3px 0 var(--cyan);
   opacity: 0.7;
   mix-blend-mode: screen;
-  animation: glitch 5s steps(1) infinite;
+  animation: glitch-marca 5s steps(1) infinite;
   pointer-events: none;
 }
 
@@ -569,7 +716,7 @@ a {
   31%, 35%                { opacity: 0.6; }
 }
 
-@keyframes glitch {
+@keyframes glitch-marca {
   0%, 88%, 100% { transform: translate(0, 0); }
   90%           { transform: translate(-4px, 2px); }
   93%           { transform: translate(3px, -1px); }
@@ -581,54 +728,229 @@ a {
 }
 
 .perfil-saludo {
-  margin: 12px 0 8px;
-  font: 700 1.1rem/1.3 var(--fuente-texto);
+  margin: 10px 0 10px;
+  font: 1.45rem/1.15 var(--fuente-sistema);
   color: var(--cyan);
+  text-wrap: balance;
 }
 
 .perfil-bio p {
-  max-width: 60ch;
-  margin: 0 0 10px;
+  max-width: 62ch;
+  margin: 0 0 8px;
+  font-size: 0.86rem;
+  line-height: 1.65;
 }
 
 .perfil-bio p:last-child {
   margin-bottom: 0;
 }
 
-.perfil-chips {
+/* Quote favorito: un papelito con borde neón */
+.quote {
+  position: relative;
+  grid-column: 1 / -1;
+  margin: 4px 0 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(255, 0, 127, 0.55);
+  background: rgba(255, 0, 127, 0.07);
+}
+
+.quote p {
+  font: 1.35rem/1.2 var(--fuente-sistema);
+  color: var(--texto);
+}
+
+.quote footer {
+  margin-top: 2px;
+  font: 1.05rem var(--fuente-sistema);
+  color: var(--texto-suave);
+}
+
+/* Espacio marcado mientras no escribas el quote en datos.js */
+.quote.pendiente {
+  border-style: dashed;
+  border-color: var(--cyan);
+  background: none;
+}
+
+.quote.pendiente p {
+  color: var(--cyan);
+}
+
+/* Blinkies: tiritas de 150×20 que parpadean (edítalos en script.js) */
+.blinkies {
   grid-column: 1 / -1;
   display: flex;
   flex-wrap: wrap;
   gap: 6px;
   margin: 0;
-  padding: 12px 0 0;
-  border-top: 1px dashed rgba(176, 38, 255, 0.7);
+  padding: 0;
   list-style: none;
 }
 
-.chip {
-  padding: 1px 9px;
-  border: 1px solid var(--cyan);
-  border-radius: 4px;
-  background: var(--noche);
-  font: 1.2rem/1.3 var(--fuente-sistema);
+.blinkie {
+  display: grid;
+  place-items: center;
+  min-width: 150px;
+  height: 22px;
+  padding: 0 8px;
+  border: 1px solid var(--fucsia);
+  background: repeating-linear-gradient(90deg, var(--papel) 0 6px, #ffb3d6 6px 12px);
+  background-size: 24px 100%;
+  color: var(--tinta);
+  font: 1.05rem/1 var(--fuente-sistema);
+  white-space: nowrap;
+  animation: blinkie 0.9s steps(2) infinite;
 }
 
-.chip span {
+.blinkie-cyan {
+  border-color: var(--cyan);
+  background-image: repeating-linear-gradient(90deg, #b8ffff 0 6px, #7ff 6px 12px);
+}
+
+.blinkie-morado {
+  border-color: var(--morado);
+  background-image: repeating-linear-gradient(90deg, #e5c2ff 0 6px, #cf95ff 6px 12px);
+}
+
+@keyframes blinkie {
+  to { background-position: 12px 0; }
+}
+
+/* ---------- escuchando ahora (MSN) ---------- */
+.msn {
+  display: grid;
+  gap: 12px;
+}
+
+.contacto {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px dashed rgba(176, 38, 255, 0.7);
+}
+
+.contacto img {
+  width: 54px;
+  height: 54px;
+  object-fit: cover;
+  border: 2px solid var(--cyan);
+}
+
+.contacto-nombre {
+  font: 1.4rem/1.1 var(--fuente-sistema);
+}
+
+.contacto-nombre small {
+  font-size: 1.05rem;
+  color: var(--texto-suave);
+}
+
+.punto {
+  color: #3dff8a;
+  text-shadow: 0 0 6px #3dff8a;
+}
+
+.contacto-cancion {
+  font-size: 0.78rem;
+  color: var(--texto-suave);
+}
+
+.spotify {
+  display: grid;
+  place-items: center;
+  min-height: 152px;
+  padding: 10px;
+  border: 2px dashed var(--cyan);
   color: var(--cyan);
+  font: 1.15rem/1.2 var(--fuente-sistema);
+  text-align: center;
 }
 
-.chip b {
+.spotify-cargar {
+  min-height: 44px;
+  padding: 0 16px;
+  border: 2px solid;
+  border-color: var(--bisel-luz) var(--bisel-sombra) var(--bisel-sombra) var(--bisel-luz);
+  background: var(--panel-claro);
+  color: var(--cyan);
+  font: 1.3rem var(--fuente-sistema);
+}
+
+.spotify-cargar:active {
+  border-color: var(--bisel-sombra) var(--bisel-luz) var(--bisel-luz) var(--bisel-sombra);
+}
+
+.spotify small {
+  display: block;
+  margin-top: 6px;
+  font-size: 1rem;
+  color: var(--texto-suave);
+}
+
+.spotify.cargado {
+  padding: 0;
+  border: 0;
+}
+
+.spotify iframe {
+  display: block;
+  width: 100%;
+  border: 0;
+}
+
+.chat {
+  display: grid;
+  gap: 4px;
+  font: 1.15rem/1.2 var(--fuente-sistema);
+  color: var(--texto-suave);
+}
+
+.chat b {
   font-weight: 400;
+  color: var(--fucsia);
 }
 
-.chip-suave {
-  border-color: rgba(185, 168, 217, 0.6);
-  color: var(--texto-suave);
+/* "Vanzy te ha enviado un zumbido!!" en VT323 */
+.chat-zumbido {
+  font-size: 1.3rem;
+  color: var(--zumbido);
+  animation: aparecer-mensaje 260ms var(--salida);
 }
 
-.chip-suave span {
-  color: var(--texto-suave);
+@keyframes aparecer-mensaje {
+  from { opacity: 0; translate: 0 6px; }
+}
+
+.boton-zumbido {
+  width: 100%;
+  height: 44px;
+  border: 2px solid;
+  border-color: #fff3b0 #7a4b00 #7a4b00 #fff3b0;
+  background: linear-gradient(180deg, #ffe680, var(--zumbido) 55%, #ffb000);
+  color: var(--tinta);
+  font: 1.6rem/1 var(--fuente-sistema);
+  letter-spacing: 0.08em;
+  transition: transform 120ms var(--salida), filter 200ms ease;
+}
+
+.boton-zumbido:active {
+  border-color: #7a4b00 #fff3b0 #fff3b0 #7a4b00;
+  transform: scale(0.97);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .boton-zumbido:hover {
+    filter: brightness(1.08) drop-shadow(0 0 8px rgba(255, 210, 63, 0.6));
+  }
+}
+
+/* Durante la espera de 3 s */
+.boton-zumbido:disabled,
+.bandeja-zumbido:disabled {
+  cursor: not-allowed;
+  filter: grayscale(0.85) brightness(0.7);
 }
 
 /* ---------- winamp ---------- */
@@ -646,7 +968,8 @@ a {
   gap: 4px 12px;
   align-items: center;
   padding: 8px 10px;
-  border: 1px solid rgba(0, 255, 255, 0.45);
+  border: 2px solid;
+  border-color: var(--bisel-sombra) var(--bisel-luz) var(--bisel-luz) var(--bisel-sombra);
   background: #000;
   color: var(--cyan);
   font-family: var(--fuente-sistema);
@@ -657,6 +980,7 @@ a {
   grid-row: 1 / 3;
   font-size: 2.4rem;
   line-height: 1;
+  font-variant-numeric: tabular-nums;
 }
 
 .lcd-pista {
@@ -717,13 +1041,12 @@ a {
 .boton-sistema {
   display: grid;
   place-items: center;
-  min-width: 40px;
+  min-width: 44px;
   height: 36px;
   padding: 0 10px;
-  border: 1px solid var(--texto-suave);
-  border-right-color: #000;
-  border-bottom-color: #000;
-  background: var(--tinta);
+  border: 2px solid;
+  border-color: var(--bisel-luz) var(--bisel-sombra) var(--bisel-sombra) var(--bisel-luz);
+  background: var(--panel-claro);
   color: var(--texto);
   font: 1.2rem var(--fuente-sistema);
   transition: transform 120ms var(--salida);
@@ -732,34 +1055,13 @@ a {
 .boton-sistema svg {
   width: 16px;
   height: 16px;
-}
-
-.boton-sistema .relleno,
-.boton-sistema svg {
   fill: currentColor;
 }
 
-.boton-sistema:active,
-.boton-sistema[aria-pressed="true"] {
-  border-color: #000;
-  border-right-color: var(--texto-suave);
-  border-bottom-color: var(--texto-suave);
-  color: var(--cyan);
-}
-
 .boton-sistema:active {
+  border-color: var(--bisel-sombra) var(--bisel-luz) var(--bisel-luz) var(--bisel-sombra);
+  color: var(--cyan);
   transform: scale(0.96);
-}
-
-.boton-playlist {
-  margin-left: auto;
-}
-
-.playlist iframe {
-  display: block;
-  width: 100%;
-  border: 0;
-  border-radius: 0;
 }
 
 /* ---------- top bandas: tarjetas que giran ---------- */
@@ -894,7 +1196,7 @@ a {
   hyphens: auto;
 }
 
-/* ---------- cositas.txt: post-it ---------- */
+/* ---------- post-it (cositas.txt y los secretos) ---------- */
 .ventana-postit,
 .ventana-postit.activa {
   border: 1px solid var(--tinta);
@@ -924,12 +1226,14 @@ a {
   height: 22px;
   translate: -50% 0;
   rotate: -4deg;
-  background: rgba(255, 255, 255, 0.5);
+  background: repeating-linear-gradient(45deg, rgba(255, 0, 127, 0.5) 0 6px, rgba(255, 255, 255, 0.55) 6px 12px);
   pointer-events: none;
 }
 
 .ventana-postit .control {
   border-color: var(--tinta);
+  background: var(--papel);
+  color: var(--tinta);
 }
 
 .cositas {
@@ -940,9 +1244,9 @@ a {
 }
 
 .cositas li {
+  position: relative;
   padding: 3px 0 3px 20px;
   border-bottom: 1px solid rgba(26, 13, 31, 0.15);
-  position: relative;
 }
 
 .cositas li::before {
@@ -950,6 +1254,70 @@ a {
   position: absolute;
   left: 0;
   color: #c4005e;
+}
+
+/* ---------- papelera: archivos protegidos ---------- */
+.papelera-intro {
+  margin-bottom: 10px;
+  font-size: 0.82rem;
+  color: var(--texto-suave);
+}
+
+.archivos {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.archivo {
+  display: grid;
+  grid-template-columns: 22px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 38px;
+  padding: 4px 10px;
+  border: 1px solid transparent;
+  background: none;
+  color: var(--texto-suave);
+  font: 1.2rem/1.1 var(--fuente-sistema);
+  text-align: left;
+}
+
+.archivo svg {
+  width: 20px;
+  height: 20px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.archivo-pista {
+  font-size: 1rem;
+  opacity: 0.85;
+}
+
+.archivo.abierto {
+  color: var(--cyan);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .archivo:hover {
+    border-color: var(--morado);
+    background: var(--panel-claro);
+  }
+}
+
+/* Archivo protegido: tiembla un poquito al intentar abrirlo */
+.archivo.negado {
+  animation: negar 380ms var(--salida);
+}
+
+@keyframes negar {
+  20%, 60% { translate: -5px 0; }
+  40%, 80% { translate: 5px 0; }
 }
 
 /* ---------- aviso "instalando…" ---------- */
@@ -967,7 +1335,8 @@ a {
   height: 22px;
   margin-bottom: 12px;
   padding: 3px;
-  border: 1px solid var(--texto-suave);
+  border: 2px solid;
+  border-color: var(--bisel-sombra) var(--bisel-luz) var(--bisel-luz) var(--bisel-sombra);
   background: #000;
 }
 
@@ -989,6 +1358,52 @@ a {
 }
 
 /* =========================================================
+   GLOBITO DE LA BANDEJA (estilo notificación MSN)
+   ========================================================= */
+.globo {
+  position: fixed;
+  right: 14px;
+  bottom: calc(var(--alto-tareas) + 12px);
+  z-index: 60;
+  width: 280px;
+  padding: 10px 12px;
+  border: 2px solid var(--tinta);
+  background: var(--papel);
+  color: var(--tinta);
+  font: 1.3rem/1.1 var(--fuente-sistema);
+  box-shadow: 4px 4px 0 rgba(0, 0, 0, 0.5);
+  transform-origin: bottom right;
+}
+
+.globo[hidden] {
+  display: none;
+}
+
+.globo::after {
+  content: "";
+  position: absolute;
+  right: 60px;
+  bottom: -10px;
+  border: 8px solid transparent;
+  border-top-color: var(--tinta);
+  border-bottom: 0;
+}
+
+.globo small {
+  display: block;
+  font-size: 1rem;
+  color: #5a3c5e;
+}
+
+.globo.entrando {
+  animation: globo 300ms var(--salida);
+}
+
+@keyframes globo {
+  from { opacity: 0; scale: 0.9; translate: 0 8px; }
+}
+
+/* =========================================================
    BARRA DE TAREAS + MENÚ INICIO
    ========================================================= */
 .tareas {
@@ -999,32 +1414,29 @@ a {
   z-index: 50;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   height: var(--alto-tareas);
-  padding: 0 8px;
-  border-top: 2px solid var(--fucsia);
-  background: #000;
-  box-shadow: 0 -6px 24px rgba(255, 0, 127, 0.2);
+  padding: 4px;
+  border-top: 2px solid var(--bisel-luz);
+  background: var(--panel-claro);
+  box-shadow: 0 -6px 24px rgba(255, 0, 127, 0.18);
 }
 
 .boton-inicio {
   flex-shrink: 0;
-  height: 38px;
+  height: 34px;
   padding: 0 14px;
-  border: 2px solid #fff;
-  border-right-color: #000;
-  border-bottom-color: #000;
+  border: 2px solid;
+  border-color: #ff8cc4 #4a0026 #4a0026 #ff8cc4;
   background: var(--fucsia);
   color: var(--tinta);
-  font: 400 1.6rem/1 var(--fuente-marca);
+  font: 400 1.45rem/1 var(--fuente-marca);
   transition: transform 120ms var(--salida);
 }
 
 .boton-inicio[aria-expanded="true"],
 .boton-inicio:active {
-  border-color: #000;
-  border-right-color: #fff;
-  border-bottom-color: #fff;
+  border-color: #4a0026 #ff8cc4 #ff8cc4 #4a0026;
 }
 
 .boton-inicio:active {
@@ -1033,11 +1445,12 @@ a {
 
 .menu-inicio {
   position: absolute;
-  left: 8px;
-  bottom: calc(var(--alto-tareas) + 2px);
+  left: 4px;
+  bottom: calc(var(--alto-tareas) - 2px);
   display: flex;
-  width: 280px;
-  border: 2px solid var(--fucsia);
+  width: 290px;
+  border: 2px solid;
+  border-color: var(--bisel-luz) var(--bisel-sombra) var(--bisel-sombra) var(--bisel-luz);
   background: var(--panel);
   box-shadow: 0 0 24px rgba(255, 0, 127, 0.35), var(--sombra-dura);
   transform-origin: bottom left;
@@ -1087,7 +1500,7 @@ a {
   align-items: center;
   gap: 10px;
   width: 100%;
-  min-height: 40px;
+  min-height: 38px;
   padding: 0 12px;
   border: 0;
   background: none;
@@ -1117,7 +1530,7 @@ a {
 
 .menu-separador {
   height: 1px;
-  margin: 6px 10px;
+  margin: 4px 10px;
   background: rgba(176, 38, 255, 0.6);
 }
 
@@ -1146,12 +1559,13 @@ a {
   display: flex;
   align-items: center;
   gap: 6px;
-  max-width: 170px;
-  height: 36px;
-  padding: 0 10px;
-  border: 1px solid var(--morado);
-  background: var(--tinta);
-  font: 1.2rem var(--fuente-sistema);
+  width: 170px;
+  height: 34px;
+  padding: 0 8px;
+  border: 2px solid;
+  border-color: var(--bisel-luz) var(--bisel-sombra) var(--bisel-sombra) var(--bisel-luz);
+  background: var(--panel);
+  font: 1.15rem var(--fuente-sistema);
   white-space: nowrap;
 }
 
@@ -1160,7 +1574,7 @@ a {
   width: 16px;
   height: 16px;
   fill: none;
-  stroke: currentColor;
+  stroke: var(--cyan);
   stroke-width: 2;
 }
 
@@ -1169,38 +1583,68 @@ a {
   text-overflow: ellipsis;
 }
 
+/* Activa: botón "hundido" */
 .tarea[aria-pressed="true"] {
-  border-color: var(--cyan);
-  background: var(--panel-claro);
-  color: var(--cyan);
+  border-color: var(--bisel-sombra) var(--bisel-luz) var(--bisel-luz) var(--bisel-sombra);
+  background: var(--morado-hondo);
 }
 
 .tarea.minimizada {
   color: var(--texto-suave);
-  border-style: dashed;
 }
 
+/* Bandeja: hundida, con MSN, zumbido, volumen, mood y reloj */
 .bandeja {
   display: flex;
   align-items: center;
-  gap: 14px;
-  height: 36px;
-  padding: 0 12px;
-  border: 1px solid #333;
-  border-top-color: #000;
-  border-left-color: #000;
-  font: 1.2rem var(--fuente-sistema);
+  gap: 4px;
+  height: 34px;
+  margin-left: auto;
+  padding: 0 10px 0 4px;
+  border: 2px solid;
+  border-color: var(--bisel-sombra) var(--bisel-luz) var(--bisel-luz) var(--bisel-sombra);
+  font: 1.25rem var(--fuente-sistema);
   color: var(--texto-suave);
   white-space: nowrap;
+}
+
+.bandeja-boton {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--cyan);
+}
+
+.bandeja-boton svg {
+  width: 17px;
+  height: 17px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+}
+
+.bandeja-zumbido {
+  color: var(--zumbido);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .bandeja-boton:hover {
+    background: var(--panel);
+    color: #fff;
+  }
 }
 
 .bandeja-mood {
   display: flex;
   align-items: center;
   gap: 6px;
-  max-width: 220px;
+  max-width: 210px;
+  margin: 0 8px 0 4px;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .bandeja-mood > span {
@@ -1210,14 +1654,74 @@ a {
 
 .bandeja-mood svg {
   flex-shrink: 0;
-  width: 16px;
-  height: 16px;
+  width: 15px;
+  height: 15px;
   fill: var(--fucsia);
   stroke: none;
 }
 
 .bandeja-reloj {
   color: var(--cyan);
+  font-variant-numeric: tabular-nums;
+}
+
+/* =========================================================
+   ZUMBIDO: toda la pantalla tiembla medio segundo
+   ========================================================= */
+.temblando .escritorio,
+.temblando .tareas {
+  animation: temblar 500ms linear;
+}
+
+@keyframes temblar {
+  0%, 100% { translate: 0 0; }
+  10% { translate: -9px 4px; }
+  20% { translate: 8px -6px; }
+  30% { translate: -10px -3px; }
+  40% { translate: 9px 6px; }
+  50% { translate: -7px 2px; }
+  60% { translate: 8px -4px; }
+  70% { translate: -5px 5px; }
+  80% { translate: 4px -2px; }
+  90% { translate: -2px 1px; }
+}
+
+/* Con movimiento reducido: la ventana parpadea suave en vez de temblar
+   (la regla que lo activa está al final, dentro de prefers-reduced-motion) */
+@keyframes parpadeo-suave {
+  0%, 100% { box-shadow: var(--sombra-dura); }
+  30%, 70% { box-shadow: 0 0 0 3px var(--zumbido), 0 0 30px rgba(255, 210, 63, 0.6), var(--sombra-dura); }
+}
+
+/* Secreto descubierto: destello neón que barre la pantalla */
+.revelando::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 140;
+  pointer-events: none;
+  background: linear-gradient(115deg, transparent 30%, rgba(255, 0, 127, 0.45), rgba(0, 255, 255, 0.45), transparent 70%);
+  background-size: 300% 100%;
+  animation: destello 700ms var(--salida) forwards;
+}
+
+@keyframes destello {
+  from { background-position: 100% 0; opacity: 1; }
+  to   { background-position: 0 0; opacity: 0; }
+}
+
+/* Glitch en ráfaga (lo aplica script.js a UNA cosa a la vez) */
+.glitch {
+  animation: glitch-rafaga 360ms steps(1);
+}
+
+@keyframes glitch-rafaga {
+  0%   { translate: 0 0; filter: none; }
+  15%  { translate: -3px 1px; filter: drop-shadow(3px 0 0 var(--cyan)) drop-shadow(-3px 0 0 var(--fucsia)); }
+  35%  { translate: 2px -1px; filter: drop-shadow(-2px 0 0 var(--cyan)) drop-shadow(2px 0 0 var(--fucsia)); }
+  55%  { translate: -1px 0; opacity: 0.6; }
+  75%  { translate: 1px 1px; opacity: 1; filter: drop-shadow(2px 0 0 var(--cyan)); }
+  100% { translate: 0 0; filter: none; }
 }
 
 /* =========================================================
@@ -1277,6 +1781,7 @@ html.con-intro body {
   font: 1.5rem var(--fuente-sistema);
   color: var(--cyan);
   text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
+  text-align: center;
   opacity: 0;
 }
 
@@ -1350,7 +1855,7 @@ html.con-intro body {
 
 /* =========================================================
    ARRANQUE: el único "momento de autor"
-   El wallpaper se dibuja y las ventanas aparecen escalonadas.
+   El wallpaper se dibuja y about_me aparece.
    ========================================================= */
 .arrancando .wallpaper-tubo {
   animation: dibujar 1.8s var(--mover) both;
@@ -1361,109 +1866,268 @@ html.con-intro body {
   to   { stroke-dashoffset: 0; }
 }
 
-.arrancando .ventana:not([hidden]) {
+.arrancando .ventana:not([hidden]),
+.arrancando .icono {
   animation: aparecer 320ms var(--salida) both;
 }
 
-.arrancando #ventana-perfil  { animation-delay: 250ms; }
-.arrancando #ventana-winamp  { animation-delay: 330ms; }
-.arrancando #ventana-bandas  { animation-delay: 390ms; }
-.arrancando #ventana-favs    { animation-delay: 440ms; }
-.arrancando #ventana-cositas { animation-delay: 480ms; }
+.arrancando #ventana-perfil { animation-delay: 300ms; }
+.arrancando #ventana-msn    { animation-delay: 420ms; }
+.arrancando .icono:nth-child(1) { animation-delay: 60ms; }
+.arrancando .icono:nth-child(2) { animation-delay: 100ms; }
+.arrancando .icono:nth-child(3) { animation-delay: 140ms; }
+.arrancando .icono:nth-child(4) { animation-delay: 180ms; }
+.arrancando .icono:nth-child(5) { animation-delay: 220ms; }
+.arrancando .icono:nth-child(6) { animation-delay: 260ms; }
+.arrancando .icono:nth-child(7) { animation-delay: 300ms; }
 
 @keyframes aparecer {
   from { opacity: 0; scale: 0.96; translate: 0 8px; }
 }
 
 /* =========================================================
-   CELULAR Y TABLET (< 900px): una columna
+   CELULAR (< 900px): pantalla de inicio de un celular de los 2000
+   Barra de señal arriba, reloj grande, widget "escuchando", grilla
+   de íconos grandes y teclas Menú / ZUMBIDO / Atrás abajo.
+   Cada ventana se abre a pantalla completa.
    ========================================================= */
 @media (max-width: 899px) {
+  :root {
+    --alto-tareas: 58px;
+    --alto-estado: 34px;
+  }
+
   .escritorio {
     display: flex;
     flex-direction: column;
-    gap: 18px;
-    min-height: 0;
-    padding: 14px 12px calc(var(--alto-tareas) + 24px);
+    min-height: 100vh;
+    padding: 0 0 calc(var(--alto-tareas) + 16px);
   }
 
+  .wallpaper {
+    right: 50%;
+    bottom: calc(var(--alto-tareas) + 70px);
+    width: 92vw;
+    translate: 50% 0;
+  }
+
+  /* Barra de estado del celu */
+  .celu-estado {
+    position: sticky;
+    top: 0;
+    z-index: 30;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: var(--alto-estado);
+    padding: 0 12px;
+    border-bottom: 2px solid var(--morado);
+    background: rgba(18, 8, 31, 0.94);
+    font: 1.25rem var(--fuente-sistema);
+  }
+
+  .senal {
+    display: flex;
+    align-items: flex-end;
+    gap: 2px;
+    height: 14px;
+  }
+
+  .senal i {
+    width: 4px;
+    background: var(--cyan);
+  }
+
+  .senal i:nth-child(1) { height: 4px; }
+  .senal i:nth-child(2) { height: 7px; }
+  .senal i:nth-child(3) { height: 10px; }
+  .senal i:nth-child(4) { height: 14px; }
+
+  .bateria {
+    width: 26px;
+    height: 13px;
+    padding: 1px;
+    border: 2px solid var(--cyan);
+  }
+
+  .bateria i {
+    display: block;
+    width: 70%;
+    height: 100%;
+    background: var(--cyan);
+  }
+
+  /* Reloj grande + widget */
+  .celu-portada {
+    display: grid;
+    justify-items: center;
+    gap: 4px;
+    padding: 26px 16px 8px;
+    text-align: center;
+  }
+
+  .celu-reloj {
+    font: 4.6rem/0.9 var(--fuente-sistema);
+    color: #fff;
+    text-shadow: 0 0 10px var(--fucsia), 0 0 24px rgba(255, 0, 127, 0.6);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .celu-fecha {
+    font: 1.3rem var(--fuente-sistema);
+    color: var(--texto-suave);
+  }
+
+  .celu-widget {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    max-width: 420px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 2px solid;
+    border-color: var(--bisel-luz) var(--bisel-sombra) var(--bisel-sombra) var(--bisel-luz);
+    background: rgba(18, 8, 31, 0.92);
+    text-align: left;
+  }
+
+  .celu-widget svg {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    fill: none;
+    stroke: var(--cyan);
+    stroke-width: 2;
+  }
+
+  .celu-widget b {
+    display: block;
+    font: 400 1.25rem/1.1 var(--fuente-sistema);
+    color: var(--cyan);
+  }
+
+  .celu-widget > span > span {
+    font-size: 0.8rem;
+  }
+
+  /* Grilla de íconos grandes */
   .iconos {
     position: static;
+    display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 6px;
+    gap: 8px;
+    padding: 10px 16px;
   }
 
   .icono {
     width: auto;
+    padding: 10px 2px;
   }
 
+  .icono svg {
+    width: 46px;
+    height: 46px;
+  }
+
+  .icono span {
+    font-size: 1.2rem;
+  }
+
+  .icono-papelera {
+    margin-top: 0;
+  }
+
+  /* Stickers: una fila al final de la pantalla de inicio (se tocan, no se arrastran) */
+  .stickers {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 4px;
+    margin-top: auto;
+    padding: 18px 10px 0;
+  }
+
+  .sticker,
+  .sticker-chica,
+  .sticker-oso,
+  .sticker-camion,
+  .sticker-leon {
+    position: relative;
+    inset: auto;
+    width: 23%;
+    cursor: pointer;
+  }
+
+  .sticker-escondido {
+    right: 2px;
+    top: 0;
+  }
+
+  /* Ventanas a pantalla completa, entre la barra de señal y las teclas */
   .ventana,
+  .ventana[style],
   #ventana-perfil,
+  #ventana-msn,
   #ventana-winamp,
   #ventana-bandas,
   #ventana-favs,
   #ventana-cositas,
+  #ventana-papelera,
+  #ventana-secreto,
   #ventana-aviso {
-    position: relative;
-    left: auto !important;
-    top: auto !important;
-    right: auto;
+    position: fixed;
+    inset: var(--alto-estado) 0 var(--alto-tareas) 0 !important;
     width: auto !important;
     min-width: 0;
     max-height: none;
     rotate: none;
   }
 
-  /* El aviso sale arriba de todo, justo bajo los íconos */
-  #ventana-aviso {
-    order: -1;
-  }
-
-  .iconos {
-    order: -2;
-  }
-
-  /* En celular "minimizar" pliega la ventana, no la esconde */
-  .ventana[data-estado="minimizada"] {
-    display: flex;
-    opacity: 1;
-    scale: 1;
-    translate: none;
-  }
-
-  .ventana[data-estado="minimizada"] .ventana-cuerpo {
-    display: none;
+  .ventana.activa {
+    box-shadow: none;
   }
 
   .ventana-barra {
-    height: 36px;
+    height: 40px;
     cursor: default;
   }
 
   .control {
-    width: 32px;
-    height: 28px;
+    width: 34px;
+    height: 30px;
   }
 
-  .control[data-accion="maximizar"] {
+  .control[data-accion="maximizar"],
+  .control[data-accion="minimizar"] {
     display: none;
   }
 
-  .ventana.maximizada {
-    height: auto !important;
+  /* Teclas del celu: Menú · ZUMBIDO · Atrás */
+  .tareas {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    gap: 8px;
+    padding: 6px 10px;
   }
 
-  .stickers {
-    order: 10;
-    display: flex;
-    justify-content: center;
-    gap: 6px;
+  .boton-inicio {
+    justify-self: start;
+    height: 42px;
+    padding: 0 12px;
+    border: 0;
+    background: none;
+    color: var(--texto);
+    font: 1.5rem var(--fuente-sistema);
   }
 
-  .sticker {
-    position: static;
-    width: 22% !important;
-    pointer-events: none;
+  .inicio-pc {
+    display: none;
+  }
+
+  .inicio-celu {
+    display: inline;
   }
 
   .tareas-lista {
@@ -1471,11 +2135,57 @@ html.con-intro body {
   }
 
   .bandeja {
-    margin-left: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
   }
 
-  .bandeja-mood {
-    max-width: 38vw;
+  .bandeja > :not(.bandeja-zumbido) {
+    display: none;
+  }
+
+  .bandeja-zumbido {
+    display: flex;
+    gap: 6px;
+    width: auto;
+    height: 42px;
+    padding: 0 16px;
+    border: 2px solid;
+    border-color: #fff3b0 #7a4b00 #7a4b00 #fff3b0;
+    background: linear-gradient(180deg, #ffe680, var(--zumbido) 55%, #ffb000);
+    color: var(--tinta);
+  }
+
+  .bandeja-zumbido .solo-celu {
+    display: inline;
+    font: 1.4rem/1 var(--fuente-sistema);
+    letter-spacing: 0.06em;
+  }
+
+  .tecla-atras {
+    display: block;
+    justify-self: end;
+    height: 42px;
+    padding: 0 12px;
+    border: 0;
+    background: none;
+    font: 1.5rem var(--fuente-sistema);
+  }
+
+  .menu-inicio {
+    left: 8px;
+    bottom: calc(var(--alto-tareas) + 4px);
+  }
+
+  .globo {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    bottom: calc(var(--alto-tareas) + 10px);
+  }
+
+  .globo::after {
+    right: 50%;
   }
 }
 
@@ -1498,6 +2208,11 @@ html.con-intro body {
     text-align: left;
   }
 
+  .blinkie {
+    min-width: 0;
+    flex: 1 1 140px;
+  }
+
   .grilla-bandas,
   .grilla-portadas {
     gap: 6px;
@@ -1509,7 +2224,7 @@ html.con-intro body {
 }
 
 /* =========================================================
-   MOVIMIENTO REDUCIDO: menos y más suave, no cero
+   MOVIMIENTO REDUCIDO: se apaga el caos, el texto queda quieto
    ========================================================= */
 @media (prefers-reduced-motion: reduce) {
   .aurora,
@@ -1520,14 +2235,35 @@ html.con-intro body {
   .ventana.activa,
   .winamp.sonando .eq i,
   .lcd-pista span,
+  .blinkie,
+  .sticker,
+  .sticker.rockeando,
+  .glitch,
+  .chat-zumbido,
+  .globo.entrando,
+  .archivo.negado,
+  .temblando .escritorio,
+  .temblando .tareas,
+  .revelando::after,
   .arrancando .wallpaper-tubo,
   .arrancando .ventana:not([hidden]),
+  .arrancando .icono,
   .ventana-aviso:not([hidden]) .barra-progreso i {
     animation: none !important;
   }
 
   .lcd-pista span {
     padding-left: 0;
+  }
+
+  /* Zumbido sin temblor: un brillo amarillo que aparece y se va */
+  .escritorio .ventana.parpadeo-suave,
+  .escritorio.parpadeo-suave {
+    animation: parpadeo-suave 900ms ease-in-out !important;
+  }
+
+  .estela {
+    display: none;
   }
 
   /* Ventanas y menú: solo un fundido corto, sin escalar */
@@ -1542,7 +2278,9 @@ html.con-intro body {
   .icono svg,
   .control,
   .boton-sistema,
-  .boton-inicio {
+  .boton-inicio,
+  .boton-zumbido,
+  .sticker-escondido {
     transition: none;
   }
 }

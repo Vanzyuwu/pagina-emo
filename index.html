@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VANZY.EXE ✦ mi rincón de internet</title>
-  <meta name="description" content="VANZY: mi rincón de internet como un escritorio Y2K. Abre las ventanas y conóceme: música, bandas, pelis, libros y cositas sobre mí.">
+  <meta name="description" content="VANZY: mi rincón de internet como un escritorio Y2K. Abre las ventanas, mándame un zumbido y busca los secretos.">
   <meta name="theme-color" content="#0b0716">
   <meta property="og:title" content="VANZY.EXE ✦">
-  <meta property="og:description" content="Mi rincón de internet como un escritorio Y2K. Pasa y abre las ventanas :3">
+  <meta property="og:description" content="Mi rincón de internet como un escritorio Y2K. Pasa, abre las ventanas y mándame un zumbido :3">
   <meta property="og:type" content="website">
   <link rel="icon" href="img/favicon.svg" type="image/svg+xml">
 
@@ -36,18 +36,18 @@
       <text class="intro-relleno" x="500" y="250" text-anchor="middle">VANZY</text>
       <text class="intro-tubo" x="500" y="250" text-anchor="middle">VANZY</text>
     </svg>
-    <p class="intro-texto">cargando mi rincón de internet<span class="intro-cursor">_</span></p>
+    <p class="intro-texto">cargando mood.dll… bajo.sys… zumbido.exe<span class="intro-cursor">_</span></p>
     <button class="intro-saltar" id="intro-saltar" type="button" tabindex="-1">saltar intro ▸</button>
   </div>
 
-  <a class="saltar" href="#ventana-perfil">saltar al perfil</a>
+  <a class="saltar" href="#ventana-perfil">saltar al about me</a>
 
   <!-- ===================== FONDO VIVO ===================== -->
   <div class="fondo" aria-hidden="true">
     <div class="aurora aurora-1"></div>
     <div class="aurora aurora-2"></div>
     <canvas class="cielo" id="cielo"></canvas>
-    <!-- Wallpaper: VANZY gigante como tubo de neón que se dibuja solo -->
+    <!-- Wallpaper: VANZY en tubo de neón, abajo a la derecha (en el espacio libre) -->
     <svg class="wallpaper" viewBox="0 0 1000 320" preserveAspectRatio="xMidYMid meet">
       <defs>
         <linearGradient id="tubo" x1="0" y1="0" x2="1" y2="0">
@@ -62,18 +62,26 @@
     <div class="scanlines"></div>
   </div>
 
+  <!-- Estela del cursor (caos 2006); se apaga con movimiento reducido -->
+  <canvas class="estela" id="estela" aria-hidden="true"></canvas>
+
   <!-- ===================== ÍCONOS (sprite SVG) ===================== -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true">
     <defs>
       <symbol id="i-perfil" viewBox="0 0 24 24"><rect x="8" y="3" width="8" height="8"/><path d="M4 21v-3a4 4 0 0 1 4-4h8a4 4 0 0 1 4 4v3"/></symbol>
+      <symbol id="i-msn" viewBox="0 0 24 24"><circle cx="8" cy="7" r="3"/><circle cx="16" cy="9" r="3"/><path d="M2 20c0-4 3-6 6-6s6 2 6 6M12 20c0-3 2-5 4-5s5 2 5 5"/></symbol>
       <symbol id="i-cd" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="2.5"/><path d="M12 5.5a6.5 6.5 0 0 1 6.5 6.5"/></symbol>
       <symbol id="i-micro" viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"/></symbol>
       <symbol id="i-libro" viewBox="0 0 24 24"><path d="M3 5h7a2 2 0 0 1 2 2v13a2 2 0 0 0-2-2H3zM21 5h-7a2 2 0 0 0-2 2v13a2 2 0 0 1 2-2h7z"/></symbol>
       <symbol id="i-nota" viewBox="0 0 24 24"><path d="M4 3h16v12l-6 6H4z"/><path d="M14 21v-6h6M8 8h8M8 12h5"/></symbol>
       <symbol id="i-musica" viewBox="0 0 24 24"><path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/></symbol>
-      <symbol id="i-juegos" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="11" rx="3"/><path d="M7 10v5M4.5 12.5h5M15.5 11h.01M18.5 14h.01"/></symbol>
       <symbol id="i-fotos" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13"/><path d="M8 7l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></symbol>
-      <symbol id="i-foro" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14"/><path d="M3 6l9 7 9-7"/></symbol>
+      <symbol id="i-gif" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14"/><path d="M9 10H6v5h3v-2M12 10v5M15 15v-5h3M15 12.5h2"/></symbol>
+      <symbol id="i-papelera" viewBox="0 0 24 24"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7"/></symbol>
+      <symbol id="i-candado" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
+      <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
+      <symbol id="i-mudo" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l5 6M21 9l-5 6"/></symbol>
+      <symbol id="i-rayo" viewBox="0 0 24 24"><path d="M13 2L4 14h7l-1 8 9-12h-7z"/></symbol>
       <symbol id="i-corazon" viewBox="0 0 24 24"><path d="M12 20s-8-5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 9c0 6-8 11-8 11z"/></symbol>
       <symbol id="i-min" viewBox="0 0 24 24"><path d="M6 17h12"/></symbol>
       <symbol id="i-max" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14"/><path d="M5 9h14"/></symbol>
@@ -89,32 +97,50 @@
   <!-- ===================== ESCRITORIO ===================== -->
   <main class="escritorio" id="escritorio">
 
-    <!-- Íconos del escritorio: abren ventanas -->
-    <nav class="iconos" aria-label="Íconos del escritorio">
-      <button class="icono" data-abre="ventana-perfil"><svg><use href="#i-perfil"/></svg><span>perfil.exe</span></button>
-      <button class="icono" data-abre="ventana-winamp"><svg><use href="#i-cd"/></svg><span>winamp</span></button>
-      <button class="icono" data-abre="ventana-bandas"><svg><use href="#i-micro"/></svg><span>top bandas</span></button>
-      <button class="icono" data-abre="ventana-favs"><svg><use href="#i-libro"/></svg><span>favoritos</span></button>
-      <button class="icono" data-abre="ventana-cositas"><svg><use href="#i-nota"/></svg><span>cositas.txt</span></button>
-      <button class="icono" data-aviso="música"><svg><use href="#i-musica"/></svg><span>música</span></button>
-      <button class="icono" data-aviso="juegos"><svg><use href="#i-juegos"/></svg><span>juegos</span></button>
-      <button class="icono" data-aviso="fotos"><svg><use href="#i-fotos"/></svg><span>fotos</span></button>
-      <button class="icono" data-aviso="foro"><svg><use href="#i-foro"/></svg><span>foro</span></button>
-    </nav>
-
-    <!-- Stickers pegados en el wallpaper (debajo de las ventanas) -->
-    <div class="stickers" aria-hidden="true">
-      <img class="sticker sticker-chica" src="img/stickers/sticker-4.webp" alt="" width="400" height="400">
-      <img class="sticker sticker-oso" src="img/stickers/sticker-1.webp" alt="" width="400" height="400">
-      <img class="sticker sticker-camion" src="img/stickers/sticker-3.webp" alt="" width="400" height="400">
-      <img class="sticker sticker-leon" src="img/stickers/sticker-2.webp" alt="" width="400" height="400">
+    <!-- Solo en celular: barra de estado + pantalla de inicio de un celu 2000s -->
+    <div class="celu-estado" aria-hidden="true">
+      <span class="senal"><i></i><i></i><i></i><i></i></span>
+      <span>VANZY</span>
+      <span class="bateria"><i></i></span>
+    </div>
+    <div class="celu-portada">
+      <time class="celu-reloj" id="celu-reloj">--:--</time>
+      <p class="celu-fecha"><span id="celu-fecha"></span> · <span id="celu-mood"></span></p>
+      <button class="celu-widget" type="button" data-abre="ventana-msn">
+        <svg aria-hidden="true"><use href="#i-cd"/></svg>
+        <span><b>♪ escuchando ahora</b><span id="celu-escuchando"></span></span>
+      </button>
     </div>
 
-    <!-- ---------- perfil.exe (la protagonista) ---------- -->
-    <section class="ventana" id="ventana-perfil" data-nombre="perfil.exe" data-icono="i-perfil" aria-labelledby="titulo-principal">
+    <!-- Íconos del escritorio: abren ventanas -->
+    <nav class="iconos" aria-label="Íconos del escritorio">
+      <button class="icono" type="button" data-abre="ventana-perfil"><svg aria-hidden="true"><use href="#i-perfil"/></svg><span>about_me.exe</span></button>
+      <button class="icono" type="button" data-abre="ventana-msn"><svg aria-hidden="true"><use href="#i-msn"/></svg><span>escuchando ahora</span></button>
+      <button class="icono" type="button" data-aviso="música" data-icono="i-musica"><svg aria-hidden="true"><use href="#i-musica"/></svg><span>música</span></button>
+      <button class="icono" type="button" data-aviso="sobre_mí" data-icono="i-nota"><svg aria-hidden="true"><use href="#i-nota"/></svg><span>sobre_mí.txt</span></button>
+      <button class="icono" type="button" data-aviso="galería" data-icono="i-fotos"><svg aria-hidden="true"><use href="#i-fotos"/></svg><span>galería</span></button>
+      <button class="icono" type="button" data-aviso="gifs_randoms" data-icono="i-gif"><svg aria-hidden="true"><use href="#i-gif"/></svg><span>gifs randoms</span></button>
+      <button class="icono icono-papelera" type="button" data-abre="ventana-papelera"><svg aria-hidden="true"><use href="#i-papelera"/></svg><span>papelera</span></button>
+    </nav>
+
+    <!-- Stickers: flotan en el wallpaper (debajo de las ventanas).
+         3 clics seguidos = suena un riff. Uno está escondido… -->
+    <div class="stickers">
+      <span class="sticker sticker-chica" data-sonido="sticker-1"><img src="img/stickers/sticker-4.webp" alt="" width="400" height="400" draggable="false"></span>
+      <span class="sticker sticker-oso" data-sonido="sticker-2"><img src="img/stickers/sticker-1.webp" alt="" width="400" height="400" draggable="false"></span>
+      <span class="sticker sticker-camion" data-sonido="sticker-3"><img src="img/stickers/sticker-3.webp" alt="" width="400" height="400" draggable="false"></span>
+      <span class="sticker sticker-leon" data-sonido="sticker-4"><img src="img/stickers/sticker-2.webp" alt="" width="400" height="400" draggable="false"></span>
+      <!-- El sticker escondido: un corazoncito asomado detrás del borde -->
+      <button class="sticker-escondido" id="sticker-escondido" type="button" aria-label="un corazoncito escondido">
+        <svg aria-hidden="true"><use href="#i-corazon"/></svg>
+      </button>
+    </div>
+
+    <!-- ---------- about_me.exe (se abre sola) ---------- -->
+    <section class="ventana" id="ventana-perfil" data-nombre="about_me.exe" data-icono="i-perfil" aria-labelledby="titulo-principal">
       <header class="ventana-barra">
-        <svg class="ventana-icono"><use href="#i-perfil"/></svg>
-        <p class="ventana-titulo">perfil.exe — vanzy</p>
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-perfil"/></svg>
+        <p class="ventana-titulo">about_me.exe — vanzy</p>
         <div class="ventana-controles"></div>
       </header>
       <div class="ventana-cuerpo perfil">
@@ -127,18 +153,55 @@
           <p class="perfil-saludo" id="perfil-saludo"></p>
           <div class="perfil-bio" id="perfil-bio"></div>
         </div>
-        <ul class="perfil-chips" aria-label="Status">
-          <li class="chip"><span>mood:</span> <b id="estado-mood"></b></li>
-          <li class="chip"><span>escuchando:</span> <b id="estado-escuchando"></b></li>
-          <li class="chip chip-suave"><span>actualizado:</span> <time id="estado-fecha"></time></li>
-        </ul>
+        <blockquote class="quote" id="quote">
+          <p id="quote-texto"></p>
+          <footer id="quote-autor"></footer>
+        </blockquote>
+        <ul class="blinkies" id="blinkies" aria-label="Blinkies"></ul>
       </div>
+      <footer class="ventana-estado">
+        <span>1 usuario conectado</span>
+        <span>mood: <b id="estado-mood"></b></span>
+      </footer>
+    </section>
+
+    <!-- ---------- escuchando ahora (estado MSN + Spotify + zumbido) ---------- -->
+    <section class="ventana" id="ventana-msn" data-nombre="escuchando ahora" data-icono="i-msn" aria-labelledby="titulo-msn" hidden>
+      <header class="ventana-barra">
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-msn"/></svg>
+        <h2 class="ventana-titulo" id="titulo-msn">escuchando ahora — msn</h2>
+        <div class="ventana-controles"></div>
+      </header>
+      <div class="ventana-cuerpo msn">
+        <div class="contacto">
+          <img src="img/avatar.webp" alt="" width="400" height="368">
+          <div>
+            <p class="contacto-nombre"><span class="punto" aria-hidden="true">●</span> Vanzy <small>(en línea)</small></p>
+            <p class="contacto-cancion">♪ <span id="msn-escuchando"></span></p>
+          </div>
+        </div>
+        <!-- El embed de Spotify se carga recién cuando aprietan "escuchar" -->
+        <div class="spotify" id="spotify">
+          <div>
+            <button class="spotify-cargar" id="spotify-cargar" type="button">▶ escuchar mi playlist</button>
+            <small>se abre el reproductor de Spotify</small>
+          </div>
+        </div>
+        <div class="chat" id="chat" aria-live="polite">
+          <p><b>Vanzy dice:</b> <span id="msn-estado"></span></p>
+        </div>
+        <button class="boton-zumbido" type="button" data-zumbido>¡ZUMBIDO!</button>
+      </div>
+      <footer class="ventana-estado">
+        <span>conectado</span>
+        <span id="msn-fuente">spotify</span>
+      </footer>
     </section>
 
     <!-- ---------- winamp ---------- -->
-    <section class="ventana" id="ventana-winamp" data-nombre="winamp" data-icono="i-cd" aria-labelledby="titulo-winamp">
+    <section class="ventana" id="ventana-winamp" data-nombre="winamp" data-icono="i-cd" aria-labelledby="titulo-winamp" hidden>
       <header class="ventana-barra">
-        <svg class="ventana-icono"><use href="#i-cd"/></svg>
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-cd"/></svg>
         <h2 class="ventana-titulo" id="titulo-winamp">winamp — vanzy.m3u</h2>
         <div class="ventana-controles"></div>
       </header>
@@ -149,41 +212,39 @@
           <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
         </div>
         <div class="winamp-controles">
-          <button class="boton-sistema" data-winamp="anterior" aria-label="Anterior"><svg><use href="#i-anterior"/></svg></button>
-          <button class="boton-sistema" data-winamp="play" aria-label="Reproducir"><svg><use href="#i-play"/></svg></button>
-          <button class="boton-sistema" data-winamp="pausa" aria-label="Pausa"><svg><use href="#i-pausa"/></svg></button>
-          <button class="boton-sistema" data-winamp="stop" aria-label="Detener"><svg><use href="#i-stop"/></svg></button>
-          <button class="boton-sistema" data-winamp="siguiente" aria-label="Siguiente"><svg><use href="#i-siguiente"/></svg></button>
-          <button class="boton-sistema boton-playlist" id="boton-playlist" aria-expanded="false" aria-controls="playlist">playlist</button>
+          <button class="boton-sistema" type="button" data-winamp="anterior" aria-label="Anterior"><svg aria-hidden="true"><use href="#i-anterior"/></svg></button>
+          <button class="boton-sistema" type="button" data-winamp="play" aria-label="Reproducir"><svg aria-hidden="true"><use href="#i-play"/></svg></button>
+          <button class="boton-sistema" type="button" data-winamp="pausa" aria-label="Pausa"><svg aria-hidden="true"><use href="#i-pausa"/></svg></button>
+          <button class="boton-sistema" type="button" data-winamp="stop" aria-label="Detener"><svg aria-hidden="true"><use href="#i-stop"/></svg></button>
+          <button class="boton-sistema" type="button" data-winamp="siguiente" aria-label="Siguiente"><svg aria-hidden="true"><use href="#i-siguiente"/></svg></button>
         </div>
-        <div class="playlist" id="playlist" hidden></div>
       </div>
     </section>
 
     <!-- ---------- top bandas ---------- -->
-    <section class="ventana" id="ventana-bandas" data-nombre="top_bandas" data-icono="i-micro" aria-labelledby="titulo-bandas">
+    <section class="ventana" id="ventana-bandas" data-nombre="top_bandas" data-icono="i-micro" aria-labelledby="titulo-bandas" hidden>
       <header class="ventana-barra">
-        <svg class="ventana-icono"><use href="#i-micro"/></svg>
-        <h2 class="ventana-titulo" id="titulo-bandas">top_bandas <small id="bandas-nota"></small></h2>
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-micro"/></svg>
+        <h2 class="ventana-titulo" id="titulo-bandas">top_bandas</h2>
         <div class="ventana-controles"></div>
       </header>
       <div class="ventana-cuerpo">
         <ul class="grilla-bandas" id="lista-bandas"></ul>
-        <p class="pista-uso">pasa el mouse (o toca) para ver el disco ♡</p>
+        <p class="pista-uso">pasa el mouse (o toca) para ver el disco ♡ <span id="bandas-nota"></span></p>
       </div>
     </section>
 
     <!-- ---------- favoritos: pelis y libros ---------- -->
-    <section class="ventana" id="ventana-favs" data-nombre="favoritos" data-icono="i-libro" aria-labelledby="titulo-favs">
+    <section class="ventana" id="ventana-favs" data-nombre="favoritos" data-icono="i-libro" aria-labelledby="titulo-favs" hidden>
       <header class="ventana-barra">
-        <svg class="ventana-icono"><use href="#i-libro"/></svg>
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-libro"/></svg>
         <h2 class="ventana-titulo" id="titulo-favs">favoritos</h2>
         <div class="ventana-controles"></div>
       </header>
       <div class="ventana-cuerpo">
         <div class="pestanas" role="tablist" aria-label="Favoritos">
-          <button class="pestana" role="tab" id="tab-pelis" aria-controls="panel-pelis" aria-selected="true">películas</button>
-          <button class="pestana" role="tab" id="tab-libros" aria-controls="panel-libros" aria-selected="false" tabindex="-1">libros</button>
+          <button class="pestana" type="button" role="tab" id="tab-pelis" aria-controls="panel-pelis" aria-selected="true">películas</button>
+          <button class="pestana" type="button" role="tab" id="tab-libros" aria-controls="panel-libros" aria-selected="false" tabindex="-1">libros</button>
         </div>
         <ul class="grilla-portadas" role="tabpanel" id="panel-pelis" aria-labelledby="tab-pelis"></ul>
         <ul class="grilla-portadas" role="tabpanel" id="panel-libros" aria-labelledby="tab-libros" hidden></ul>
@@ -191,9 +252,9 @@
     </section>
 
     <!-- ---------- cositas.txt (post-it) ---------- -->
-    <section class="ventana ventana-postit" id="ventana-cositas" data-nombre="cositas.txt" data-icono="i-nota" aria-labelledby="titulo-cositas">
+    <section class="ventana ventana-postit" id="ventana-cositas" data-nombre="cositas.txt" data-icono="i-nota" aria-labelledby="titulo-cositas" hidden>
       <header class="ventana-barra">
-        <svg class="ventana-icono"><use href="#i-nota"/></svg>
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-nota"/></svg>
         <h2 class="ventana-titulo" id="titulo-cositas">cositas.txt</h2>
         <div class="ventana-controles"></div>
       </header>
@@ -202,24 +263,59 @@
       </div>
     </section>
 
+    <!-- ---------- papelera (los secretos) ---------- -->
+    <section class="ventana" id="ventana-papelera" data-nombre="papelera" data-icono="i-papelera" aria-labelledby="titulo-papelera" hidden>
+      <header class="ventana-barra">
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-papelera"/></svg>
+        <h2 class="ventana-titulo" id="titulo-papelera">papelera de reciclaje</h2>
+        <div class="ventana-controles"></div>
+      </header>
+      <div class="ventana-cuerpo">
+        <p class="papelera-intro">cosas que "borré"… algunas están protegidas. dicen que hay formas de abrirlas :o</p>
+        <ul class="archivos" id="lista-secretos"></ul>
+      </div>
+      <footer class="ventana-estado">
+        <span id="papelera-cuenta"></span>
+        <span>pistas: ↑↑↓↓ · teclado · ♡</span>
+      </footer>
+    </section>
+
+    <!-- ---------- visor de un secreto ---------- -->
+    <section class="ventana ventana-postit" id="ventana-secreto" data-nombre="secreto.txt" data-icono="i-nota" aria-labelledby="titulo-secreto" hidden>
+      <header class="ventana-barra">
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-nota"/></svg>
+        <h2 class="ventana-titulo" id="titulo-secreto">secreto.txt</h2>
+        <div class="ventana-controles"></div>
+      </header>
+      <div class="ventana-cuerpo">
+        <ul class="cositas" id="secreto-lineas"></ul>
+      </div>
+    </section>
+
     <!-- ---------- aviso: secciones que vienen después ---------- -->
     <section class="ventana ventana-aviso" id="ventana-aviso" data-nombre="instalando…" data-icono="i-corazon" aria-labelledby="titulo-aviso" hidden>
       <header class="ventana-barra">
-        <svg class="ventana-icono"><use href="#i-corazon"/></svg>
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-corazon"/></svg>
         <h2 class="ventana-titulo" id="titulo-aviso">instalando…</h2>
         <div class="ventana-controles"></div>
       </header>
       <div class="ventana-cuerpo aviso">
         <p id="aviso-texto"></p>
         <div class="barra-progreso" aria-hidden="true"><i></i></div>
-        <p class="aviso-nota">✦ próximamente ✦ vuelve prontito :3</p>
+        <p class="aviso-nota" id="aviso-nota">✦ próximamente ✦</p>
       </div>
     </section>
   </main>
 
+  <!-- Globito de la bandeja (zumbidos y secretos) -->
+  <div class="globo" id="globo" role="status" aria-live="polite" hidden>
+    <p><b>MSN</b> <span id="globo-texto"></span></p>
+    <small>hace un momento</small>
+  </div>
+
   <!-- ===================== BARRA DE TAREAS ===================== -->
   <footer class="tareas">
-    <button class="boton-inicio" id="boton-inicio" aria-expanded="false" aria-controls="menu-inicio">VANZY</button>
+    <button class="boton-inicio" id="boton-inicio" type="button" aria-expanded="false" aria-controls="menu-inicio"><span class="inicio-pc">VANZY</span><span class="inicio-celu">Menú</span></button>
 
     <div class="menu-inicio" id="menu-inicio" hidden>
       <p class="menu-franja" aria-hidden="true">VANZY 2.0</p>
@@ -232,9 +328,14 @@
     <ul class="tareas-lista" id="tareas-lista" aria-label="Ventanas abiertas"></ul>
 
     <div class="bandeja">
-      <span class="bandeja-mood" title="mood"><svg><use href="#i-corazon"/></svg><span id="bandeja-mood"></span></span>
+      <button class="bandeja-boton" type="button" data-abre="ventana-msn" aria-label="Abrir MSN"><svg aria-hidden="true"><use href="#i-msn"/></svg></button>
+      <button class="bandeja-boton bandeja-zumbido" type="button" data-zumbido aria-label="Mandar un zumbido"><svg aria-hidden="true"><use href="#i-rayo"/></svg><span class="solo-celu">ZUMBIDO</span></button>
+      <button class="bandeja-boton" type="button" id="boton-sonido" aria-pressed="false" aria-label="Silenciar sonidos"><svg aria-hidden="true"><use href="#i-vol"/></svg></button>
+      <span class="bandeja-mood" title="mood"><svg aria-hidden="true"><use href="#i-corazon"/></svg><span id="bandeja-mood"></span></span>
       <time class="bandeja-reloj" id="reloj">--:--</time>
     </div>
+
+    <button class="tecla-atras" id="tecla-atras" type="button">Atrás</button>
   </footer>
 
   <script src="datos.js" defer></script>

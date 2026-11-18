@@ -16,14 +16,19 @@ const datos = {
   mood: "feliz y con sueño :3",
   escuchando: "Faster — Manic Street Preachers",
 
-  /* ---------- PERFIL ---------- */
+  /* ---------- ABOUT ME ---------- */
   avatar: "img/avatar.webp",
-  saludo: "★ Holaaaa~ ♡",
+  saludo: "Hola, soy el Vanzy para los nuevos, Pipe para los oldschool.",
   bio: [
-    "Bienvenid@ a mi pequeño rinconcito de internet ✨",
-    "Si llegaste hasta aquí, espero que te quedes un ratito. Esta página la hice para compartir un poquito de quién soy, las cosas que me gustan, mi música favorita y uno que otro pensamiento perdido por ahí. UwU ♡",
-    "Ponte cómod@, explora todo lo que quieras y gracias por pasar a visitar mi pequeño mundo. :3",
+    "Toco bajo, guitarra y batería (no soy experto, pero se me da bien). Toco desde el PC con mi interfaz y tengo una pedalera.",
+    "Me gusta grabar videos (que algún día subiré), los videojuegos y la música de todo tipo.",
+    "Colecciono CDs de bandas que me gustan; ahora estoy buscando todos los de Fall Out Boy y me ha costado más de lo que esperaba.",
   ],
+
+  // ✎ QUOTE FAVORITO: escribe aquí tu línea de "Hum Hallelujah" (Fall Out Boy).
+  // Mientras esté vacío, se muestra un espacio marcado.
+  quote: "",
+  quoteAutor: "Fall Out Boy — Hum Hallelujah",
 
   // Cositas sobre mí: una por línea
   cositas: [
@@ -45,9 +50,22 @@ const datos = {
     "My Own Summer (Shove It) — Deftones",
   ],
 
-  // Playlist de Spotify: copia el código que sale en el link
-  // open.spotify.com/playlist/ESTE_CODIGO
-  playlistSpotify: "3b2iNp0JaHr6DSoBxhhhUj",
+  /* ---------- ESCUCHANDO AHORA (ventana MSN) ---------- */
+  // ✎ PEGA AQUÍ el link de tu playlist de Spotify (el link completo sirve):
+  // ej: https://open.spotify.com/playlist/3b2iNp0JaHr6DSoBxhhhUj
+  playlistSpotify: "https://open.spotify.com/playlist/3b2iNp0JaHr6DSoBxhhhUj",
+
+  // Estado MSN (lo que sale bajo tu nombre)
+  estadoMsn: "mándame un zumbido si te aburres :3",
+
+  // Last.fm (para más adelante): con tu usuario y una API key, la ventana
+  // muestra la canción que estás escuchando EN VIVO en vez de "escuchando".
+  // La key de Last.fm es de solo lectura, pero igual queda pública en la página.
+  // Crea una en https://www.last.fm/api/account/create
+  lastfm: {
+    usuario: "",
+    apiKey: "",
+  },
 
   /* ---------- TOP BANDAS (la tarjeta gira y muestra el disco) ---------- */
   topBandasNota: "(una es falsa es fake)",
@@ -84,5 +102,37 @@ const datos = {
     { nombre: "El Psicoanalista", portada: "img/libros/el-psicoanalista.webp" },
     { nombre: "Harry Potter y el Príncipe Mestizo", portada: "img/libros/harry-potter-principe-mestizo.webp" },
     { nombre: "El Retrato de Dorian Gray", portada: "img/libros/el-retrato-de-dorian-gray.webp" },
+  ],
+
+  /* ---------- SECRETOS (la papelera) ----------
+     Cada archivo se desbloquea de una forma:
+       "konami"  -> código Konami: ↑ ↑ ↓ ↓ ← → ← → B A
+       "palabra" -> escribir la palabra secreta con el teclado
+       "sticker" -> encontrar el sticker escondido
+       ""        -> todavía bloqueado (próximamente)
+     ✎ Escribe tu contenido en "lineas" (una línea por cosa). */
+  palabraSecreta: "descargado",
+  secretos: [
+    {
+      archivo: "dreams.txt",
+      titulo: "Dreams",
+      desbloqueo: "konami",
+      lineas: ["(escribe aquí tus sueños ♡)", "uno por línea, como una lista :3"],
+    },
+    {
+      archivo: "bucket_list.txt",
+      titulo: "Bucket list",
+      desbloqueo: "palabra",
+      lineas: ["(cosas que quiero hacer antes de morir)", "[ ] completar todos los CDs de Fall Out Boy"],
+    },
+    {
+      archivo: "things_ill_never_forget.txt",
+      titulo: "Things I'll never forget",
+      desbloqueo: "sticker",
+      lineas: ["(momentos que nunca voy a olvidar)"],
+    },
+    { archivo: "memories.txt", titulo: "Memories", desbloqueo: "", lineas: [] },
+    // Amigos solo con apodo (nunca nombres completos ni contactos)
+    { archivo: "my_friends.txt", titulo: "My friends", desbloqueo: "", lineas: [] },
   ],
 };
