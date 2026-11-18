@@ -70,6 +70,16 @@ spacing:
 - **Papelera:** archivos protegidos (candado) que se abren con Konami, palabra secreta o el sticker escondido. Destello neón al descubrir uno.
 - **Avisos "próximamente":** música, sobre mí, galería, gifs randoms, cada uno con su chiste y barra de progreso.
 
+## Música: audio_lab.exe
+
+Un programa propio dentro del escritorio, con su propio mundo:
+
+- **Colores (solo en esta ventana):** base **morado y negro** con **tablero emo** que se desliza; acentos **fucsia scene** (`#ff2fa0`); el estante de **Fall Out Boy en negro y rojo** (`#ff1f3d`) con estática, para que destaque.
+- **Entrada:** portada **ENTER** (como las webs de bandas de la era Flash) → la ventana se "rompe" y **D'LIRIA la hackea** (homenaje a la campaña de *Folie à Deux*): alerta, logo con glitch, frases que se escriben y **3 boletas** que tocan los adelantos (`audio/boleta-1..3.mp3`). Una vez por visita.
+- **Carpetas:** banda_actual (foto con marco arcoíris que gira, nombre glitter, llamas, sesión de grabación con onda que baila y barra de mezcla), bandas_muertas (CDs que salen de la caja girando, R.I.P, velitas, notita en papel, Spotify al tocar), mis_cds (repisas con lo que tengo/me falta y contador), tocatas (polaroids con flash, tocar = agrandar), favoritas (banners de banda tipo MySpace + menciones honrosas).
+- **"Gifs" hechos con CSS:** brillitos, insignias que giran (NEW!, HOT!, LIVE!, TOP 8, COMPLETA!), CDs, llamas, glitter, marquesinas. Todo se apaga con movimiento reducido.
+- Todo el contenido sale de `datos.musica`.
+
 ## Movimiento (caos 2006, bien hecho)
 
 - Momento de autor: intro (VANZY se dibuja y se enciende) → wallpaper se dibuja → íconos y ventanas aparecen escalonados.

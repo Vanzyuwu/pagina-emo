@@ -12,5 +12,8 @@ Ej: si pones zumbido.mp3, se usa ese en vez de zumbido.wav.
   sticker-3    -> 3 clics en el camión
   sticker-4    -> 3 clics en el león
   secreto      -> cuando alguien descubre un archivo secreto
+  boleta-1/2/3 -> adelantos de 15 s de D'LIRIA (las boletas del hackeo
+                  en música). Son .mp3 recortados de tus temas, desde el
+                  segundo 50. Si quieres otro pedazo, reemplázalos.
 
 Tip: que duren menos de 3 segundos y no pesen más de ~200 KB.

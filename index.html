@@ -78,6 +78,7 @@
       <symbol id="i-fotos" viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="13"/><path d="M8 7l2-3h4l2 3"/><circle cx="12" cy="13" r="3.5"/></symbol>
       <symbol id="i-gif" viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14"/><path d="M9 10H6v5h3v-2M12 10v5M15 15v-5h3M15 12.5h2"/></symbol>
       <symbol id="i-papelera" viewBox="0 0 24 24"><path d="M4 6h16M9 6V3h6v3M6 6l1 15h10l1-15M10 10v7M14 10v7"/></symbol>
+      <symbol id="i-carpeta" viewBox="0 0 24 24"><path d="M3 6h7l2 2h9v11H3z"/></symbol>
       <symbol id="i-candado" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></symbol>
       <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
       <symbol id="i-mudo" viewBox="0 0 24 24"><path d="M4 9h4l5-4v14l-5-4H4z"/><path d="M16 9l5 6M21 9l-5 6"/></symbol>
@@ -116,7 +117,7 @@
     <nav class="iconos" aria-label="Íconos del escritorio">
       <button class="icono" type="button" data-abre="ventana-perfil"><svg aria-hidden="true"><use href="#i-perfil"/></svg><span>about_me.exe</span></button>
       <button class="icono" type="button" data-abre="ventana-msn"><svg aria-hidden="true"><use href="#i-msn"/></svg><span>escuchando ahora</span></button>
-      <button class="icono" type="button" data-aviso="música" data-icono="i-musica"><svg aria-hidden="true"><use href="#i-musica"/></svg><span>música</span></button>
+      <button class="icono" type="button" data-abre="ventana-musica"><svg aria-hidden="true"><use href="#i-musica"/></svg><span>música</span></button>
       <button class="icono" type="button" data-aviso="sobre_mí" data-icono="i-nota"><svg aria-hidden="true"><use href="#i-nota"/></svg><span>sobre_mí.txt</span></button>
       <button class="icono" type="button" data-aviso="galería" data-icono="i-fotos"><svg aria-hidden="true"><use href="#i-fotos"/></svg><span>galería</span></button>
       <button class="icono" type="button" data-aviso="gifs_randoms" data-icono="i-gif"><svg aria-hidden="true"><use href="#i-gif"/></svg><span>gifs randoms</span></button>
@@ -196,6 +197,64 @@
         <span>conectado</span>
         <span id="msn-fuente">spotify</span>
       </footer>
+    </section>
+
+    <!-- ---------- música: audio_lab.exe ----------
+         ENTER → D'LIRIA "hackea" el programa → carpetas.
+         Todo el contenido sale de datos.musica (datos.js). -->
+    <section class="ventana" id="ventana-musica" data-nombre="audio_lab.exe" data-icono="i-cd" aria-labelledby="titulo-musica" hidden>
+      <header class="ventana-barra">
+        <svg class="ventana-icono" aria-hidden="true"><use href="#i-cd"/></svg>
+        <h2 class="ventana-titulo" id="titulo-musica">audio_lab.exe — ★彡 VANZY AUDIO LAB 彡★</h2>
+        <div class="ventana-controles"></div>
+      </header>
+
+      <!-- Portada ENTER (estilo web de banda de la era Flash) -->
+      <div class="lab-splash" id="lab-splash">
+        <span class="cd-gira cd-grande" aria-hidden="true"></span>
+        <button class="boton-enter" id="lab-enter" type="button">ENTER</button>
+        <p>audio_lab.exe · best viewed at 1024×768</p>
+      </div>
+
+      <!-- El hackeo de D'LIRIA (homenaje a la campaña de Folie à Deux) -->
+      <div class="lab-hackeo" id="lab-hackeo" role="dialog" aria-labelledby="hackeo-titulo" hidden>
+        <p class="hackeo-alerta">⚠ ATENCIÓN: ESTA TRANSMISIÓN FUE INTERVENIDA ⚠</p>
+        <p class="hackeo-titulo" id="hackeo-titulo">D'LIRIA</p>
+        <p class="hackeo-linea" id="hackeo-linea" aria-live="polite"></p>
+        <div class="boletas" id="boletas"></div>
+        <p class="hackeo-firma" id="hackeo-firma"></p>
+        <button class="boton-entrar" id="lab-entrar" type="button">entrar al lab ▸</button>
+      </div>
+
+      <!-- Transporte: lo que "suena" en el estudio -->
+      <div class="lab-transporte">
+        <span class="cd-gira" aria-hidden="true"></span>
+        <div class="lcd">
+          <span class="lcd-rec">REC</span>
+          <div class="lcd-pista"><span id="lab-marquesina"></span></div>
+          <span class="lcd-tiempo" id="lab-tiempo">00:00</span>
+          <div class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+        </div>
+      </div>
+
+      <div class="lab-cuerpo">
+        <div class="carpetas" role="tablist" aria-label="Carpetas de música" id="lab-carpetas">
+          <button class="carpeta" type="button" role="tab" id="tab-actual" aria-controls="lab-actual" aria-selected="true"><svg aria-hidden="true"><use href="#i-carpeta"/></svg><span>banda_actual<small>D'LIRIA</small></span><span class="nuevo" aria-hidden="true">NEW!</span></button>
+          <button class="carpeta" type="button" role="tab" id="tab-muertas" aria-controls="lab-muertas" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-carpeta"/></svg><span>bandas_muertas<small>R.I.P</small></span></button>
+          <button class="carpeta" type="button" role="tab" id="tab-cds" aria-controls="lab-cds" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-carpeta"/></svg><span>mis_cds<small>colección</small></span></button>
+          <button class="carpeta" type="button" role="tab" id="tab-tocatas" aria-controls="lab-tocatas" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-carpeta"/></svg><span>tocatas<small>en vivo</small></span></button>
+          <button class="carpeta" type="button" role="tab" id="tab-favs" aria-controls="lab-favs" aria-selected="false" tabindex="-1"><svg aria-hidden="true"><use href="#i-carpeta"/></svg><span>favoritas<small>top 8</small></span></button>
+          <p class="carpetas-gif" aria-hidden="true"><span class="cd-gira cd-mediano"></span>now playing<br>en mi pieza ♡</p>
+        </div>
+
+        <div class="lab-panel" role="tabpanel" id="lab-actual" aria-labelledby="tab-actual"></div>
+        <div class="lab-panel" role="tabpanel" id="lab-muertas" aria-labelledby="tab-muertas" hidden></div>
+        <div class="lab-panel" role="tabpanel" id="lab-cds" aria-labelledby="tab-cds" hidden></div>
+        <div class="lab-panel" role="tabpanel" id="lab-tocatas" aria-labelledby="tab-tocatas" hidden></div>
+        <div class="lab-panel" role="tabpanel" id="lab-favs" aria-labelledby="tab-favs" hidden></div>
+      </div>
+
+      <div class="lab-pie" aria-hidden="true"><span>★彡 bienvenid@s al audio lab de vanzy 彡★ D'LIRIA está mezclando su primer disco ★ R.I.P Clouded &amp; Pollo Xs ★ sube el volumen ★彡</span></div>
     </section>
 
     <!-- ---------- winamp ---------- -->

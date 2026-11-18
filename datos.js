@@ -106,33 +106,167 @@ const datos = {
 
   /* ---------- SECRETOS (la papelera) ----------
      Cada archivo se desbloquea de una forma:
-       "konami"  -> código Konami: ↑ ↑ ↓ ↓ ← → ← → B A
-       "palabra" -> escribir la palabra secreta con el teclado
-       "sticker" -> encontrar el sticker escondido
-       ""        -> todavía bloqueado (próximamente)
+       "palabra" -> escribir la palabra secreta con el teclado (abre 3 archivos)
+       "konami"  -> código Konami: ↑ ↑ ↓ ↓ ← → ← → B A (abre memories)
+       "sticker" -> encontrar el sticker escondido (abre my_friends)
      ✎ Escribe tu contenido en "lineas" (una línea por cosa). */
   palabraSecreta: "descargado",
   secretos: [
     {
       archivo: "dreams.txt",
       titulo: "Dreams",
-      desbloqueo: "konami",
-      lineas: ["(escribe aquí tus sueños ♡)", "uno por línea, como una lista :3"],
+      desbloqueo: "palabra",
+      lineas: ["tocar por el mundo con mi banda", "viajar por el mundo", "(y otras cosas ñoñas que iré agregando)"],
     },
     {
       archivo: "bucket_list.txt",
       titulo: "Bucket list",
       desbloqueo: "palabra",
-      lineas: ["(cosas que quiero hacer antes de morir)", "[ ] completar todos los CDs de Fall Out Boy"],
+      lineas: ["[ ] sacar adelante la banda", "[ ] tirarme en paracaídas", "(se irá agregando)"],
     },
     {
       archivo: "things_ill_never_forget.txt",
       titulo: "Things I'll never forget",
-      desbloqueo: "sticker",
-      lineas: ["(momentos que nunca voy a olvidar)"],
+      desbloqueo: "palabra",
+      lineas: [
+        "Nunca olvidaré las cosas malas que hice, pero sé que hoy soy mejor, y eso es lo que importa.",
+        "Aprender a perdonar y a perdonarse es lo mejor que uno puede hacer.",
+      ],
     },
-    { archivo: "memories.txt", titulo: "Memories", desbloqueo: "", lineas: [] },
-    // Amigos solo con apodo (nunca nombres completos ni contactos)
-    { archivo: "my_friends.txt", titulo: "My friends", desbloqueo: "", lineas: [] },
+    {
+      // Recuerdos con foto, fecha y una historia corta.
+      // foto: "img/recuerdos/archivo.webp" (déjalo "" si no hay)
+      archivo: "memories",
+      titulo: "Memories",
+      desbloqueo: "konami",
+      recuerdos: [
+        { foto: "", fecha: "AAAA-MM-DD", historia: "✎ (escribe aquí un recuerdo)" },
+        { foto: "", fecha: "AAAA-MM-DD", historia: "✎ (escribe aquí otro recuerdo)" },
+        { foto: "", fecha: "AAAA-MM-DD", historia: "✎ (y otro más)" },
+      ],
+    },
+    {
+      // Amigos SOLO con apodo (nunca nombres completos ni contactos). La foto es opcional.
+      archivo: "my_friends",
+      titulo: "My friends",
+      desbloqueo: "sticker",
+      amigos: [
+        { apodo: "✎ apodo", linea: "(una línea sobre esta persona)", foto: "" },
+        { apodo: "✎ apodo", linea: "(una línea sobre esta persona)", foto: "" },
+        { apodo: "✎ apodo", linea: "(una línea sobre esta persona)", foto: "" },
+      ],
+    },
   ],
+
+  /* =========================================================
+     MÚSICA (audio_lab.exe)
+     ========================================================= */
+  musica: {
+    // Lo que "pasa" por la pantalla de arriba
+    marquesina: "★ pronto en Spotify y todas las plataformas ★ Vanzy en la batería ★",
+
+    /* ---------- BANDA ACTUAL ---------- */
+    bandaActual: {
+      nombre: "D'LIRIA",
+      foto: "img/musica/banda-actual.webp",
+      // ✎ Cuando tengan logo: "img/musica/logo-dliria.webp" (si está vacío se usa el nombre en letras)
+      logo: "",
+      rol: "batero ♥",
+      genero: "pop punk · emo · rock alternativo",
+      estado: "grabando el primer disco",
+      estampas: ["★ pronto en spotify ★", "100% emo", "♪ batero ♪"],
+      // Temas del primer disco: mezcla de 0 a 100. Cuando salgan, pega su link de Spotify.
+      temas: [
+        { nombre: "???", mezcla: 85, spotify: "" },
+        { nombre: "???", mezcla: 85, spotify: "" },
+        { nombre: "???", mezcla: 85, spotify: "" },
+      ],
+    },
+
+    /* ---------- EL HACKEO (entrada) ----------
+       Las boletas tocan los adelantos de audio/boleta-1.mp3, -2, -3 */
+    hackeo: {
+      frases: ["audio_lab.exe ahora nos pertenece.", "el primer disco viene.", "escucha las pistas. vota por tu favorita."],
+      firma: "— el primer disco viene. no le digas a nadie.",
+    },
+
+    /* ---------- BANDAS MUERTAS ---------- */
+    bandasMuertas: [
+      {
+        nombre: "Clouded",
+        rol: "bajista / coros",
+        periodo: "2022 – 2024",
+        genero: "indie rock / punk",
+        portada: "img/musica/clouded-reflejo.jpg",
+        cancion: "Reflejo",
+        spotify: "https://open.spotify.com/track/3F1sEJs9xCpQSuZpOVrYTf",
+        nota: "Clouded fue una buena banda. La recuerdo con mucho cariño y me dejó muy buenos amigos :3",
+      },
+      {
+        nombre: "Pollo Xs",
+        rol: "bajo / voz",
+        periodo: "2024",
+        genero: "alternative",
+        portada: "img/musica/pollo-xs-satanas.jpg",
+        cancion: "SATANÁS DUERME BAJO MI CAMA",
+        spotify: "https://open.spotify.com/track/0GUpzTvN43wzXspUdzytbF",
+        nota: "Terminó mal, así que nos quedamos con sus canciones y las tocamos con las letras cambiadas. Venganza musical.",
+      },
+    ],
+
+    /* ---------- MIS CDS ----------
+       tengo: true = lo tengo · fav: true = mi favorito
+       color: colores de la cajita (no son las portadas reales) */
+    coleccion: [
+      {
+        banda: "Fall Out Boy",
+        destacada: true, // bloque en negro y rojo
+        nota: "mi disco favorito… y no lo tengo en CD. lo descargué entero jaja",
+        discos: [
+          { titulo: "Take This to Your Grave", anio: 2003, tengo: false },
+          { titulo: "From Under the Cork Tree", anio: 2005, tengo: true, color: "#b9895a, #5a3a22" },
+          { titulo: "Infinity on High", anio: 2007, tengo: true, color: "#e8e8e8, #2a2a2a" },
+          { titulo: "Folie à Deux", anio: 2008, tengo: false, fav: true },
+          { titulo: "Believers Never Die", anio: 2009, tengo: true, color: "#ff3b3b, #5a0010", extra: "greatest hits" },
+          { titulo: "Save Rock and Roll", anio: 2013, tengo: false },
+          { titulo: "American Beauty / American Psycho", anio: 2015, tengo: false },
+          { titulo: "Mania", anio: 2018, tengo: false },
+          { titulo: "Believers Never Die Vol. 2", anio: 2019, tengo: false },
+          { titulo: "So Much (for) Stardust", anio: 2023, tengo: false },
+        ],
+      },
+      {
+        banda: "Paramore",
+        discos: [
+          { titulo: "All We Know Is Falling", anio: 2005, tengo: true, color: "#7a8fa6, #1f2a38" },
+          { titulo: "Riot!", anio: 2007, tengo: true, color: "#ff9a3b, #7a1d00" },
+          { titulo: "Brand New Eyes", anio: 2009, tengo: true, color: "#ffd6a8, #7a3b1d", fav: true },
+          { titulo: "Paramore", anio: 2013, tengo: true, color: "#ff5fa8, #3b1d7a" },
+          { titulo: "After Laughter", anio: 2017, tengo: true, color: "#ffc0e0, #7ad6ff" },
+          { titulo: "This Is Why", anio: 2023, tengo: true, color: "#ffe14d, #222222" },
+        ],
+      },
+    ],
+
+    /* ---------- TOCATAS ---------- */
+    tocatas: [
+      { foto: "img/musica/tocata-crearock.webp", texto: "CREAROCK — live" },
+      { foto: "img/musica/tocata-rbx.webp", texto: "RBX — caos" },
+      { foto: "img/musica/tocata-batuta.webp", texto: "BATUTA — 2023" },
+    ],
+
+    /* ---------- FAVORITAS: TOP 8 + MENCIONES HONROSAS ----------
+       ✎ disco: tu disco favorito · porque: una línea */
+    top8: [
+      { banda: "Fall Out Boy", disco: "Folie à Deux", porque: "Fue el primer disco que descargué entero y lo escuché mil veces, en especial en paseos fuera de Santiago." },
+      { banda: "Paramore", disco: "Brand New Eyes", porque: "Tiene muchas canciones que me recuerdan buenos momentos y amores del pasado que aún recuerdo con cariño." },
+      { banda: "Deftones", disco: "", porque: "" },
+      { banda: "Linkin Park", disco: "", porque: "" },
+      { banda: "Incubus", disco: "", porque: "" },
+      { banda: "Basement", disco: "", porque: "" },
+      { banda: "Blink-182", disco: "", porque: "" },
+      { banda: "Pierce The Veil", disco: "", porque: "" },
+    ],
+    menciones: ["The Cure", "Gustavo Cerati", "Soda Stereo"],
+  },
 };

@@ -839,6 +839,7 @@ function prepararStickers() {
 
 const CODIGO_KONAMI = ["arrowup", "arrowup", "arrowdown", "arrowdown", "arrowleft", "arrowright", "arrowleft", "arrowright", "b", "a"];
 const PISTAS = { konami: "↑↑↓↓←→←→BA", palabra: "escribe algo…", sticker: "busca bien ♡", "": "próximamente" };
+// (los secretos sin desbloqueo quedan como "próximamente")
 
 function prepararSecretos(d) {
   const secretos = d.secretos || [];
@@ -867,28 +868,48 @@ function prepararSecretos(d) {
     poner("papelera-cuenta", `${cuenta} de ${secretos.length} descubiertos`);
   };
 
+  // Tarjetita con foto (o espacio para foto) para memories y my_friends
+  const tarjeta = (foto, arriba, texto) =>
+    crear(
+      "li",
+      { class: "tarjeta-secreto" },
+      foto
+        ? crear("img", { src: foto, alt: "", loading: "lazy", width: 120, height: 120 })
+        : crear("span", { class: "foto-vacia", "aria-hidden": "true" }, "foto"),
+      crear("span", {}, crear("b", {}, arriba), texto)
+    );
+
   const verSecreto = (secreto) => {
     const visor = document.getElementById("ventana-secreto");
     visor.dataset.nombre = secreto.archivo;
     poner("titulo-secreto", `${secreto.archivo} — ${secreto.titulo}`);
-    poner("secreto-lineas", (secreto.lineas || []).map((linea) => crear("li", {}, linea)));
+    const lista = document.getElementById("secreto-lineas");
+    lista.classList.toggle("tarjetas", Boolean(secreto.recuerdos || secreto.amigos));
+    if (secreto.recuerdos) {
+      poner("secreto-lineas", secreto.recuerdos.map((r) => tarjeta(r.foto, r.fecha, r.historia)));
+    } else if (secreto.amigos) {
+      poner("secreto-lineas", secreto.amigos.map((a) => tarjeta(a.foto, a.apodo, a.linea)));
+    } else {
+      poner("secreto-lineas", (secreto.lineas || []).map((linea) => crear("li", {}, linea)));
+    }
     abrir(visor);
   };
 
-  // Desbloquea el secreto que corresponde a un método
+  // Desbloquea TODOS los secretos de un método y abre el primero
   const desbloquear = (metodo) => {
-    const secreto = secretos.find((s) => s.desbloqueo === metodo);
-    if (!secreto) return;
-    const nuevo = !descubiertos.has(secreto.archivo);
-    descubiertos.add(secreto.archivo);
+    const delMetodo = secretos.filter((s) => s.desbloqueo === metodo);
+    if (!delMetodo.length) return;
+    const nuevos = delMetodo.filter((s) => !descubiertos.has(s.archivo));
+    delMetodo.forEach((s) => descubiertos.add(s.archivo));
     memoria.guardar("vanzy-secretos", [...descubiertos]);
     pintarPapelera();
-    if (nuevo) {
+    if (nuevos.length) {
       reproducir("secreto");
       if (!movimientoReducido.matches) reiniciarClase(document.body, "revelando", 700);
-      mostrarGlobo(`desbloqueaste ${secreto.archivo}!! ✦`);
+      const nombres = nuevos.map((s) => s.archivo).join(", ");
+      mostrarGlobo(`desbloqueaste ${nombres}!! ✦`);
     }
-    verSecreto(secreto);
+    verSecreto(delMetodo[0]);
   };
 
   // Teclado: Konami y palabra secreta (no cuenta si escribes en un campo)
@@ -918,6 +939,340 @@ function prepararSecretos(d) {
   document.getElementById("sticker-escondido").addEventListener("click", () => desbloquear("sticker"));
 
   pintarPapelera();
+}
+
+/* ---------- 11b. MÚSICA: audio_lab.exe ----------
+   ENTER → D'LIRIA "hackea" el programa (una vez por visita) → carpetas.
+   Todo sale de datos.musica. */
+
+// Brillitos decorativos en posiciones fijas (titilan con CSS)
+function brillos(posiciones) {
+  return posiciones.map(([arriba, lado, valor, tipo = "", retraso = 0]) =>
+    crear("span", {
+      class: `brillo ${tipo}`.trim(),
+      "aria-hidden": "true",
+      style: `top:${arriba};${lado}:${valor};animation-delay:${retraso}s`,
+    })
+  );
+}
+
+const insignia = (texto, estilo) => crear("span", { class: "insignia", "aria-hidden": "true", style: estilo }, crear("span", {}, texto));
+const ruta = (carpeta) => crear("p", { class: "ruta" }, "C:\\VANZY\\música\\", crear("b", {}, carpeta));
+
+function prepararMusica(m) {
+  const ventana = document.getElementById("ventana-musica");
+  if (!ventana || !m) return;
+  const banda = m.bandaActual || {};
+  const temas = banda.temas || [];
+
+  /* ---- Reproductor de las boletas (un audio a la vez) ---- */
+  let audioBoleta = null;
+  const pararBoleta = () => {
+    if (audioBoleta) audioBoleta.pause();
+    audioBoleta = null;
+  };
+  const tocarBoleta = (n) => {
+    pararBoleta();
+    if (silenciado) return;
+    audioBoleta = new Audio(`audio/boleta-${n}.mp3`);
+    audioBoleta.volume = 0.7;
+    audioBoleta.play().catch(() => {});
+  };
+
+  /* ---- banda_actual ---- */
+  const pista = (tema, i) =>
+    crear(
+      "li",
+      { class: "pista" },
+      crear("span", { class: "pista-num" }, String(i + 1).padStart(2, "0")),
+      crear("span", { class: "pista-nombre" }, tema.nombre || "???"),
+      crear("span", { class: "onda", "aria-hidden": "true" }, Array.from({ length: 30 }, () => crear("i"))),
+      tema.spotify
+        ? crear("a", { class: "pista-escuchar", href: tema.spotify, target: "_blank", rel: "noopener noreferrer" }, "▶ escuchar")
+        : crear(
+            "span",
+            { class: "progreso", style: `--p:${Math.max(0, Math.min(100, tema.mezcla || 0))}%`, role: "img", "aria-label": `mezclando ${tema.mezcla || 0}%` },
+            crear("i"),
+            crear("b", {}, `mezclando ${tema.mezcla || 0}%`)
+          )
+    );
+
+  poner("lab-actual", [
+    ...brillos([["20px", "left", "46%", "f"], ["60px", "right", "40px", "c chico", -0.5], ["300px", "right", "120px", "c", -0.8], ["140px", "right", "200px", "f chico", -1.2]]),
+    insignia("HOT!", "top:150px;right:26px"),
+    ruta("banda_actual"),
+    crear(
+      "div",
+      { class: "actual" },
+      crear(
+        "div",
+        { class: "marco-neon" },
+        crear("img", { src: banda.foto, alt: `${banda.nombre}, la banda`, width: 600, height: 760 }),
+        crear("span", { class: "rec" }, "REC")
+      ),
+      crear(
+        "div",
+        { class: "actual-info" },
+        banda.logo
+          ? crear("img", { class: "logo-banda", src: banda.logo, alt: banda.nombre })
+          : crear("h3", { class: "nombre-banda glitter" }, banda.nombre),
+        crear("span", { class: "llamas", "aria-hidden": "true" }, Array.from({ length: 20 }, () => crear("i"))),
+        crear(
+          "dl",
+          { class: "ficha" },
+          crear("dt", {}, "rol:"), crear("dd", {}, banda.rol),
+          crear("dt", {}, "género:"), crear("dd", {}, banda.genero),
+          crear("dt", {}, "estado:"), crear("dd", {}, crear("span", { class: "parpadea", "aria-hidden": "true" }, "● "), banda.estado)
+        ),
+        crear("p", { class: "estampas" }, (banda.estampas || []).map((e, i) => crear("span", { class: `estampa estampa-${i % 3}` }, e))),
+        banda.logo ? null : crear("p", { class: "marcado" }, "✎ aquí va el logo de D'LIRIA cuando lo tengan")
+      ),
+      crear(
+        "div",
+        { class: "sesion" },
+        crear("h3", {}, crear("span", { class: "glitter" }, "sesión de grabación"), " ", crear("span", { class: "estampa estampa-2" }, "próximos lanzamientos")),
+        crear("ol", { class: "pistas" }, temas.map(pista))
+      )
+    ),
+  ]);
+
+  /* ---- bandas_muertas: CDs que salen de la caja ---- */
+  poner("lab-muertas", [
+    ...brillos([["40px", "left", "46%"], ["300px", "right", "30px", "f", -0.7], ["90px", "right", "60px", "c chico", -1.1]]),
+    crear("p", { class: "ruta" }, "C:\\VANZY\\música\\", crear("b", {}, "bandas_muertas"), " — ", crear("span", { class: "glitter" }, "en el cielo del rock")),
+    crear(
+      "div",
+      { class: "cds" },
+      (m.bandasMuertas || []).map((b) => {
+        const zona = crear("div", { class: "reproductor" }, "▶ toca el CD para escuchar \"", b.cancion, "\"");
+        const cd = crear(
+          "button",
+          { class: "cd-caja", type: "button", "aria-expanded": "false", "aria-label": `${b.nombre}: escuchar "${b.cancion}"` },
+          crear("span", { class: "disco", "aria-hidden": "true" }),
+          crear("span", { class: "caja" }, crear("span", { class: "lomo" }), crear("img", { src: b.portada, alt: "", width: 300, height: 300, loading: "lazy" }), crear("span", { class: "rip" }, "R.I.P")),
+          crear("span", { class: "vela", "aria-hidden": "true" })
+        );
+        cd.addEventListener("click", () => {
+          const abierto = cd.getAttribute("aria-expanded") !== "true";
+          cd.setAttribute("aria-expanded", String(abierto));
+          const src = embedSpotify(b.spotify);
+          if (abierto && src && !zona.querySelector("iframe")) {
+            zona.classList.add("cargado");
+            zona.replaceChildren(crear("iframe", { src, title: `${b.nombre} — ${b.cancion}`, height: 80, loading: "lazy", allow: "autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" }));
+          }
+        });
+        return crear(
+          "article",
+          { class: "cd" },
+          cd,
+          crear("h3", { class: "glitter" }, b.nombre),
+          crear("p", { class: "cd-meta" }, crear("b", {}, b.rol), ` · ${b.periodo} · ${b.genero}`),
+          crear("p", { class: "nota-papel" }, b.nota),
+          zona
+        );
+      })
+    ),
+  ]);
+
+  /* ---- mis_cds: la repisa ---- */
+  const caja = (disco) => {
+    const clases = ["caja-cd", disco.tengo ? "tengo" : "falta", disco.fav ? "favorito" : ""].join(" ").trim();
+    const estilo = disco.tengo && disco.color ? `--portada:linear-gradient(160deg, ${disco.color})` : null;
+    return crear(
+      "li",
+      { class: clases, style: estilo },
+      disco.tengo ? null : crear("em", {}, disco.fav ? "me falta :(" : "me falta"),
+      crear("span", {}, disco.titulo, crear("small", {}, `${disco.extra || disco.anio}${disco.fav ? " ♡" : ""}`)),
+      crear("span", { class: "solo-lector" }, disco.tengo ? " (lo tengo)" : " (me falta)")
+    );
+  };
+  poner("lab-cds", [
+    ...brillos([["24px", "right", "60px", "f"], ["330px", "right", "30px", "c chico", -0.7]]),
+    ruta("mis_cds"),
+    ...(m.coleccion || []).map((grupo) => {
+      const tengo = grupo.discos.filter((d) => d.tengo).length;
+      const total = grupo.discos.length;
+      const porcentaje = Math.round((tengo / total) * 100);
+      const completa = tengo === total;
+      return crear(
+        "section",
+        { class: `estante${grupo.destacada ? " estante-rojo" : ""}` },
+        crear("h3", {}, crear("span", { class: "glitter" }, grupo.banda), completa ? insignia("COMPLETA!", "position:relative;width:104px;height:104px") : null),
+        crear(
+          "p",
+          { class: "contador" },
+          `${tengo} / ${total} `,
+          crear("span", { class: "progreso", style: `--p:${porcentaje}%`, "aria-hidden": "true" }, crear("i"), crear("b", {}, completa ? "100% ♡" : `cazando CDs… ${porcentaje}%`))
+        ),
+        crear("ul", { class: "repisa" }, grupo.discos.map(caja)),
+        grupo.nota ? crear("p", { class: "nota-papel nota-fav" }, "♡ ", grupo.nota) : null
+      );
+    }),
+  ]);
+
+  /* ---- tocatas: polaroids (tocar = agrandar) ---- */
+  poner("lab-tocatas", [
+    insignia("LIVE!", "top:20px;right:30px"),
+    ...brillos([["200px", "left", "20px", "f"], ["420px", "right", "60px", "c", -0.6]]),
+    ruta("tocatas"),
+    crear(
+      "ul",
+      { class: "polaroids" },
+      (m.tocatas || []).map((t) => {
+        const foto = crear("button", { class: "polaroid", type: "button", "aria-pressed": "false" }, crear("img", { src: t.foto, alt: t.texto, loading: "lazy", width: 600, height: 600 }), crear("span", {}, t.texto));
+        foto.addEventListener("click", () => foto.setAttribute("aria-pressed", String(foto.getAttribute("aria-pressed") !== "true")));
+        return crear("li", {}, foto);
+      })
+    ),
+    crear("p", { class: "marcado" }, "✎ aquí van más fotos: tu batería, la pedalera, ensayos…"),
+  ]);
+
+  /* ---- favoritas: banners de banda tipo MySpace ---- */
+  poner("lab-favs", [
+    ...brillos([["30px", "right", "80px", "f"], ["260px", "right", "40px", "c", -0.9]]),
+    insignia("TOP 8", "top:2px;left:250px"),
+    ruta("favoritas"),
+    crear(
+      "ol",
+      { class: "banners" },
+      (m.top8 || []).map((b, i) =>
+        crear(
+          "li",
+          { class: `banner banner-${i % 4}` },
+          crear("span", { class: "banner-num" }, String(i + 1).padStart(2, "0")),
+          crear("span", { class: "banner-nombre" }, b.banda),
+          crear(
+            "span",
+            { class: "banner-texto" },
+            crear("b", {}, b.disco ? `♡ ${b.disco}` : "✎ disco favorito: ???"),
+            b.porque || "✎ (por qué)"
+          )
+        )
+      )
+    ),
+    crear("h3", { class: "menciones-titulo" }, crear("span", { class: "glitter" }, "menciones honrosas")),
+    crear("ul", { class: "menciones" }, (m.menciones || []).map((n) => crear("li", {}, n))),
+  ]);
+
+  /* ---- Pestañas (carpetas), con flechas del teclado ---- */
+  const carpetas = [...document.querySelectorAll("#lab-carpetas .carpeta")];
+  const elegir = (elegida) => {
+    carpetas.forEach((c) => {
+      const activa = c === elegida;
+      c.setAttribute("aria-selected", String(activa));
+      c.tabIndex = activa ? 0 : -1;
+      document.getElementById(c.getAttribute("aria-controls")).hidden = !activa;
+    });
+  };
+  carpetas.forEach((c, i) => {
+    c.addEventListener("click", () => elegir(c));
+    c.addEventListener("keydown", (evento) => {
+      const paso = { ArrowDown: 1, ArrowRight: 1, ArrowUp: -1, ArrowLeft: -1 }[evento.key];
+      if (!paso) return;
+      evento.preventDefault();
+      const siguiente = carpetas[(i + paso + carpetas.length) % carpetas.length];
+      elegir(siguiente);
+      siguiente.focus();
+    });
+  });
+
+  /* ---- Transporte: marquesina + reloj que corre ---- */
+  const primero = temas[0] || {};
+  poner("lab-marquesina", `${banda.nombre} — tema ${primero.nombre || "???"} [mezclando ${primero.mezcla || 0}%] ${m.marquesina || ""}`);
+  let segundos = 0;
+  setInterval(() => {
+    if (ventana.dataset.estado !== "abierta" || document.hidden) return;
+    segundos += 1;
+    poner("lab-tiempo", `${String(Math.floor(segundos / 60)).padStart(2, "0")}:${String(segundos % 60).padStart(2, "0")}`);
+  }, 1000);
+
+  /* ---- ENTER + HACKEO ---- */
+  const splash = document.getElementById("lab-splash");
+  const hackeo = document.getElementById("lab-hackeo");
+  const linea = document.getElementById("hackeo-linea");
+  const frases = m.hackeo?.frases || [];
+  poner("hackeo-firma", m.hackeo?.firma);
+  let turno = 0;
+
+  poner(
+    "boletas",
+    temas.map((tema, i) => {
+      const boleta = crear(
+        "button",
+        { class: "boleta", type: "button", "aria-pressed": "false", style: `--r:${[-3, 2, -1][i % 3]}deg` },
+        crear("b", {}, `boleta #${String(i + 1).padStart(2, "0")}`),
+        crear("span", { class: "casilla", "aria-hidden": "true" }),
+        `tema ${tema.nombre || "???"} ▶`
+      );
+      boleta.addEventListener("click", () => {
+        boleta.setAttribute("aria-pressed", "true");
+        boleta.classList.add("votada");
+        tocarBoleta(i + 1);
+      });
+      return boleta;
+    })
+  );
+
+  const escribir = async (miTurno) => {
+    for (const frase of frases) {
+      linea.textContent = "";
+      for (const letra of frase) {
+        if (miTurno !== turno) return;
+        linea.textContent += letra;
+        await new Promise((listo) => setTimeout(listo, 38));
+      }
+      await new Promise((listo) => setTimeout(listo, 700));
+    }
+  };
+
+  const mostrarHackeo = () => {
+    hackeo.hidden = false;
+    hackeo.querySelector(".boleta")?.focus({ preventScroll: true });
+    if (movimientoReducido.matches) linea.textContent = frases.join(" ");
+    else escribir(++turno);
+  };
+
+  const entrarAlLab = () => {
+    turno += 1;
+    pararBoleta();
+    hackeo.hidden = true;
+    try {
+      sessionStorage.setItem("vanzy-lab-visto", "1");
+    } catch {
+      /* sin memoria: se verá otra vez */
+    }
+    carpetas.find((c) => c.getAttribute("aria-selected") === "true")?.focus({ preventScroll: true });
+  };
+
+  document.getElementById("lab-enter").addEventListener("click", () => {
+    splash.hidden = true;
+    if (movimientoReducido.matches) return mostrarHackeo();
+    setTimeout(() => ventana.classList.add("hackeando"), 700);
+    setTimeout(() => {
+      ventana.classList.remove("hackeando");
+      reproducir("secreto");
+      mostrarHackeo();
+    }, 1900);
+  });
+  document.getElementById("lab-entrar").addEventListener("click", entrarAlLab);
+
+  // Al abrir: la primera vez de la visita sale ENTER; después, directo a las carpetas
+  ventana.addEventListener("abierta", () => {
+    let visto = false;
+    try {
+      visto = Boolean(sessionStorage.getItem("vanzy-lab-visto"));
+    } catch {
+      /* sin memoria */
+    }
+    splash.hidden = visto;
+    hackeo.hidden = true;
+    if (!visto) document.getElementById("lab-enter").focus({ preventScroll: true });
+  });
+
+  // Si se cierra o minimiza la ventana, se corta el audio
+  new MutationObserver(() => {
+    if (ventana.dataset.estado !== "abierta") pararBoleta();
+  }).observe(ventana, { attributes: true, attributeFilter: ["data-estado"] });
 }
 
 /* ---------- 12. CAOS 2006: ESTELA DEL CURSOR Y GLITCHES ---------- */
@@ -1153,6 +1508,7 @@ document.addEventListener("DOMContentLoaded", () => {
     prepararWinamp(datos);
     prepararMsn(datos);
     prepararSecretos(datos);
+    prepararMusica(datos.musica);
   }
   pintarBlinkies();
   activarPestanas();
