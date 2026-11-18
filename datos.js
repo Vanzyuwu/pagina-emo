@@ -27,7 +27,7 @@ const datos = {
 
   // ✎ QUOTE FAVORITO: escribe aquí tu línea de "Hum Hallelujah" (Fall Out Boy).
   // Mientras esté vacío, se muestra un espacio marcado.
-  quote: "",
+  quote: "I could write it better than you ever felt it",
   quoteAutor: "Fall Out Boy — Hum Hallelujah",
 
   // Cositas sobre mí: una por línea

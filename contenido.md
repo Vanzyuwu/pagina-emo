@@ -38,16 +38,27 @@ Colecciono CDs de bandas que me gustan; ahora estoy buscando todos los de Fall O
 
 ## Quote favorito
 
-> ✎ _(aquí va tu línea de "Hum Hallelujah" — Fall Out Boy)_
-> Cuando la tengas, pégala también en `datos.js` → `quote`.
+> "I could write it better than you ever felt it"
+> — Fall Out Boy, *Hum Hallelujah* (en `datos.js` → `quote`)
 
 ## Blinkies
 
 Se editan en `script.js` (lista `BLINKIES`, arriba del todo):
 
-- nitanhardcorito
-- callao
-- _(más por agregar)_
+Hechos a mano en código (máximo 12). Además de estos 10, van **deftones / white pony** (gris perla con brillo que pasa y caballitos blancos) y **basement** (verde agua desteñido, casetes y letras en ola), después de Linkin Park:
+
+1. nitanhardcorito — rosado, corazones que laten
+2. callao — celeste, diamantes que titilan
+3. fall out boy / folie à deux — vino y crema, vinilos girando
+4. paramore / brand new eyes — atardecer naranjo, ojos que parpadean
+5. Pierce The Veil — negro gótico, calaveritas
+6. LINKIN PARK — gris con glitch
+7. blink-182 — caritas, colores que cambian
+8. depression sucks — azul con lluvia y florcita
+9. GAME OVER / INSERT COIN — pixel rojo que alterna
+10. is there a full moon? — luna cambiando de fase
+
+Afuera por ahora (para reemplazar alguno): Minecraft, Completely nuts.
 
 ## Secretos (papelera)
 

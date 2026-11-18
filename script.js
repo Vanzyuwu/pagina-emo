@@ -23,11 +23,28 @@
    ========================================================= */
 
 /* ---------- 1. BLINKIES (edítalos aquí) ----------
-   texto: lo que dice · color: "fucsia", "cyan" o "morado" */
+   Hechos a mano en código (máximo 12). Cada uno:
+     estilo: el diseño (ver ".bk-..." en estilos.css)
+     texto:  lo que dice
+     icono:  iconito pixel a los lados (bk-corazon, bk-diamante, bk-calavera,
+             bk-vinilo, bk-ojo, bk-carita, bk-flor, o "luna") — opcional
+     doble:  true = el icono va a ambos lados
+     ola:    true = las letras se mueven como ola
+   El orden de la lista es el orden en que aparecen. */
 const BLINKIES = [
-  { texto: "♥ nitanhardcorito ♥", color: "fucsia" },
-  { texto: "✦ callao ✦", color: "cyan" },
-  // { texto: "otro blinkie", color: "morado" },
+  { estilo: "nitan", texto: "nitanhardcorito", icono: "bk-corazon", doble: true },
+  { estilo: "callao", texto: "callao", icono: "bk-diamante", doble: true },
+  // "\n" parte el texto en dos líneas
+  { estilo: "fob", texto: "fall out boy\nfolie à deux", icono: "bk-vinilo", doble: true },
+  { estilo: "paramore", texto: "paramore\nbrand new eyes", icono: "bk-ojo", doble: true },
+  { estilo: "ptv", texto: "Pierce The Veil", icono: "bk-calavera", doble: true },
+  { estilo: "lp", texto: "LINKIN PARK" },
+  { estilo: "deftones", texto: "deftones\nwhite pony", icono: "bk-caballo", doble: true },
+  { estilo: "basement", texto: "basement", icono: "bk-casete", doble: true, ola: true },
+  { estilo: "blink", texto: "blink-182", icono: "bk-carita", doble: true },
+  { estilo: "depre", texto: "depression sucks", icono: "bk-flor" },
+  { estilo: "gameover", texto: "GAME OVER" },
+  { estilo: "luna", texto: "is there a full moon?", icono: "luna" },
 ];
 
 /* ---------- 2. AYUDANTES ---------- */
@@ -132,7 +149,20 @@ function pintarPerfil(d) {
 function pintarBlinkies() {
   poner(
     "blinkies",
-    BLINKIES.map((b) => crear("li", { class: `blinkie blinkie-${b.color || "fucsia"}` }, b.texto))
+    BLINKIES.slice(0, 12).map((b) => {
+      const dibujo = () => (b.icono === "luna" ? crear("span", { class: "luna", "aria-hidden": "true" }) : b.icono ? icono(b.icono) : null);
+      return crear(
+        "li",
+        { class: `bk bk-${b.estilo}` },
+        dibujo(),
+        b.texto.includes("\n")
+          ? crear("span", { class: "bk-texto bk-dos" }, b.texto.split("\n").map((linea) => crear("span", {}, linea)))
+          : b.ola
+            ? crear("span", { class: "bk-texto bk-ola", "aria-label": b.texto }, [...b.texto].map((letra, i) => crear("span", { "aria-hidden": "true", style: `--i:${i}` }, letra)))
+            : crear("span", { class: "bk-texto" }, b.texto),
+        b.doble ? dibujo() : null
+      );
+    })
   );
 }
 
