@@ -119,7 +119,7 @@
       <p class="celu-fecha"><span id="celu-fecha"></span> · <span id="celu-mood"></span></p>
       <button class="celu-widget" type="button" data-abre="ventana-msn">
         <svg aria-hidden="true"><use href="#i-cd"/></svg>
-        <span><b>♪ escuchando ahora</b><span id="celu-escuchando"></span></span>
+        <span><b>♪ mi playlist</b><span id="celu-escuchando">toca para escucharla en Spotify</span></span>
       </button>
     </div>
 
@@ -188,16 +188,12 @@
           <img src="img/avatar.webp" alt="" width="400" height="368">
           <div>
             <p class="contacto-nombre"><span class="punto" aria-hidden="true">●</span> Vanzy <small>(en línea)</small></p>
-            <p class="contacto-cancion">♪ <span id="msn-escuchando"></span></p>
+            <!-- Solo aparece si conectas Last.fm en datos.js (canción en vivo) -->
+            <p class="contacto-cancion" id="msn-cancion" hidden>♪ <span id="msn-escuchando"></span></p>
           </div>
         </div>
-        <!-- El embed de Spotify se carga recién cuando aprietan "escuchar" -->
-        <div class="spotify" id="spotify">
-          <div>
-            <button class="spotify-cargar" id="spotify-cargar" type="button">▶ escuchar mi playlist</button>
-            <small>se abre el reproductor de Spotify</small>
-          </div>
-        </div>
+        <!-- Reproductor de mi playlist de Spotify (se carga apenas se abre la ventana) -->
+        <div class="spotify" id="spotify"></div>
         <div class="chat" id="chat" aria-live="polite">
           <p><b>Vanzy dice:</b> <span id="msn-estado"></span></p>
         </div>

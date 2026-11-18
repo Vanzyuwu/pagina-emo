@@ -127,7 +127,6 @@ function pintarPerfil(d) {
   poner("perfil-saludo", d.saludo);
   poner("perfil-bio", (d.bio || []).map((parrafo) => crear("p", {}, parrafo)));
   ["estado-mood", "bandeja-mood", "celu-mood"].forEach((id) => poner(id, d.mood));
-  ["msn-escuchando", "celu-escuchando"].forEach((id) => poner(id, d.escuchando));
   poner("msn-estado", d.estadoMsn);
 
   // Quote: si está vacío, queda el espacio marcado para escribirlo
@@ -558,7 +557,7 @@ function prepararWinamp(d) {
   const winamp = document.querySelector(".winamp");
   const tiempo = document.getElementById("lcd-tiempo");
   const texto = document.getElementById("lcd-texto");
-  const pistas = [d.escuchando, ...(d.winamp || [])].filter(Boolean);
+  const pistas = (d.winamp || []).filter(Boolean);
   let pista = 0;
   let segundos = 0;
   let intervalo = null;
@@ -631,8 +630,9 @@ function prepararMsn(d) {
     return escucharLastfm(d.lastfm);
   }
 
-  // El reproductor se carga recién cuando lo piden (no antes: ahorra datos)
-  document.getElementById("spotify-cargar").addEventListener("click", () => {
+  // El reproductor aparece apenas se abre la ventana (una sola vez)
+  document.getElementById("ventana-msn").addEventListener("abierta", () => {
+    if (caja.querySelector("iframe")) return;
     caja.replaceChildren(
       crear("iframe", {
         src,
@@ -643,7 +643,6 @@ function prepararMsn(d) {
       })
     );
     caja.classList.add("cargado");
-    caja.querySelector("iframe").focus();
   });
 
   escucharLastfm(d.lastfm);
@@ -668,9 +667,10 @@ function escucharLastfm(config) {
       const enVivo = tema["@attr"]?.nowplaying === "true";
       const texto = `${tema.name} — ${tema.artist?.["#text"] || ""}`;
       ["msn-escuchando", "celu-escuchando"].forEach((id) => poner(id, texto));
+      document.getElementById("msn-cancion").hidden = false;
       poner("msn-fuente", enVivo ? "● en vivo desde last.fm" : "último tema en last.fm");
     } catch {
-      /* sin internet o key mala: se queda el texto de datos.js */
+      /* sin internet o key mala: no se muestra ninguna canción */
     }
   };
 

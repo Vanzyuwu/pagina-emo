@@ -14,7 +14,6 @@ const datos = {
   // Fecha de la última vez que cambiaste algo (año-mes-día)
   actualizado: "2026-11-17",
   mood: "feliz y con sueño :3",
-  escuchando: "Faster — Manic Street Preachers",
 
   /* ---------- ABOUT ME ---------- */
   avatar: "img/avatar.webp",
@@ -43,7 +42,7 @@ const datos = {
     "Soul Reaver siempre.",
   ],
 
-  // Canciones que pasan por el winamp (la primera siempre es "escuchando")
+  // Canciones que pasan por el winamp
   winamp: [
     "Red Flag — Billy Talent",
     "Devil in a Midnight Mass — Billy Talent",
