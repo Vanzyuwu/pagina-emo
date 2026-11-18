@@ -739,12 +739,32 @@ function mostrarGlobo(texto) {
 const ESPERA_ZUMBIDO = 3000;
 let ultimoZumbido = 0;
 
+// Le avisa a Vanzy por ntfy (le llega una notificación al celu).
+// Máximo una vez cada 30 s por persona, para que no le llenen el celu.
+const ESPERA_AVISO = 30000;
+function avisarAlCelu() {
+  const tema = typeof datos !== "undefined" ? datos.zumbidoNtfy : "";
+  if (!tema) return;
+  const ultimo = Number(memoria.leer("vanzy-ultimo-aviso")) || 0;
+  if (Date.now() - ultimo < ESPERA_AVISO) return;
+  memoria.guardar("vanzy-ultimo-aviso", Date.now());
+  // Petición simple (sin cabeceras especiales) para que el navegador no la bloquee
+  // priority=high: en la app vibra y aparece arriba de la pantalla
+  fetch(`https://ntfy.sh/${encodeURIComponent(tema)}?title=${encodeURIComponent("VANZY.EXE")}&tags=zap&priority=high`, {
+    method: "POST",
+    body: "¡Alguien te mandó un zumbido desde tu página! :3",
+  }).catch(() => {
+    /* sin internet: el zumbido igual se ve en la página */
+  });
+}
+
 function zumbido() {
   const ahora = Date.now();
   if (ahora - ultimoZumbido < ESPERA_ZUMBIDO) return;
   ultimoZumbido = ahora;
 
   reproducir("zumbido");
+  avisarAlCelu();
 
   if (movimientoReducido.matches) {
     const activa = document.querySelector(".ventana.activa") || escritorio;

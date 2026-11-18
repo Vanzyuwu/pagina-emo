@@ -57,6 +57,11 @@ const datos = {
   // Estado MSN (lo que sale bajo tu nombre)
   estadoMsn: "mándame un zumbido si te aburres :3",
 
+  // Zumbidos al celu (ntfy, gratis): en la app ntfy suscríbete a este nombre.
+  // Cada vez que alguien te manda un zumbido, te llega una notificación.
+  // Déjalo "" para apagarlo.
+  zumbidoNtfy: "vanzy-zumbido-907579d0",
+
   // Last.fm (para más adelante): con tu usuario y una API key, la ventana
   // muestra la canción que estás escuchando EN VIVO en vez de "escuchando".
   // La key de Last.fm es de solo lectura, pero igual queda pública en la página.
